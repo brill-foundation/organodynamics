@@ -5,6 +5,7 @@ status: open
 opened: 2026-07-06
 concerns: the nature of instruments in Organodynamics
 confidence: speculative
+revision: 2
 ---
 
 # RFC-001 — The Instrument
@@ -18,7 +19,9 @@ Organodynamics is an engineering discipline for evolving representations of real
 This RFC proposes that the apparatus which makes that evolution *observable* — the
 Instrument — is a first-class concept of the discipline, not an implementation detail
 of its repository. It proposes a definition, an ontology of the objects an Instrument
-deals with, and positions on seven foundational questions.
+deals with, and positions on seven foundational questions. Exploring those questions
+uncovered an eighth — whether the Instrument is one thing — and §6 proposes the
+Observatory in answer.
 
 ## 2. Why this is first-class
 
@@ -56,7 +59,8 @@ Five kinds of object, which must not be conflated:
 | The Record | zeroth | Append-only history of everything that happened. Evidence, not knowledge. |
 | Representations | first | Authored claims about reality. Bear confidence, mature through a lifecycle, can be challenged. |
 | Relations | second | Objects *about representations*: tension, supersession, dependency. Exist only between their endpoints. |
-| The Instrument | — | A versioned function plus its protocol. |
+| Instruments | — | Versioned functions plus their protocols. There may be many (§6). |
+| The Observatory | — | The set of Instruments over the one Record, plus the comparison protocol (§6). |
 | Observations | — | Readings: `Instrument(Record, t)`. Unauthored, confidence-free, reproducible. |
 
 ## 5. The seven questions
@@ -162,24 +166,92 @@ reading*, never a document. It must carry its coordinates (`taken-at`, `at-commi
 cited by a representation — a representation that needs a reading cites the
 coordinates and re-derives.
 
-## 6. What this RFC does not decide
+## 6. The eighth question: one Instrument, or an Observatory?
+
+Exploring the seven questions uncovered a question deeper than any of them:
+is the Instrument *one thing*?
+
+**The single-instrument assumption fails this RFC's own test.** §2 holds that the
+tooling is a theory of what matters. A single Instrument makes that theory invisible
+and total: whatever it does not measure, the discipline cannot see, and there exists
+no second vantage point from which the blindness is detectable. In observational
+science, artifact is distinguished from signal by triangulation — instruments of
+different construction agreeing, or more instructively, disagreeing. A lone
+instrument cannot detect its own artifacts.
+
+**This RFC already described two Instruments without noticing.** §5.2 splits
+observables into declared and derived — self-report and behavior. These are
+different sensing modalities, with different disturbance profiles and different
+failure modes. And §5.2 locates the richest reading in the *gap between them* — a
+reading neither modality can produce alone. The most important observation this RFC
+names is an inter-instrument comparison. The Observatory was implicit from the start.
+
+**Proposed resolution: one Record, many Instruments.**
+
+> An Observatory is a set of Instruments over a single shared Record, together with
+> a comparison protocol — the rules that make readings from different Instruments
+> juxtaposable without collapsing them onto one scale.
+
+The unity that matters is not the Instrument but the Record. One sky, many
+telescopes: radio and optical astronomy disagree about nearly everything except the
+sky. Each Instrument in the Observatory remains exactly what §3 defines — a
+versioned, reproducible function of the Record — and that is what keeps the
+Observatory flat rather than towered:
+
+- **Comparison needs no meta-level.** A comparator (say, the divergence between
+  declared confidence and behavioral dormancy) takes other Instruments' readings as
+  input — but readings are re-derivable functions of the Record, so the comparator
+  is itself just another function of the Record. Another Instrument, not a higher
+  kind.
+- **Self-observation dissolves (Q-a, partially answered).** Instrument versions live
+  in the Record, so an Instrument that reads calibration history is simply another
+  member of the Observatory. No regress: everything roots in the one Record.
+
+**Two disciplines the Observatory must keep:**
+
+1. **No aggregation.** The Observatory juxtaposes readings; it never combines them
+   into a scalar. A composite score is a single Instrument reborn, with its theory
+   of what matters hidden inside the weights — the royal road back past the Goodhart
+   line (§5.3). Disagreement between Instruments is a first-class output, not noise
+   to be averaged away.
+2. **Commissioning by challenge.** Every new Instrument is a new theory of what
+   matters and new Goodhart surface. Instruments are therefore commissioned and
+   decommissioned the way representations mature: proposed by RFC, challenged,
+   versioned, retired — never silently added. This gives Q-c a tractable shape: the
+   window between blindness and Goodhart is negotiated one Instrument at a time.
+
+An illustrative — not decided — initial roster: a maturity instrument (declared
+states), a dormancy instrument (derived from the Record's timeline), a tension
+instrument (relational stress), and a divergence instrument comparing the first two.
+Small on purpose; the roster is a commissioning question, not a definitional one.
+
+## 7. What this RFC does not decide
 
 Implementation: schemas, scripts, directory layout, the exact maturity vocabulary,
-the cadence of readings, and whether cached readings live in the repository at all.
-Those follow understanding; this RFC is the understanding.
+the cadence of readings, whether cached readings live in the repository at all, and
+the initial roster of the Observatory. Those follow understanding; this RFC is the
+understanding.
 
-## 7. Open questions
+## 8. Open questions
 
-- **Q-a.** Can the Instrument observe itself, or does observing the Instrument's own
-  evolution require only the record of its versions?
+- **Q-a** *(partially answered by §6)*. Self-observation needs no meta-instrument —
+  calibration history is in the Record. Residual: does the act of reading
+  calibration history change how recalibration is proposed?
 - **Q-b.** Who may recalibrate, and what challenge must a recalibration survive?
 - **Q-c.** Is there a minimal set of observables below which the discipline is blind
   — and a maximal set above which Goodhart dominates? What bounds the window?
 - **Q-d.** Are relations beyond tension and supersession needed (support, dependence,
   analogy), or does proliferating relation-kinds re-create the measurement problem
   one level up?
+- **Q-e.** What belongs in the comparison protocol — shared coordinates only
+  (`at-commit`, `instrument-version`), or shared units too? How much shared
+  vocabulary can Instruments have before they collapse into one?
+- **Q-f.** What must a candidate Instrument demonstrate to be commissioned — its
+  restraint case, its disturbance profile, its expected failure modes?
+- **Q-g.** Is there a minimum viable Observatory: the smallest roster that can
+  detect its own artifacts?
 
-## 8. Disposition
+## 9. Disposition
 
 This RFC is resolved by challenge and revision like any other. If accepted, its
 definitions become the first canon of Organodynamics, and implementation of the
