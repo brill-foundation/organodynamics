@@ -6,6 +6,7 @@ opened: 2026-07-06
 concerns: what the Organodynamics Development System is made of — the layer beneath the primitives
 confidence: speculative
 exposed-by: the ODS transition — the recognition that the environment for evolving the discipline must be designed before the discipline
+revision: 2
 ---
 
 # RFC-004 — The Substrate
@@ -14,6 +15,15 @@ exposed-by: the ODS transition — the recognition that the environment for evol
 question "what is the primitive?" by arguing that the question is slightly
 wrong, and that the system which does not yet know its primitives must be
 founded one layer below them. Everything here is staked to be challenged.
+
+*Revision 2* incorporates a conversational challenge (provenance: a
+ChatGPT-mediated participant, 2026-07-06) that asked whether the history of
+representations is a second history distinct from the history of events, and
+proposed lineage-primary representation over ownership. §14 and §15 are the
+disposition; the challenge also amended §6 item 1 and the tension roster in
+§10. Conversational-stage revision is the RFC-001 pattern; RFC-003's batching
+discipline governs the independent-review stage, which this RFC has not yet
+entered.
 
 ## 1. The exposure, and the paradox inside it
 
@@ -165,7 +175,9 @@ workbench must itself be plural and its lenses declarable, not baked in.
 **Protocol** — the narrow waist plus the minimum needed for two independent
 implementations to interoperate and for a fork to survive:
 
-1. The event structure: time, provenanced process, content, references.
+1. The event structure: time, provenanced process, content, references —
+   where a reference may carry a *declared label* whose semantics belong to
+   lenses, not to the waist (§14).
 2. Append-only discipline, plus the tombstone rule (redaction preserves the
    fact, shape, and reason of removal — never silent deletion).
 3. Attribution: the means by which a process's authorship is verifiable.
@@ -300,7 +312,9 @@ journal. But the roster itself deserves review:
   the tombstone rule is its held form); *Legibility↔Goodhart* (whatever the
   environment makes visible, it incentivizes — the workbench version of
   RFC-001 §5.3); *Present attention↔Future readers* (views optimized for now
-  vs. the archive's readers in twenty years).
+  vs. the archive's readers in twenty years); *Recognition↔De-individuation*
+  (added in revision 2 — contributor recognition sustains participation, yet
+  identity must not dominate the narrative; §15.3).
 
 ## 11. The reflexivity trap — the strongest warning in this RFC
 
@@ -390,7 +404,127 @@ them.
   genre, version numbers, pipeline stages, chat sessions, model vendors —
   all views or vehicles, all replaceable without constitutional event.
 
-## 14. What this RFC does not decide
+## 14. Two histories? (added in revision 2)
+
+The challenge: perhaps there are two different histories — the history of
+events (what happened) and the history of representations (what changed) —
+related but not identical. Is the distinction fundamental, or can the
+evolution of representations always be reconstructed from the event journal?
+
+**Verdict: the distinction is real, but it is not a second history at the
+substrate — it is the event/lens boundary (§2, §4) seen from a new angle.
+And seeing it from this angle exposed a genuine gap in revision 1.**
+
+*Why representation history cannot be substrate.* "What changed" is an
+interpretation of "what happened." A representation's evolution — observation,
+challenge, counterexample, refinement, synthesis — is a typed path through the
+event graph, and typing is lens work. Two reasons the substrate must not own
+it:
+
+1. **Representation identity is interpretive.** When does a refinement yield
+   *the same representation, evolved*, and when a *new* representation that
+   supersedes the old? That is a Ship-of-Theseus question, and different
+   lenses may legitimately answer it differently. Freezing one answer into
+   the waist would entrench an ontology — exactly what §2 refused to do.
+2. **A substrate that records representation-history must know what a
+   representation is** — the very question the project has deliberately left
+   open. The moment "what counts as the same idea" is a protocol fact rather
+   than a lens claim, the ontology debate is over by fiat.
+
+*The reconstructibility answer, precisely.* Representation history is
+reconstructible from the journal **exactly to the extent that lineage was
+declared at commitment time.** An event that declares "refines e₁, in tension
+with e₂" makes its place in an evolution derivable forever. Undeclared
+lineage is not reconstructible — it can only be *hypothesized*, and a
+hypothesized lineage is a claim: authored, confidence-bearing, challengeable,
+promoted like any interpretation (RFC-001 §5.4). This reproduces RFC-001
+§5.2's declared/derived split one level up, and the same corollary holds:
+the gap between declared lineage and lens-inferred lineage is itself one of
+the richest readings available — a representation whose declared ancestry
+diverges from its behavioral ancestry is telling the discipline something.
+
+*The gap in revision 1.* §6 gave events "references" but never said that
+references may carry **declared labels** (refines, supersedes, challenges,
+synthesizes-from). Labels are the difference between a journal from which
+evolution is derivable and one from which it must be guessed. Amended (§6
+item 1): references may carry declared labels; the label *vocabulary and
+semantics* belong to lenses, not the waist. The substrate does not know what
+"refines" means — it guarantees only that the author said it, and when.
+
+So: one journal, not two histories — but the journal must be
+lineage-capable, and revision 1 undersold that. Events record what happened;
+what changed is what lenses say happened; and the discipline's practice must
+be to declare change at the moment of commitment, because declared lineage is
+the only lineage the substrate can promise to preserve.
+
+## 15. Lineage, provenance, ownership (added in revision 2)
+
+The proposed principle — represent the evolution of ideas, not the ownership
+of ideas — is **accepted**, and it grows stronger when its three conflated
+concepts are pulled apart:
+
+- **Provenance** is substrate and non-negotiable (invariant 3). Nothing in
+  this section weakens it by one bit; every event remains attributable and
+  auditable forever.
+- **Ownership** should not be de-emphasized — it should **not exist**. No
+  representation has an owner: no participant holds edit rights, veto rights,
+  or exemption-from-challenge over a representation, including its
+  originator. This is representation-before-authority made structural. It is
+  a *rights* decision, far stronger than a display decision, and it belongs
+  at the constitutional layer.
+- **Authorship display** is a view policy (§5). The default view of a
+  representation renders its transformation lineage — the path §14 makes
+  derivable — and identity surfaces on demand, for audit.
+
+Proposed constitutional form:
+
+> **Lineage is the narrative; provenance is the evidence; ownership does not
+> exist.**
+
+Two carve-outs and one honest cost, so the principle is load-bearing rather
+than sentimental:
+
+1. **Provenance-class is evidence, not just audit.** Independence counting
+   (RFC-003 §7.2), disturbance profiles, blind status — these require
+   provenance *in the default view* wherever convergence or independence is
+   being read. The principle de-emphasizes *identity as narrative*; it must
+   never hide *provenance-class as evidence*. Who-specifically is audit;
+   what-kind-of-process-and-how-independent is epistemics.
+2. **Invariant 5 binds the system's views, not the world.** Lineage-primary
+   display protects against the archive-as-reputation failure — but a fully
+   queryable provenance layer can still be compiled into per-person records
+   by any external observer. The workbench must never offer
+   person-aggregation as a rendered view; the substrate cannot prevent
+   someone else from computing it. State the limit honestly rather than
+   promising what append-only provenance cannot deliver.
+3. **The cost is recognition.** Contributor recognition is the incentive
+   that sustains participation in every existing knowledge economy, however
+   corrupt the citation market is. A system that removes identity from the
+   primary narrative weakens that motor. The mitigation — provenance remains
+   fully queryable, so any participant can extract and present their own
+   contribution record externally; the system declines to make identity
+   *ambient*, not to make it *inaccessible* — is a mitigation, not a
+   solution. This is a genuine constitutional tension and joins the roster:
+   **Recognition↔De-individuation** (§10).
+
+One rejection within the acceptance: "optimize for the quality of
+representation evolution" must not become constitutional *wording*. The
+intent is right; the formulation is a metric invitation, and merit
+measurement is prohibited (RFC-001 §5.3) precisely because the discipline
+that scores its own evolution will evolve toward the score. The system
+*represents* evolution and *protects the conditions* under which it happens;
+it does not grade it.
+
+Finally, the self-demonstration, which is the strongest evidence the
+principle fits: the repository already practices lineage-primary narrative.
+RFC-001's revision history records "challenge corrected this; the correction
+is accepted" without organizing the story around who challenged — and every
+concept this project now values most (held tensions, the Observatory, the
+waist, the very distinction this section disposes of) is a lineage artifact
+that no single participant authored. The principle is not an aspiration; it
+is a description of how the good parts already happened.
+
+## 16. What this RFC does not decide
 
 The concrete event encoding; the attribution scheme; whether the journal is
 centralized, replicated, or federated; the first lens vocabulary; office
@@ -398,7 +532,7 @@ definitions and the ratification rule (the standing debt — RFC-003 Q-f — is
 *still open*, and nothing in this RFC closes it); which Instruments are
 commissioned first beyond the reality-contact instrument (§11.1).
 
-## 15. Open questions
+## 17. Open questions
 
 - **Q-a.** Can the waist itself come under tension without a paradox — what
   is the amendment procedure for the protocol layer, and is it an event *in*
@@ -419,8 +553,16 @@ commissioned first beyond the reality-contact instrument (§11.1).
 - **Q-f.** What quantum of attention should a view assume? The choice encodes
   a theory of human cognition — is it a lens parameter, a workbench policy,
   or a per-person declaration?
+- **Q-g** *(added in revision 2)*. What is the minimal declared-label
+  vocabulary that makes lineage derivable without ontological
+  overcommitment — and is an *unlabeled* reference a lineage claim of any
+  kind, or pure citation?
+- **Q-h** *(added in revision 2)*. Can Recognition↔De-individuation be held
+  by exportable personal provenance alone, or does sustained participation
+  require recognition *inside* the system — and can any in-system
+  recognition mechanism avoid becoming a person-metric (invariant 5)?
 
-## 16. Disposition
+## 18. Disposition
 
 Resolved by challenge and revision like any other RFC — and, per RFC-003,
 this document should receive independent reviews from processes other than
