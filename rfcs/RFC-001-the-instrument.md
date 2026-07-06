@@ -5,7 +5,7 @@ status: open
 opened: 2026-07-06
 concerns: the nature of instruments in Organodynamics
 confidence: speculative
-revision: 2
+revision: 3
 ---
 
 # RFC-001 — The Instrument
@@ -52,11 +52,13 @@ Unpacking:
 
 ## 4. Ontology (proposed)
 
-Five kinds of object, which must not be conflated:
+The kinds of object, which must not be conflated (revision 2 quietly falsified the
+original count of five; the count is now left unstated on purpose):
 
 | Kind | Order | Nature |
 |------|-------|--------|
-| The Record | zeroth | Append-only history of everything that happened. Evidence, not knowledge. |
+| Reality | — | Not an object of the system but its anchor. Not negotiated, not produced, not revisable (§7). |
+| The Record | zeroth | Append-only history of everything that happened. Evidence, not knowledge. An artifact (§7). |
 | Representations | first | Authored claims about reality. Bear confidence, mature through a lifecycle, can be challenged. |
 | Relations | second | Objects *about representations*: tension, supersession, dependency. Exist only between their endpoints. |
 | Instruments | — | Versioned functions plus their protocols. There may be many (§6). |
@@ -192,9 +194,10 @@ names is an inter-instrument comparison. The Observatory was implicit from the s
 > a comparison protocol — the rules that make readings from different Instruments
 > juxtaposable without collapsing them onto one scale.
 
-The unity that matters is not the Instrument but the Record. One sky, many
-telescopes: radio and optical astronomy disagree about nearly everything except the
-sky. Each Instrument in the Observatory remains exactly what §3 defines — a
+The unity that matters within the Observatory is the shared Record — though
+challenge later showed the anchor sits deeper still (§7): one sky, many telescopes,
+and the sky was never the Record. Each Instrument in the Observatory remains
+exactly what §3 defines — a
 versioned, reproducible function of the Record — and that is what keeps the
 Observatory flat rather than towered:
 
@@ -209,11 +212,17 @@ Observatory flat rather than towered:
 
 **Two disciplines the Observatory must keep:**
 
-1. **No aggregation.** The Observatory juxtaposes readings; it never combines them
-   into a scalar. A composite score is a single Instrument reborn, with its theory
-   of what matters hidden inside the weights — the royal road back past the Goodhart
-   line (§5.3). Disagreement between Instruments is a first-class output, not noise
-   to be averaged away.
+1. **No aggregation — because disagreement is information.** The Observatory
+   juxtaposes readings; it never combines them into a scalar. The deepest
+   justification is not defensive (Goodhart, §5.3) but constitutional:
+   *disagreement is information.* When two Instruments disagree, the first
+   objective is never to average their outputs but to understand why they diverge —
+   the gap is a phenomenon to investigate, not noise to suppress. Averaging
+   destroys exactly the information the Observatory exists to produce. This is the
+   same principle that makes tension generative among representations (§5.5): the
+   discipline metabolizes disagreement into knowledge, at every level. A composite
+   score is a single Instrument reborn, its theory of what matters hidden inside
+   the weights; Goodhart is merely what punishes the discipline that forgets this.
 2. **Commissioning by challenge.** Every new Instrument is a new theory of what
    matters and new Goodhart surface. Instruments are therefore commissioned and
    decommissioned the way representations mature: proposed by RFC, challenged,
@@ -225,14 +234,46 @@ states), a dormancy instrument (derived from the Record's timeline), a tension
 instrument (relational stress), and a divergence instrument comparing the first two.
 Small on purpose; the roster is a commissioning question, not a definitional one.
 
-## 7. What this RFC does not decide
+## 7. Reality above the Record
+
+Revision 2 claimed the unity that matters is the Record. Challenge corrected this,
+and the correction is accepted: **the Record is not the deepest invariant. Reality
+is.** An early constitutional principle of Organodynamics states: *Reality is not
+negotiated. Representations are.* That asymmetry must hold all the way down — and
+the Record, for all its append-only discipline, is an artifact: a representation of
+interactions with Reality, not the anchor itself.
+
+Two refinements to the proposed hierarchy (Reality → Record → Observatory →
+Instruments → Observations → Representations), offered as friendly amendments:
+
+- **A loop, not a line.** Representations do not descend only from Observations
+  (that path exists, via promotion, §5.4) — they arise chiefly from researchers
+  encountering Reality directly, and they guide the next encounter. The geometry is
+  a cycle anchored at its one unproduced node: Reality → encounter →
+  Representations → Record → Observatory → Observations → interpretation →
+  Representations → encounter → … Reality is the only element of the diagram that
+  nothing else produces. That is what "not negotiated" means structurally.
+
+- **The Record has two zones.** Events internal to the discipline — a commit, a
+  challenge, a supersession — are *constitutive*: the recording is the act, and
+  cannot be wrong about it. Events outside — an experiment, a conversation, an
+  encounter with Reality — enter the Record only as *testimony*: the Record proves
+  the testimony was given, never that it was true. The Record is infallible only
+  about itself; about Reality it is exactly as good as its witnesses.
+
+One reframing falls out: the Record's append-only discipline is not an
+implementation convenience but an *engineered homage* to the asymmetry it cannot
+embody. The Record cannot be Reality, so it is built to imitate the one property of
+Reality that matters most: what happened cannot be renegotiated.
+
+## 8. What this RFC does not decide
 
 Implementation: schemas, scripts, directory layout, the exact maturity vocabulary,
 the cadence of readings, whether cached readings live in the repository at all, and
 the initial roster of the Observatory. Those follow understanding; this RFC is the
 understanding.
 
-## 8. Open questions
+## 9. Open questions
 
 - **Q-a** *(partially answered by §6)*. Self-observation needs no meta-instrument —
   calibration history is in the Record. Residual: does the act of reading
@@ -250,8 +291,18 @@ understanding.
   restraint case, its disturbance profile, its expected failure modes?
 - **Q-g.** Is there a minimum viable Observatory: the smallest roster that can
   detect its own artifacts?
+- **Q-h** *(exposed, moved to RFC-002)*. Who composes the Observatory around a live
+  question — which Instruments participate when a tension appears, a representation
+  changes, or evidence accumulates? This RFC defines ambient observation only;
+  directed observation is the subject of RFC-002 (Inquiry).
+- **Q-i.** The Observatory pattern appears self-similar: plural Instruments over
+  readings, plural challengers over claims, plural perspectives over proposals —
+  no total vantage point at any scale. Whether that principle belongs in the
+  constitution rather than in this RFC is left to the constitutional layer. If
+  codified, it should protect *independence of perspective*, not identity of
+  reviewer: a fixed roster of predictable voices is aggregation by another name.
 
-## 9. Disposition
+## 10. Disposition
 
 This RFC is resolved by challenge and revision like any other. If accepted, its
 definitions become the first canon of Organodynamics, and implementation of the
