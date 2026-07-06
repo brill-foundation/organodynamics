@@ -1,7 +1,7 @@
 ---
 id: META-REVIEW-000
 subject: RFC-000 (Organodynamics Development Manifest, Draft 0.1)
-subject-revision: draft 0.1 as circulated for review, 2026-07-06 (not yet committed to rfcs/)
+subject-revision: draft 0.1, imported verbatim as rfcs/RFC-000-development-manifest.md (record recovery, 2026-07-06)
 status: awaiting-quorum
 opened: 2026-07-06
 meta-reviewer: unassigned — must satisfy RFC-003 §7.3 (not the author of RFC-000 or of any corpus review)
