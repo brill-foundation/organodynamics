@@ -57,6 +57,12 @@ any violation is disclosed here, not silently tolerated.
   layer — and ideally one reviewer who has not read RFC-001/002, so the
   corpus can distinguish "defects visible from inside the project's own
   vocabulary" from "defects visible without it."
+- **Commissioning opened, 2026-07-07:** the ask above is now a recorded
+  request, not just a gap description — see
+  `reviews/REQUEST-independent-reviews-RFC-000.md` for the exact brief,
+  the BLIND/CONTEXTED conditions, and the provenance block reviewers must
+  return. R2 and R3 should be added to the corpus table below as they
+  arrive.
 
 ## 4. Convergence map
 
