@@ -131,7 +131,11 @@ def append_event(proc, cls, content, refs):
 
 def git_commit(paths, msg):
     sh("git", "add", *[str(p) for p in paths])
-    r = sh("git", "commit", "-q", "-m", msg, check=False)
+    r = sh("git", "commit", "-q", "-m", msg, check=False, capture=True)
+    if r.returncode != 0:
+        print(f"WARNING: recorded in the journal but NOT git-committed:\n"
+              f"{(r.stdout + r.stderr).strip()}\n"
+              f"fix the cause, then: git add {paths[0]} && git commit")
     return r.returncode == 0
 
 
@@ -177,6 +181,13 @@ def cmd_setup(a):
         die("a process name is required — provenance is never optional")
     CONF.parent.mkdir(exist_ok=True)
     CONF.write_text(json.dumps({"process": proc, "class": cls}, indent=2) + "\n")
+    # Cold-clone finding (EXPERIMENT-002 run 1): without a git identity the
+    # doorway's auto-commit fails on a fresh machine. Set a repo-local one.
+    if sh("git", "config", "user.email", check=False, capture=True).returncode != 0:
+        slug = "".join(c if c.isalnum() else "-" for c in proc)
+        sh("git", "config", "user.name", proc)
+        sh("git", "config", "user.email", f"{slug}@participants.ods")
+        print(f"git identity set for this repository only: {proc} <{slug}@participants.ods>")
     J.verify(J.read_events())
     print(f"participant recorded locally (.ods/, not committed): {proc} [{cls}]")
     print("next: ./ods note \"your first thought\"   |   ./ods log   |   ./ods status")
@@ -211,19 +222,57 @@ def cmd_verify(_a):
 
 def cmd_sync(_a):
     br = current_branch()
-    pull = sh("git", "pull", "--rebase", "origin", br, check=False, capture=True)
+    dirty = sh("git", "status", "--porcelain", capture=True).stdout.strip()
+    if dirty:
+        die("uncommitted changes in the working tree — commit them first\n"
+            + dirty + "\n(then re-run ./ods sync)")
+    sh("git", "fetch", "-q", "origin", br, check=False)
+    pre_pull = [(e["id"], e["body"]) for e in J.read_events()]
+    pull = sh("git", "pull", "-q", "--rebase", "origin", br,
+              check=False, capture=True)
     if pull.returncode != 0:
-        print(pull.stdout + pull.stderr)
-        if "journal.jsonl" in pull.stdout + pull.stderr:
-            print("\n*** Concurrent journal append detected. ***\n"
-                  "This is H5 (EXPERIMENT-001) — a REGISTERED EXPERIMENTAL RESULT,\n"
-                  "not a bug. Before resolving, capture the conflict (git diff) and\n"
-                  "record what happened with `./ods note`. Then resolve by keeping\n"
-                  "BOTH sets of events in order and re-verifying the chain, or abort\n"
-                  "with `git rebase --abort` and coordinate.")
-        return
+        conflicts = [l[3:] for l in sh("git", "status", "--porcelain",
+                                       capture=True).stdout.splitlines()
+                     if l.startswith("UU")]
+        sh("git", "rebase", "--abort", check=False, capture=True)
+        local_files = sh("git", "diff", "--name-only", f"origin/{br}...HEAD",
+                         check=False, capture=True).stdout.split()
+        if conflicts == ["journal/journal.jsonl"] and \
+                local_files == ["journal/journal.jsonl"]:
+            # H5 (EXPERIMENT-001), shape measured in EXPERIMENT-002 run 2:
+            # keeping both event lines breaks the chain (the later event's
+            # `prev` no longer matches). Verified resolution: re-append the
+            # local events' BODIES on the new tip. Bodies and provenance
+            # unchanged; ids change because chain position changes — events
+            # are provisional until pushed.
+            remote = sh("git", "show", f"origin/{br}:journal/journal.jsonl",
+                        capture=True).stdout
+            remote_ids = {json.loads(l)["id"] for l in remote.splitlines()
+                          if l.strip()}
+            local_only = [b for i, b in pre_pull if i not in remote_ids]
+            print(f"H5: concurrent journal append ({len(local_only)} local "
+                  f"event(s)). Auto-resolving: re-appending on the new tip "
+                  f"(bodies unchanged, ids change).")
+            sh("git", "reset", "-q", "--hard", f"origin/{br}")
+            for body in local_only:
+                prev = J.verify(J.read_events(), quiet=True)
+                ev = {"id": J.event_id(prev, body), "prev": prev, "body": body}
+                with J.JOURNAL.open("a") as f:
+                    f.write(J.canonical(ev) + "\n")
+            git_commit([J.JOURNAL],
+                       f"journal: re-append {len(local_only)} event(s) after "
+                       f"concurrent sync (H5)")
+        else:
+            print(f"rebase conflict beyond the simple journal case "
+                  f"(conflicts: {conflicts or 'none listed'}). Rebase aborted; "
+                  f"resolve by hand:\n  git pull --rebase origin {br}\n"
+                  f"If the journal conflicts, do NOT keep both lines (breaks "
+                  f"the chain): take the remote version, then re-add your "
+                  f"events with `./ods note` (same text; the id changes — "
+                  f"that is correct).")
+            return
     J.verify(J.read_events())
-    push = sh("git", "push", "origin", br, check=False, capture=True)
+    push = sh("git", "push", "-q", "origin", br, check=False, capture=True)
     print("synced" if push.returncode == 0
           else f"pulled ok; push failed:\n{push.stderr.strip()}")
 
