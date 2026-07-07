@@ -21,3 +21,5 @@ node_modules/
 # lab-local (never committed: per-machine identity, assembled experiment packets)
 .ods/
 dist/
+__pycache__/
+*.pyc
