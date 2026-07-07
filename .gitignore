@@ -17,3 +17,7 @@ desktop.ini
 tmp/
 node_modules/
 .cache/
+
+# lab-local (never committed: per-machine identity, assembled experiment packets)
+.ods/
+dist/
