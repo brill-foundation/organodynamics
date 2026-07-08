@@ -10,7 +10,7 @@ reported (§7), not smoothed.
 
 ## 0. The one-line claim
 
-The rotating table is **not a new model**. It is two Readings already earned this
+The rotating table is **not a new model**. It is Readings already earned this
 cycle, fused into a single interaction primitive:
 
 - **the table is the forge** — the alive, liquid space where perspectives *operate on*
@@ -18,7 +18,10 @@ cycle, fused into a single interaction primitive:
 - **the shelf is the kernel** — durable, committed, recallable memory (the append-only
   Record);
 - **rotation** is changing which operation is applied to a fixed specimen;
-- **the idea** at the center is a Representation with confidence and a lifecycle.
+- **the idea** at the center is a Representation with confidence and a lifecycle;
+- **the table is layered, not flat** — a shared idea (L3), the shared *state* of the
+  inquiry (L2), and each seat's private workspace (L1). "Communication" was only ever a
+  projection of L2; the middle layer is *state*, not messaging (§3).
 
 If that fusion holds, the model earns its place by *replacing* concepts, never by
 adding them (§2).
@@ -35,9 +38,10 @@ adding them (§2).
 | Message / handoff between agents | **Rotation (the pedal)** | Nothing is handed to anyone. The specimen stays put; the *operation applied to it* changes. |
 | Archive / storage | **The shelf** | Living memory: committed but recallable, not cold storage. |
 | Reopening a file | **Return from shelf** | An idea comes back to a *new* table when reality changes; the shelf entry itself is immutable (§4). |
+| Message log / chat thread | **Shared State (L2)** | Messages are one projection of the inquiry's current condition; the state exists whether or not anything is said (§3). |
 
 The test for "replacement, not addition": if a concept below could coexist with the
-table, the model has failed and is just another feature. None of the six can — each
+table, the model has failed and is just another feature. None of the seven can — each
 row is an either/or. That is the evidence the model reduces rather than accretes.
 
 ---
@@ -57,38 +61,68 @@ Brief, by reference — this is not a re-derivation.
 - **Placing on the shelf** = crossing the membrane (Discovery→Kernel).
 - **Return from shelf → new table** = supersession-with-lineage (RFC-001 §5.5 relations):
   the old shelf entry is preserved; a new table produces a successor.
+- **Shared state (L2)** = a *reading* of the Record, `Instrument(Record, now)`
+  (RFC-001 §5.6–5.7): the inquiry's current condition, re-derivable, never hand-authored.
+  Communication is one projection of it, not the layer itself.
+- **Private workspace (L1)** = a seat's local forge — where an operation happens before
+  it *surfaces* into shared state. This is where perspectives diverge; L2 is where they
+  synchronize.
 
 ---
 
 ## 3. Object model
 
-Six objects. Nothing else is introduced.
+Three vertical layers, eight objects. The table is not flat — it is a stack.
 
 ```
-IDEA          the specimen at the center. Immutable identity, evolving content while
-              on a table. Carries: confidence, lifecycle-state, lineage.
+L3  SHARED IDEA     the specimen at the center. Shared. Immutable identity, evolving
+                    content while on a table. Carries confidence, lifecycle-state,
+                    lineage. (= IDEA)
 
-TABLE         a live workspace holding exactly one IDEA and N SEATS. A table is in the
-              forge: its contents are liquid and not yet citable by anything outside it.
+L2  SHARED STATE    the current condition of the inquiry, shared and live: current
+                    tensions, active requests, blocked dependencies, waiting-for-
+                    reality, current experiment, observations needing attention.
+                    A READING of the Record — Instrument(Record, now) — re-derivable,
+                    never hand-authored. Communication is ONE projection of it, not
+                    the layer itself. Holds tensions AS tensions; never a consensus
+                    scalar (no aggregation, RFC-001 §6).
 
-SEAT          a perspective = one operation that may be applied to the IDEA.
-              A seat is a role, not a person; the same person may occupy different
-              seats at different tables. A seat NEVER owns the idea.
+L1  WORKSPACES      one PRIVATE space per active seat — the seat's local forge, where
+                    its operation happens before it SURFACES as shared state. Liquid,
+                    private, invisible to others until surfaced. This is where
+                    perspectives diverge; L2 is where they synchronize.
 
-ROTATION      the act of changing which SEAT is currently operating. Triggered by
-              "diminishing returns" on the active seat. Preserves the idea; changes
-              only the operation. (The "pedal.")
+Spanning objects:
 
-SHELF         the kernel. Holds committed IDEAS as immutable entries with full lineage.
-              "Living" = entries can reactivate (§4), not that entries mutate.
+TABLE     the shared face of a live inquiry = L3 idea + L2 shared state, sat around by
+          seats whose private work lives in L1. In the forge: liquid, not yet citable
+          outside itself.
 
-RETURN        opening a NEW table seeded by a shelf entry, when reality changes. The
-              shelf entry is unchanged; the new table's result supersedes it.
+SEAT      a perspective = one operation. Works in its L1 WORKSPACE and SURFACES results
+          into L2 SHARED STATE. A role, not a person; the same person may occupy
+          different seats at different tables. A seat NEVER owns the idea.
+
+ROTATION  changing which SEAT is currently operating on the shared face. Triggered by
+          "diminishing returns." Preserves the idea; changes only the operation.
+          (The "pedal.")
+
+SHELF     the kernel. Committed IDEAS as immutable entries with full lineage.
+          "Living" = entries reactivate (§4), not that they mutate.
+
+RETURN    opening a NEW table seeded by a shelf entry when reality changes; the shelf
+          entry is unchanged, the new result supersedes it.
 ```
 
-Invariant (from the forge/kernel Reading): **content on a TABLE is causally inert** —
-nothing outside the table may cite it. Only crossing to the SHELF makes an idea
-citable, dependable, challengeable.
+Invariant (from the forge/kernel Reading): **content in L1 and on the L2/L3 table face
+is causally inert** — nothing outside may cite it. Only crossing to the SHELF makes an
+idea citable, dependable, challengeable.
+
+**Why three layers and not one flat surface.** L1 is where perspectives *diverge*; L2 is
+where they *synchronize*. State divergence — the failure that triggered SYNC STOP — is
+L1 workspaces evolving faster than they surface to L2. This is why CURRENT_STATE.md
+became load-bearing: it was already acting as the L2 cache holding divergence in check.
+The middle layer was never "communication"; it was the shared state that keeps private
+forges from becoming separate laboratories.
 
 ---
 
@@ -144,28 +178,33 @@ rest; entering it offers RETURN, not resume.
 
 ### 5.2 A single table (the primary surface)
 
-The idea is the center. Prior operations are visible as **strata around it** — not a
-chat log, but the accreted results of each rotation, each labeled by the seat that
-produced it. The active seat operates at the live edge. The pedal is present but not
-pressed by the surface itself (§7.B).
+The table shows two shared layers: the **idea** (L3) at the center and the **shared
+state** (L2) around it — the inquiry's *current* condition, not its transcript. Each
+seat's private work (L1) is off-surface until it *surfaces* into shared state. Past
+operations (history) recede as depth behind the live state — they are Record, not
+current condition.
 
 ```
-            ┌─────────── strata: prior operations, by seat ───────────┐
-            │  Reduction: "smallest primitive is the membrane, not…"   │
-            │  Translation: "feels like a table that rotates…"         │
+            ┌──────────── L2 SHARED STATE (current condition) ─────────┐
+            │  ⚡ tension: "maturity = convergence?"  (held, §7.A)      │
+            │  ⛔ blocked: CROSSING — who turns the table? (§7.B)       │
+            │  ⏳ waiting for reality: the friction experiment         │
             │                                                          │
             │                    ╔══════════════╗                      │
-            │                    ║   THE IDEA    ║   ◄ center, owned    │
-            │                    ║  (current)    ║     by no seat       │
+            │                    ║  L3  THE IDEA ║   ◄ center, owned    │
+            │                    ║   (current)   ║     by no seat       │
             │                    ╚══════════════╝                      │
             │                                                          │
-            │  ▸ active seat: SYSTEMS  — operating now                 │
-            └──────────────────────────────[ pedal ]──[ to shelf? ]───┘
+            │  ▸ active seat: SYSTEMS — operating in its L1 workspace,  │
+            │    surfacing observations into shared state above        │
+            └──────────────────────[ pedal ]──[ to shelf? ]───────────┘
+             (history: prior operations recede as depth behind L2)
 ```
 
-Two disagreeing strata are **kept side by side**, never merged (disagreement is
-information). This is the surface-level enforcement of "no aggregation" — and it is
-exactly what §7.A puts in tension with "the idea matures."
+Tensions in L2 are **kept as tensions**, never merged into a status line (disagreement
+is information). This is the surface-level guarantee that "Shared State" does not
+silently become consensus — the exact failure §7.A warns of, and the reason the middle
+layer must be *state* and not a single summary.
 
 ### 5.3 The shelf (replaces the archive)
 
@@ -188,7 +227,7 @@ Pressing the pedal does not move the idea to another actor. It swaps the *lens*:
 ```
    before:  IDEA ← [Reduction operating]
    pedal →
-   after:   IDEA ← [Systems operating]      (same idea; new operation; strata grow)
+   after:   IDEA ← [Systems operating]      (same idea; new operation; shared state grows)
 ```
 
 No identity changes. No message is sent. The specimen is fixed; the operation rotates.
@@ -249,6 +288,14 @@ contest* (peer — but then "Adi decides" is false), or it is a governing seat
 (hierarchy — but then "non-hierarchical" is false). The model currently asserts both.
 **Unresolved. Reality must decide whether the pedal has an owner.**
 
+The L2/L1 clarification (§3) *sharpens* this, it does not soften it. "Who may surface a
+private workspace (L1) into shared state (L2)" is the **same** question as "who presses
+the pedal." If any seat may surface freely, shared state is uncontrolled and can diverge
+faster than it synchronizes — the SYNC STOP failure itself. If only one seat may
+authorize surfacing, that seat governs L2 — the hierarchy the model denies. Renaming the
+layer to *Shared State* made the layer honest about what it holds; it did **not** answer
+who controls the crossing into it. Same contradiction, now with a sharper name.
+
 ### 7.C — Correction (resolved, reported for transparency)
 
 Tempting mapping: *table = Observatory, seats = Instruments*. It fails. Instruments must
@@ -263,12 +310,17 @@ resolved with reasoning, not silently — recorded here so the resolution is leg
 
 ## 8. Status
 
-- **Survives implementation:** the object model (§3), the replacement claim (§2), the
-  navigation and table/shelf/rotation surfaces (§5), the forge/kernel fusion (§0), and
-  the operation-vs-observation correction (§7.C).
+- **Survives implementation:** the three-layer object model (§3, L3 idea / L2 shared
+  state / L1 private workspaces), the replacement claim (§2), the navigation and
+  table/shelf/rotation surfaces (§5), the forge/kernel fusion (§0), and the
+  operation-vs-observation correction (§7.C).
+- **Vocabulary corrected (reality-supported):** the middle layer is **Shared State**, not
+  "Communication" — communication is one projection of it. CURRENT_STATE.md was already
+  behaving as this layer during SYNC STOP; that is empirical support, not theory.
 - **Blocked pending reality's decision:** the two membrane-adjacent black boxes — *what
-  crosses* (§7.A) and *who turns the table* (§7.B). Both sit on the critical path
-  between table and shelf. The model can be inhabited (tables, seats, rotation, strata)
+  crosses* (§7.A) and *who turns the table* (§7.B). Both sit on the critical path between
+  table and shelf. The L2/L1 split **sharpened** §7.B: "who may surface L1 into L2" is the
+  pedal question. The model can be inhabited (tables, seats, rotation, shared state)
   before they are decided; it cannot be *committed to shelf* until they are.
 
 The model is alive enough to enter. It is not yet complete enough to preserve.
