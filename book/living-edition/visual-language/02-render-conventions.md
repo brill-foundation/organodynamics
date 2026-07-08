@@ -79,8 +79,8 @@ maturity meter.
 
 Diagrams obey the same gradient (see [maturation](01-maturation-gradient.md)):
 
-- **✏️ pencil** — fenced ` ```text ` construction blocks: hand-drawn feel, `····` for
-  not-yet-inked lines, `←` margin arrows, `?` on unresolved joins.
+- **✏️ pencil** — fenced `text` construction blocks (a `text`-typed code fence): hand-drawn
+  feel, `····` for not-yet-inked lines, `←` margin arrows, `?` on unresolved joins.
 - **🔵 blue ink** — Mermaid with a comment `%% 🔵` and *some* dashed edges (`-.->`) where a
   link is provisional.
 - **⚫ black ink** — clean Mermaid (`%% ⚫`), solid edges, or precise tables.
