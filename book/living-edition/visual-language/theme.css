@@ -1,0 +1,102 @@
+/* ============================================================================
+   The Brill Blueprint — Living Edition
+   Visual Epistemology stylesheet.
+
+   Colour is CONTENT, not decoration (see 00-epistemology.md). Every semantic
+   colour below has a matching Markdown token (emoji + label) so meaning never
+   depends on colour perception — this file only ADDS reinforcement for renderers
+   that support colour (mdBook, Pandoc, HTML). Theme-aware (light/dark),
+   WCAG-AA-minded on both backgrounds.
+
+   Usage: <span class="blue">survived challenge</span>, etc.
+   ============================================================================ */
+
+:root {
+  /* Base media — the maturity axis */
+  --pencil:  #6b6b6b;  /* graphite — hypothesis, exploration, incomplete      */
+  --blue:    #1b56b0;  /* ink blue — a representation that survived challenge  */
+  --ink:     #141414;  /* black ink — canonical / ratified (rare, on purpose) */
+
+  /* Margin events — the epistemic-event axis */
+  --insight: #157f43;  /* green — a genuine insight / promotion / discovery    */
+  --tension: #c0271b;  /* red — contradiction / open or held tension          */
+  --erased:  #9a9a9a;  /* faded — an abandoned representation (kept, struck)   */
+
+  /* Surfaces */
+  --paper:   #fbfaf7;  /* warm notebook paper */
+  --rule:    #e4e0d8;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --pencil:  #a9a9a9;
+    --blue:    #7da3f0;    /* lightened for contrast on dark */
+    --ink:     #f2f0ea;    /* "black ink" inverts to near-white on dark paper */
+    --insight: #5fce93;
+    --tension: #ff6f61;
+    --erased:  #6f6f6f;
+    --paper:   #14161a;
+    --rule:    #2a2d33;
+  }
+}
+/* Explicit theme override (viewer toggle stamps data-theme on :root) */
+:root[data-theme="dark"] {
+  --pencil:#a9a9a9; --blue:#7da3f0; --ink:#f2f0ea;
+  --insight:#5fce93; --tension:#ff6f61; --erased:#6f6f6f;
+  --paper:#14161a; --rule:#2a2d33;
+}
+:root[data-theme="light"] {
+  --pencil:#6b6b6b; --blue:#1b56b0; --ink:#141414;
+  --insight:#157f43; --tension:#c0271b; --erased:#9a9a9a;
+  --paper:#fbfaf7; --rule:#e4e0d8;
+}
+
+/* ---- The six semantic marks ---------------------------------------------- */
+
+.pencil  { color: var(--pencil);  font-style: italic; }
+.blue    { color: var(--blue);    font-weight: 500; }
+.ink     { color: var(--ink);     font-weight: 700; }
+.insight { color: var(--insight); font-weight: 600; }
+.tension { color: var(--tension); font-weight: 600; }
+
+.erased  {
+  color: var(--erased);
+  text-decoration: line-through;
+  text-decoration-thickness: 1px;
+}
+
+/* Callout blockquotes: a left border in the mark's colour ------------------ */
+blockquote.pencil,  blockquote:has(> p:first-child:is([data-mark="pencil"]))  { border-left: 4px solid var(--pencil); }
+blockquote.blue     { border-left: 4px solid var(--blue); }
+blockquote.ink      { border-left: 4px solid var(--ink); }
+blockquote.insight  { border-left: 4px solid var(--insight); background: color-mix(in srgb, var(--insight) 6%, transparent); }
+blockquote.tension  { border-left: 4px solid var(--tension); background: color-mix(in srgb, var(--tension) 6%, transparent); }
+blockquote.erased   { border-left: 4px dashed var(--erased); }
+
+blockquote[class] { padding: .4em .9em; margin: 1em 0; border-radius: 0 4px 4px 0; }
+
+/* The three narrative layers ---------------------------------------------- */
+.layer-technical::before { content: "▣ TECHNICAL"; }
+.layer-human::before     { content: "◇ HUMAN"; }
+.layer-chronicle::before { content: "⏱ CHRONICLE"; }
+.layer-technical::before, .layer-human::before, .layer-chronicle::before {
+  display: inline-block; font: 600 .72rem/1 ui-monospace, monospace;
+  letter-spacing: .08em; padding: .2em .5em; margin-bottom: .4em;
+  border: 1px solid var(--rule); border-radius: 3px; color: var(--pencil);
+}
+
+/* The maturity meter ------------------------------------------------------- */
+.meter { font: 600 .8rem ui-monospace, monospace; letter-spacing: .12em; }
+.meter .fill-pencil { color: var(--pencil); }
+.meter .fill-blue   { color: var(--blue); }
+.meter .fill-ink    { color: var(--ink); }
+
+/* Page ground: the notebook warms toward the desk toward the spec ---------- */
+.zone-notebook { background: var(--paper); }
+.zone-spec     { background: color-mix(in srgb, var(--paper) 92%, #dfe6f2); }
+
+/* Construction (pencil) diagram blocks ------------------------------------- */
+pre.pencil-block {
+  color: var(--pencil); border: 1px dashed var(--rule);
+  background: transparent; font-style: normal;
+}

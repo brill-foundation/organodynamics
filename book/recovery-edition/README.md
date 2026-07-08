@@ -47,7 +47,7 @@ book/
    a belief once; all of it is kept — never erased — in historical sidebars and
    [Appendix C](appendices/C-evolution-of-rfc-001.md).
 3. **The repository stays the source of truth.** The book is a *derived* artifact — a lens; the
-   repository is the sky. The RFCs live in [`/rfcs`](../rfcs); the appendices reproduce them
+   repository is the sky. The RFCs live in [`/rfcs`](../../rfcs); the appendices reproduce them
    verbatim so any derivation can be audited.
 
 ## How it looks the way it knows — the pencil→ink language
