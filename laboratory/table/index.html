@@ -7,87 +7,81 @@
 <style>
   :root{
     --bg:#f4efe6; --bg2:#efe8db; --ink:#2b2622; --muted:#7d746a; --line:#d9cfbe;
-    --card:#fffdf8; --accent:#a6642f; --accent-soft:#e7d3bf; --live:#c07a2b;
+    --card:#fffdf8; --accent:#a6642f; --accent-soft:#e7d3bf;
     --tension:#b4472d; --blocked:#8a5a2b; --waiting:#5a6b8a; --observation:#6a7d5f;
     --request:#8a6f2b; --experiment:#6a5a8a; --held:#9a8f7a;
     --seat-reality:#3f6b52; --seat-reduction:#a6642f; --seat-systems:#3f5f8a; --seat-translation:#8a4f6b;
-    --shadow:0 1px 2px rgba(60,45,25,.06),0 8px 30px rgba(60,45,25,.08);
+    /* journal media */
+    --paper:#efe4c8; --paper2:#e7dab8; --rule:#cdb98c; --marginline:#c68b7a;
+    --pencil:#6a6155; --inkc:#38506f; --shadow:0 1px 2px rgba(60,45,25,.06),0 8px 30px rgba(60,45,25,.08);
     --serif:"Iowan Old Style",Georgia,"Times New Roman",serif;
     --sans:-apple-system,BlinkMacSystemFont,"Segoe UI","Assistant","Heebo",system-ui,sans-serif;
+    --hand:"Bradley Hand","Segoe Print","Snell Roundhand","Comic Sans MS",cursive;
   }
   @media (prefers-color-scheme: dark){
     :root{
       --bg:#1c1a17; --bg2:#211e1a; --ink:#ece5d8; --muted:#9a9184; --line:#3a352d;
-      --card:#26231e; --accent:#d68a4e; --accent-soft:#3a2f24; --live:#e0985a;
+      --card:#26231e; --accent:#d68a4e; --accent-soft:#3a2f24;
+      --paper:#2b2721; --paper2:#322d25; --rule:#413a2e; --marginline:#7a4f45;
+      --pencil:#b3a992; --inkc:#8fb0d8;
       --shadow:0 1px 2px rgba(0,0,0,.3),0 8px 30px rgba(0,0,0,.35);
     }
   }
   *{box-sizing:border-box}
   html,body{margin:0;height:100%}
-  body{
-    background:radial-gradient(120% 90% at 50% -10%,var(--bg2),var(--bg));
-    color:var(--ink);font-family:var(--sans);font-size:15px;line-height:1.55;
-    -webkit-font-smoothing:antialiased;overflow:hidden;
-  }
+  body{background:radial-gradient(120% 90% at 50% -10%,var(--bg2),var(--bg));color:var(--ink);
+    font-family:var(--sans);font-size:15px;line-height:1.55;-webkit-font-smoothing:antialiased;overflow:hidden}
   button{font-family:inherit;font-size:inherit;color:inherit;cursor:pointer;border:none;background:none}
-  textarea,input{font-family:inherit;font-size:inherit;color:var(--ink)}
+  textarea,input,select{font-family:inherit;font-size:inherit;color:var(--ink)}
   ::selection{background:var(--accent-soft)}
 
   .app{display:flex;flex-direction:column;height:100vh}
-  header{
-    display:flex;align-items:center;gap:14px;padding:12px 22px;border-bottom:1px solid var(--line);
-    background:color-mix(in srgb,var(--card) 60%,transparent);backdrop-filter:blur(6px);
-  }
+  header{display:flex;align-items:center;gap:14px;padding:12px 22px;border-bottom:1px solid var(--line);
+    background:color-mix(in srgb,var(--card) 60%,transparent);backdrop-filter:blur(6px)}
   header .brand{font-family:var(--serif);font-size:20px;font-weight:600;letter-spacing:.02em}
   header .brand small{color:var(--muted);font-weight:400;font-size:13px;margin-inline-start:8px;font-family:var(--sans)}
   header .spacer{flex:1}
   .hbtn{padding:6px 12px;border-radius:9px;border:1px solid var(--line);color:var(--muted);font-size:13px;transition:.15s}
   .hbtn:hover{color:var(--ink);border-color:var(--accent);background:var(--card)}
 
-  .stage{flex:1;display:grid;grid-template-columns:1fr 340px;gap:0;min-height:0}
-  @media (max-width:900px){.stage{grid-template-columns:1fr}}
-
-  .center{display:flex;flex-direction:column;min-height:0;padding:22px 26px;gap:16px;overflow:hidden}
-
-  /* seat ring */
-  .ring{display:flex;gap:8px;align-items:stretch;flex-wrap:wrap}
-  .seat{
-    flex:1;min-width:120px;padding:9px 12px;border-radius:12px;border:1px solid var(--line);
-    background:var(--card);transition:.18s;display:flex;flex-direction:column;gap:2px;position:relative;overflow:hidden;
+  .stage{flex:1;display:grid;grid-template-columns:300px minmax(420px,1fr) 384px;min-height:0}
+  .rail{order:1}.center{order:2}.journal{order:3}
+  @media (max-width:1180px){
+    .stage{display:flex;flex-direction:column;overflow-y:auto}
+    .center{order:1}.journal{order:2}.rail{order:3;border-inline-start:none;border-top:1px solid var(--line)}
+    .journal{border-inline:none;border-block:1px solid var(--line)}
   }
-  .seat .role{font-weight:600;font-size:13.5px}
-  .seat .who{font-size:11.5px;color:var(--muted)}
+
+  /* ---------- center : seats + idea + work ---------- */
+  .center{display:flex;flex-direction:column;min-height:0;padding:20px 22px;gap:14px;overflow:hidden}
+  .ring{display:flex;gap:8px;flex-wrap:wrap}
+  .seat{flex:1;min-width:118px;padding:9px 12px;border-radius:12px;border:1px solid var(--line);
+    background:var(--card);transition:.18s;display:flex;flex-direction:column;gap:2px;position:relative;overflow:hidden}
+  .seat .role{font-weight:600;font-size:13.5px}.seat .who{font-size:11.5px;color:var(--muted)}
   .seat::before{content:"";position:absolute;inset-block:0;inset-inline-start:0;width:3px;background:var(--sc,var(--line))}
-  .seat[data-seat=reality]{--sc:var(--seat-reality)}
-  .seat[data-seat=reduction]{--sc:var(--seat-reduction)}
-  .seat[data-seat=systems]{--sc:var(--seat-systems)}
-  .seat[data-seat=translation]{--sc:var(--seat-translation)}
-  .seat.active{border-color:var(--sc);box-shadow:0 0 0 1px var(--sc) inset, var(--shadow);transform:translateY(-1px)}
+  .seat[data-seat=reality]{--sc:var(--seat-reality)}.seat[data-seat=reduction]{--sc:var(--seat-reduction)}
+  .seat[data-seat=systems]{--sc:var(--seat-systems)}.seat[data-seat=translation]{--sc:var(--seat-translation)}
+  .seat.active{border-color:var(--sc);box-shadow:0 0 0 1px var(--sc) inset,var(--shadow);transform:translateY(-1px)}
   .seat.active .role{color:var(--sc)}
   .seat .dot{position:absolute;inset-block-start:9px;inset-inline-end:10px;width:7px;height:7px;border-radius:50%;background:var(--sc);opacity:0;transition:.2s}
   .seat.active .dot{opacity:1}
 
-  /* idea card */
-  .idea{
-    background:var(--card);border:1px solid var(--line);border-radius:16px;box-shadow:var(--shadow);
-    padding:16px 20px;display:flex;flex-direction:column;gap:6px;position:relative;
-  }
+  .idea{background:var(--card);border:1px solid var(--line);border-radius:16px;box-shadow:var(--shadow);
+    padding:15px 20px;display:flex;flex-direction:column;gap:5px;position:relative}
   .idea::after{content:"";position:absolute;inset:6px;border:1px solid color-mix(in srgb,var(--accent) 22%,transparent);border-radius:12px;pointer-events:none;opacity:.5}
   .idea .lbl{font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
-  .idea-title{font-family:var(--serif);font-size:24px;font-weight:600;border:none;background:none;outline:none;width:100%;padding:0}
+  .idea-title{font-family:var(--serif);font-size:23px;font-weight:600;border:none;background:none;outline:none;width:100%;padding:0}
   .idea-title::placeholder{color:var(--held)}
-  .idea-form{border:none;background:none;outline:none;width:100%;resize:none;font-size:15px;color:var(--ink);min-height:44px;max-height:120px}
-  .idea-actions{display:flex;gap:8px;margin-top:2px}
+  .idea-form{border:none;background:none;outline:none;width:100%;resize:none;font-size:15px;color:var(--ink);min-height:40px;max-height:110px}
+  .idea-actions{display:flex;gap:8px;margin-top:2px;flex-wrap:wrap}
   .pill{padding:6px 13px;border-radius:20px;font-size:13px;border:1px solid var(--line);color:var(--muted);transition:.15s;white-space:nowrap}
   .pill:hover{border-color:var(--accent);color:var(--ink);background:var(--bg2)}
   .pill.primary{background:var(--accent);color:#fff;border-color:var(--accent)}
   .pill.primary:hover{filter:brightness(1.06)}
 
-  /* workspace */
   .work{flex:1;display:flex;flex-direction:column;min-height:0;background:var(--card);border:1px solid var(--line);border-radius:16px;box-shadow:var(--shadow);overflow:hidden}
   .work-head{padding:11px 18px;border-bottom:1px solid var(--line);display:flex;align-items:center;gap:10px;background:color-mix(in srgb,var(--sc,var(--card)) 8%,var(--card))}
-  .work-head .wh-role{font-weight:600;color:var(--sc,var(--ink))}
-  .work-head .wh-who{font-size:12px;color:var(--muted)}
+  .work-head .wh-role{font-weight:600;color:var(--sc,var(--ink))}.work-head .wh-who{font-size:12px;color:var(--muted)}
   .work-head .wh-op{font-size:12px;color:var(--muted);flex:1}
   .thread{flex:1;overflow-y:auto;padding:14px 18px;display:flex;flex-direction:column;gap:12px}
   .msg{max-width:88%;padding:9px 13px;border-radius:13px;white-space:pre-wrap;word-break:break-word;font-size:14.5px;position:relative}
@@ -95,72 +89,146 @@
   .msg.seat{align-self:flex-end;background:color-mix(in srgb,var(--sc) 10%,var(--card));border:1px solid color-mix(in srgb,var(--sc) 28%,var(--line))}
   .msg.err{align-self:center;background:color-mix(in srgb,var(--tension) 12%,var(--card));border:1px solid var(--tension);color:var(--tension);font-size:13px}
   .msg .who{font-size:10.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin-bottom:3px}
-  .msg .surface{margin-top:7px;font-size:11.5px;color:var(--accent);border:1px dashed color-mix(in srgb,var(--accent) 50%,transparent);border-radius:7px;padding:2px 8px;opacity:.75}
-  .msg .surface:hover{opacity:1;background:var(--accent-soft)}
+  .msg .acts{margin-top:7px;display:flex;gap:6px;flex-wrap:wrap}
+  .msg .act{font-size:11.5px;color:var(--accent);border:1px dashed color-mix(in srgb,var(--accent) 50%,transparent);border-radius:7px;padding:2px 8px;opacity:.75}
+  .msg .act:hover{opacity:1;background:var(--accent-soft)}
   .thread .empty{color:var(--held);font-size:13.5px;text-align:center;margin:auto;max-width:280px;font-family:var(--serif);font-style:italic}
   .composer{border-top:1px solid var(--line);padding:10px 14px;display:flex;gap:9px;align-items:flex-end;background:var(--bg2)}
   .composer textarea{flex:1;border:1px solid var(--line);border-radius:11px;background:var(--card);padding:9px 12px;resize:none;min-height:40px;max-height:150px;outline:none}
   .composer textarea:focus{border-color:var(--accent)}
   .send{padding:9px 16px;border-radius:11px;background:var(--accent);color:#fff;font-weight:600;align-self:stretch;transition:.15s}
-  .send:hover{filter:brightness(1.06)} .send:disabled{opacity:.5;cursor:default;filter:none}
-  .thinking{display:inline-flex;gap:3px} .thinking i{width:5px;height:5px;border-radius:50%;background:var(--sc,var(--accent));animation:bp 1s infinite}
-  .thinking i:nth-child(2){animation-delay:.15s} .thinking i:nth-child(3){animation-delay:.3s}
+  .send:hover{filter:brightness(1.06)}.send:disabled{opacity:.5;cursor:default;filter:none}
+  .thinking{display:inline-flex;gap:3px}.thinking i{width:5px;height:5px;border-radius:50%;background:var(--sc,var(--accent));animation:bp 1s infinite}
+  .thinking i:nth-child(2){animation-delay:.15s}.thinking i:nth-child(3){animation-delay:.3s}
   @keyframes bp{0%,100%{opacity:.25;transform:translateY(0)}50%{opacity:1;transform:translateY(-3px)}}
 
-  /* rail : shared state + shelf */
+  /* ---------- rail : shared state + shelf ---------- */
   .rail{border-inline-start:1px solid var(--line);background:var(--bg2);display:flex;flex-direction:column;min-height:0}
-  .rail-sec{display:flex;flex-direction:column;min-height:0}
-  .rail-sec.grow{flex:1}
+  .rail-sec{display:flex;flex-direction:column;min-height:0}.rail-sec.grow{flex:1}
   .rail-head{padding:12px 16px 8px;display:flex;align-items:center;gap:8px}
   .rail-head h3{margin:0;font-size:13px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);font-weight:600}
   .rail-head .count{font-size:11px;color:var(--held);background:var(--card);border:1px solid var(--line);border-radius:20px;padding:0 7px}
-  .rail-head .spacer{flex:1}
   .l2list{overflow-y:auto;padding:0 12px 10px;display:flex;flex-direction:column;gap:7px}
   .l2{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:8px 10px;font-size:13.5px;position:relative;border-inline-start:3px solid var(--kc,var(--line))}
-  .l2[data-kind=tension]{--kc:var(--tension)} .l2[data-kind=blocked]{--kc:var(--blocked)}
-  .l2[data-kind=waiting]{--kc:var(--waiting)} .l2[data-kind=observation]{--kc:var(--observation)}
-  .l2[data-kind=request]{--kc:var(--request)} .l2[data-kind=experiment]{--kc:var(--experiment)}
-  .l2 .k{font-size:10.5px;letter-spacing:.06em;text-transform:uppercase;color:var(--kc);font-weight:700;display:flex;align-items:center;gap:5px}
+  .l2[data-kind=tension]{--kc:var(--tension)}.l2[data-kind=blocked]{--kc:var(--blocked)}
+  .l2[data-kind=waiting]{--kc:var(--waiting)}.l2[data-kind=observation]{--kc:var(--observation)}
+  .l2[data-kind=request]{--kc:var(--request)}.l2[data-kind=experiment]{--kc:var(--experiment)}
+  .l2 .k{font-size:10.5px;letter-spacing:.06em;text-transform:uppercase;color:var(--kc);font-weight:700}
   .l2 .txt{margin-top:2px;white-space:pre-wrap;word-break:break-word}
-  .l2 .row{display:flex;gap:8px;margin-top:5px}
-  .l2 .mini{font-size:11px;color:var(--muted)}.l2 .mini:hover{color:var(--ink)}
+  .l2 .row{display:flex;gap:8px;margin-top:5px}.l2 .mini{font-size:11px;color:var(--muted)}.l2 .mini:hover{color:var(--ink)}
   .l2.held{opacity:.72;background:repeating-linear-gradient(135deg,var(--card),var(--card) 7px,var(--bg2) 7px,var(--bg2) 8px)}
-  .l2.held .k::after{content:"· מוחזק"}
-  .l2empty{color:var(--held);font-size:13px;font-style:italic;padding:6px 4px;font-family:var(--serif)}
+  .l2.held .k::after{content:" · מוחזק"}
+  .l2empty,.jempty{color:var(--held);font-size:13px;font-style:italic;padding:6px 4px;font-family:var(--serif)}
   .l2add{padding:8px 12px;border-top:1px solid var(--line);display:flex;gap:6px;flex-wrap:wrap}
   .l2add select,.l2add input{border:1px solid var(--line);border-radius:9px;background:var(--card);padding:6px 9px;outline:none}
-  .l2add input{flex:1;min-width:120px} .l2add select:focus,.l2add input:focus{border-color:var(--accent)}
+  .l2add input{flex:1;min-width:110px}
   .l2add .go{padding:6px 12px;border-radius:9px;border:1px solid var(--line);color:var(--muted)}.l2add .go:hover{border-color:var(--accent);color:var(--ink)}
-
-  .shelf{border-top:1px solid var(--line);max-height:42%;display:flex;flex-direction:column}
-  .shelf .l2list{padding-block:6px}
+  .shelf{border-top:1px solid var(--line);max-height:40%;display:flex;flex-direction:column}
   .shelfitem{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:8px 11px;font-size:13px}
   .shelfitem .st{font-family:var(--serif);font-weight:600;font-size:14.5px}
   .shelfitem .sm{color:var(--muted);font-size:11.5px;margin-top:2px}
-  .shelfitem .sn{margin-top:5px;font-size:12.5px;border-inline-start:2px solid var(--accent-soft);padding-inline-start:8px;color:var(--ink)}
-  .shelfitem .srow{display:flex;gap:10px;margin-top:6px}
-  .shelfitem .srow button{font-size:11.5px;color:var(--accent)}.shelfitem .srow button.g{color:var(--muted)}
+  .shelfitem .sn{margin-top:5px;font-size:12.5px;border-inline-start:2px solid var(--accent-soft);padding-inline-start:8px}
+  .shelfitem .srow{display:flex;gap:10px;margin-top:6px}.shelfitem .srow button{font-size:11.5px;color:var(--accent)}.shelfitem .srow button.g{color:var(--muted)}
 
-  /* settings modal */
+  /* ---------- the journal : a notebook that lies open on the table ---------- */
+  .journal{border-inline-start:1px solid var(--line);display:flex;flex-direction:column;min-height:0;
+    background:linear-gradient(180deg,#6b4a2c 0%,#5c3f26 100%);padding:12px 10px 10px}
+  @media (prefers-color-scheme: dark){.journal{background:linear-gradient(180deg,#2a2018,#211a13)}}
+  .jhead{display:flex;align-items:center;gap:8px;padding:0 4px 9px;color:#efe4cf}
+  .jhead h3{margin:0;font-size:13px;letter-spacing:.1em;text-transform:uppercase;font-weight:600}
+  .jhead .count{font-size:11px;color:#e6d6b8;border:1px solid #8a6a45;border-radius:20px;padding:0 7px}
+  .jhead .spacer{flex:1}
+  .book{flex:1;display:flex;flex-direction:column;min-height:0;border-radius:4px 10px 10px 4px;position:relative;
+    box-shadow:0 10px 26px rgba(0,0,0,.34);overflow:hidden}
+  /* the page */
+  .page{flex:1;min-height:0;display:flex;flex-direction:column;position:relative;overflow:hidden;
+    background:
+      linear-gradient(90deg,rgba(0,0,0,.10),rgba(0,0,0,0) 26px),
+      repeating-linear-gradient(180deg,transparent,transparent 27px,var(--rule) 27px,var(--rule) 28px),
+      linear-gradient(180deg,var(--paper),var(--paper2));
+    background-blend-mode:multiply,normal,normal}
+  /* foxing / patina grows with age via --patina 0..1 */
+  .page::before{content:"";position:absolute;inset:0;pointer-events:none;opacity:calc(var(--patina,0)*.9);
+    background:radial-gradient(60% 40% at 88% 8%,rgba(120,86,40,.20),transparent 60%),
+              radial-gradient(50% 40% at 10% 92%,rgba(120,86,40,.16),transparent 60%),
+              radial-gradient(30% 20% at 40% 60%,rgba(120,86,40,.10),transparent 60%)}
+  /* red margin line near the binding (inline-start) */
+  .page::after{content:"";position:absolute;inset-block:0;inset-inline-start:34px;width:1px;background:var(--marginline);opacity:.5}
+  .page-head{padding:12px 16px 8px 16px;padding-inline-start:44px;display:flex;flex-direction:column;gap:1px;position:relative;z-index:1}
+  .jday{font-family:var(--hand);font-size:15px;color:var(--inkc);cursor:pointer}
+  .jday:hover{text-decoration:underline dotted}
+  .jcreated{font-size:11px;color:var(--pencil);font-family:var(--sans);letter-spacing:.02em}
+  .pbody{flex:1;overflow-y:auto;padding:6px 16px 12px;padding-inline-start:44px;position:relative;z-index:1}
+
+  .ent{display:block;margin:0 0 14px;position:relative;transform:rotate(var(--rot,0deg));transform-origin:right top}
+  .ent .eicon{font-size:15px;margin-inline-end:6px;filter:saturate(.85)}
+  .ent .etext{white-space:pre-wrap;word-break:break-word}
+  .ent .emeta{display:block;font-size:10px;color:var(--pencil);opacity:.7;margin-top:2px;font-family:var(--sans)}
+  .ent .eage{position:absolute;inset-inline-end:-2px;inset-block-start:-2px;font-size:12px;opacity:0;transition:.15s;color:var(--pencil)}
+  .ent:hover .eage{opacity:.7}.ent .eage:hover{opacity:1;color:var(--accent)}
+  /* maturity mediums : pencil -> ink -> print */
+  .ent.ink0 .etext{font-family:var(--hand);color:var(--pencil);font-size:15.5px;letter-spacing:.1px}
+  .ent.ink1{--rot:0deg}
+  .ent.ink1 .etext{font-family:var(--hand);color:var(--inkc);font-size:15.5px;font-weight:600}
+  .ent.ink2{--rot:0deg}
+  .ent.ink2 .etext{font-family:var(--serif);color:var(--ink);font-size:14.5px;line-height:1.5}
+  .ent.ink2{border-inline-start:2px solid color-mix(in srgb,var(--accent) 30%,transparent);padding-inline-start:8px;margin-inline-start:-8px}
+
+  /* generated (printed) page */
+  .gen .pbody{font-family:var(--serif)}
+  .gen-title{font-family:var(--serif);font-weight:700;font-size:17px;margin-bottom:6px}
+  .gen-body{white-space:pre-wrap;word-break:break-word;font-size:14px;color:var(--ink)}
+  .prov{margin-top:12px;border-top:1px dashed var(--rule);padding-top:8px;font-family:var(--sans);font-size:11px;color:var(--pencil);display:grid;grid-template-columns:auto 1fr;gap:2px 10px}
+  .prov b{color:var(--inkc);font-weight:600}
+  .badge{display:inline-block;font-size:10px;padding:1px 7px;border-radius:20px;border:1px solid currentColor;margin-inline-start:6px}
+  .badge.live{color:#3f6b52}.badge.frozen{color:#5a6b8a}
+
+  .flip{display:flex;align-items:center;gap:6px;padding:7px 10px;background:color-mix(in srgb,var(--paper2) 80%,#000 4%);
+    border-top:1px solid var(--rule);position:relative;z-index:2;font-size:12px;color:var(--pencil)}
+  .flip button{padding:3px 9px;border-radius:8px;border:1px solid var(--rule);color:var(--pencil)}
+  .flip button:hover{border-color:var(--accent);color:var(--accent)}
+  .flip .pos{flex:1;text-align:center;font-family:var(--hand);font-size:13px}
+
+  /* capture (belongs to the place) */
+  .jcapture{margin-top:9px;background:#efe4cf;border-radius:10px;padding:8px 9px;box-shadow:var(--shadow)}
+  @media (prefers-color-scheme: dark){.jcapture{background:#2b2620}}
+  .cats{display:flex;gap:3px;flex-wrap:wrap;margin-bottom:6px}
+  .cat{font-size:15px;line-height:1;padding:4px 6px;border-radius:8px;border:1px solid transparent;opacity:.5;transition:.12s;position:relative}
+  .cat:hover{opacity:.9;background:rgba(0,0,0,.04)}
+  .cat.on{opacity:1;border-color:var(--accent);background:var(--card)}
+  .cat .lab{display:none}
+  .caprow{display:flex;gap:6px;align-items:flex-end}
+  .caprow textarea{flex:1;border:1px solid var(--rule);border-radius:9px;background:var(--card);padding:7px 10px;resize:none;min-height:36px;max-height:90px;outline:none;font-family:var(--hand);font-size:15px;color:var(--inkc)}
+  .caprow textarea:focus{border-color:var(--accent)}
+  .caprow .write{padding:8px 12px;border-radius:9px;background:var(--inkc);color:#fff;font-weight:600;font-size:13px}
+  .caphint{font-size:10.5px;color:#c9bfa8;margin-top:4px;text-align:center;font-family:var(--sans)}
+
+  /* printing press */
+  .jpress{margin-top:8px;background:#efe4cf;border-radius:10px;padding:8px 9px;box-shadow:var(--shadow)}
+  @media (prefers-color-scheme: dark){.jpress{background:#2b2620}}
+  .jpress .ph{font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--pencil);margin-bottom:6px;display:flex;align-items:center;gap:6px}
+  .jpress .prow{display:flex;gap:6px;margin-bottom:6px}
+  .jpress select{border:1px solid var(--rule);border-radius:9px;background:var(--card);padding:6px 8px;outline:none}
+  .jpress textarea{width:100%;border:1px solid var(--rule);border-radius:9px;background:var(--card);padding:7px 10px;resize:none;min-height:38px;max-height:90px;outline:none;font-size:13.5px}
+  .jpress .prow2{display:flex;gap:8px;align-items:center;margin-top:6px}
+  .jpress label.lf{font-size:12px;color:var(--pencil);display:flex;gap:4px;align-items:center;cursor:pointer}
+  .jpress .print{margin-inline-start:auto;padding:7px 14px;border-radius:9px;background:var(--accent);color:#fff;font-weight:600;font-size:13px}
+  .jpress .print:disabled{opacity:.5}
+
+  /* settings + toast (unchanged) */
   .modal-bg{position:fixed;inset:0;background:rgba(30,22,12,.5);display:none;align-items:center;justify-content:center;z-index:20;padding:20px}
   .modal-bg.on{display:flex}
   .modal{background:var(--card);border:1px solid var(--line);border-radius:18px;box-shadow:var(--shadow);max-width:560px;width:100%;max-height:88vh;overflow-y:auto;padding:22px 24px}
-  .modal h2{margin:0 0 4px;font-family:var(--serif);font-size:21px}
-  .modal p.sub{margin:0 0 16px;color:var(--muted);font-size:13.5px}
-  .prov{border:1px solid var(--line);border-radius:12px;padding:12px 14px;margin-bottom:12px}
-  .prov h4{margin:0 0 8px;font-size:14px;display:flex;align-items:center;gap:8px}
-  .prov h4 .tag{font-size:11px;color:var(--muted);font-weight:400}
-  .fld{display:flex;flex-direction:column;gap:3px;margin-bottom:8px}
-  .fld label{font-size:12px;color:var(--muted)}
-  .fld input{border:1px solid var(--line);border-radius:9px;background:var(--bg2);padding:8px 10px;outline:none}
-  .fld input:focus{border-color:var(--accent)}
+  .modal h2{margin:0 0 4px;font-family:var(--serif);font-size:21px}.modal p.sub{margin:0 0 16px;color:var(--muted);font-size:13.5px}
+  .prov-set{border:1px solid var(--line);border-radius:12px;padding:12px 14px;margin-bottom:12px}
+  .prov-set h4{margin:0 0 8px;font-size:14px;display:flex;align-items:center;gap:8px}.prov-set h4 .tag{font-size:11px;color:var(--muted);font-weight:400}
+  .fld{display:flex;flex-direction:column;gap:3px;margin-bottom:8px}.fld label{font-size:12px;color:var(--muted)}
+  .fld input{border:1px solid var(--line);border-radius:9px;background:var(--bg2);padding:8px 10px;outline:none}.fld input:focus{border-color:var(--accent)}
   .modal .note{font-size:12px;color:var(--muted);background:var(--bg2);border:1px solid var(--line);border-radius:10px;padding:9px 12px;line-height:1.5}
   .modal .foot{display:flex;gap:10px;justify-content:flex-end;margin-top:8px}
-  .modal .foot .pill.primary{padding:8px 18px}
   .toast{position:fixed;inset-block-end:22px;inset-inline:0;display:flex;justify-content:center;pointer-events:none;z-index:30}
   .toast div{background:var(--ink);color:var(--bg);padding:8px 18px;border-radius:20px;font-size:13px;opacity:0;transform:translateY(8px);transition:.25s;box-shadow:var(--shadow)}
   .toast.on div{opacity:.94;transform:none}
-  kbd{font-family:var(--sans);font-size:11px;background:var(--bg2);border:1px solid var(--line);border-radius:5px;padding:1px 5px;color:var(--muted)}
 </style>
 </head>
 <body>
@@ -173,9 +241,9 @@
   </header>
 
   <div class="stage">
+    <!-- center -->
     <div class="center">
       <div class="ring" id="ring"></div>
-
       <div class="idea">
         <div class="lbl" id="ideaLbl">הרעיון · במרכז השולחן</div>
         <input class="idea-title" id="ideaTitle" placeholder="על מה עובדים?">
@@ -186,7 +254,6 @@
           <button class="pill" id="newBtn">רעיון חדש</button>
         </div>
       </div>
-
       <div class="work" id="work">
         <div class="work-head" id="workHead"></div>
         <div class="thread" id="thread"></div>
@@ -197,24 +264,18 @@
       </div>
     </div>
 
+    <!-- rail -->
     <aside class="rail">
       <div class="rail-sec grow">
-        <div class="rail-head">
-          <h3>מצב משותף · L2</h3><span class="count" id="l2count">0</span>
-          <span class="spacer"></span>
-        </div>
+        <div class="rail-head"><h3>מצב משותף · L2</h3><span class="count" id="l2count">0</span></div>
         <div class="l2list" id="l2list"></div>
         <div class="l2add">
           <select id="l2kind">
-            <option value="tension">⚡ מתח</option>
-            <option value="blocked">⛔ חסום</option>
-            <option value="waiting">⏳ ממתין למציאות</option>
-            <option value="request">▸ בקשה</option>
-            <option value="observation">◦ תצפית</option>
-            <option value="experiment">⚗ ניסוי</option>
+            <option value="tension">⚡ מתח</option><option value="blocked">⛔ חסום</option>
+            <option value="waiting">⏳ ממתין למציאות</option><option value="request">▸ בקשה</option>
+            <option value="observation">◦ תצפית</option><option value="experiment">⚗ ניסוי</option>
           </select>
-          <input id="l2text" placeholder="מה במצב המשותף כרגע?">
-          <button class="go" id="l2add">הוסף</button>
+          <input id="l2text" placeholder="מה במצב המשותף כרגע?"><button class="go" id="l2add">הוסף</button>
         </div>
       </div>
       <div class="rail-sec shelf">
@@ -222,326 +283,338 @@
         <div class="l2list" id="shelflist"></div>
       </div>
     </aside>
+
+    <!-- the journal -->
+    <aside class="journal">
+      <div class="jhead"><h3>יומן המסע</h3><span class="count" id="jcount">0</span><span class="spacer"></span></div>
+      <div class="book"><div class="page" id="page"></div><div class="flip" id="flip"></div></div>
+
+      <div class="jcapture">
+        <div class="cats" id="cats"></div>
+        <div class="caprow">
+          <textarea id="capText" rows="1" placeholder="רשום רגע בעיפרון… (משפט אחד)"></textarea>
+          <button class="write" id="capWrite">רשום</button>
+        </div>
+        <div class="caphint">היומן שייך למקום, לא לכיסא. הוא נשאר פתוח על אותו עמוד כשמסובבים.</div>
+      </div>
+
+      <div class="jpress">
+        <div class="ph">🖋️ המכבש — בקשה שהופכת לעמוד</div>
+        <div class="prow">
+          <select id="pressWho">
+            <option value="reduction">אל צמצום · Claude</option>
+            <option value="systems">אל מערכות · Gemini</option>
+            <option value="translation">אל תרגום · ChatGPT</option>
+          </select>
+        </div>
+        <textarea id="pressReq" rows="2" placeholder="למשל: אספי כל מטאפורה שהופיעה במסע · או: כל משפט שבו ציטטנו את Claude"></textarea>
+        <div class="prow2">
+          <label class="lf"><input type="checkbox" id="pressLive" checked> עמוד חי (ממשיך לגדול)</label>
+          <button class="print" id="pressGo">הדפס דף</button>
+        </div>
+      </div>
+    </aside>
   </div>
 </div>
 
 <!-- settings -->
-<div class="modal-bg" id="modalBg">
-  <div class="modal">
-    <h2>הכיסאות</h2>
-    <p class="sub">הכיסא שלך הוא <b>מציאות</b> — כאן את חושבת ושופטת. שלושת האחרים עונים כאן, בחלון אחד, אם תיתני להם מפתח. המפתחות נשמרים רק בדפדפן הזה.</p>
-
-    <div class="prov" data-seat="reduction">
-      <h4><span style="color:var(--seat-reduction)">צמצום</span> <span class="tag">Claude · Anthropic — מסיר שכבות, מחפש את הפרימיטיב היציב הקטן ביותר</span></h4>
-      <div class="fld"><label>API key (x-api-key)</label><input type="password" data-k="key" placeholder="sk-ant-…"></div>
-      <div class="fld"><label>מודל</label><input data-k="model" placeholder="claude-sonnet-5"></div>
-    </div>
-    <div class="prov" data-seat="systems">
-      <h4><span style="color:var(--seat-systems)">מערכות</span> <span class="tag">Gemini · Google — כשל לטווח ארוך, סיכון מערכתי נסתר, קנה מידה</span></h4>
-      <div class="fld"><label>API key</label><input type="password" data-k="key" placeholder="AIza…"></div>
-      <div class="fld"><label>מודל</label><input data-k="model" placeholder="gemini-2.0-flash"></div>
-    </div>
-    <div class="prov" data-seat="translation">
-      <h4><span style="color:var(--seat-translation)">תרגום</span> <span class="tag">ChatGPT · OpenAI — הופך הפשטה למקומות, טקסים, שפה שאפשר לגור בה</span></h4>
-      <div class="fld"><label>API key</label><input type="password" data-k="key" placeholder="sk-…"></div>
-      <div class="fld"><label>מודל</label><input data-k="model" placeholder="gpt-4o"></div>
-    </div>
-
-    <p class="note">בלי מפתחות — השולחן עדיין אחד: כל כיסא הוא מרחב עבודה פרטי (L1) והכול נשמר. עם מפתחות — הכיסאות עונים. הקריאות יוצאות ישירות מהדפדפן שלך אל הספקים; שום מפתח לא נשמר בקוד ולא נשלח לשום מקום אחר.</p>
-    <div class="foot">
-      <button class="pill" id="setClose">סגור</button>
-      <button class="pill primary" id="setSave">שמור</button>
-    </div>
-  </div>
-</div>
-
+<div class="modal-bg" id="modalBg"><div class="modal">
+  <h2>הכיסאות</h2>
+  <p class="sub">הכיסא שלך הוא <b>מציאות</b> — כאן את חושבת ושופטת. השאר עונים כאן, בחלון אחד, אם תיתני מפתח. המפתחות נשמרים רק בדפדפן הזה.</p>
+  <div class="prov-set" data-seat="reduction"><h4><span style="color:var(--seat-reduction)">צמצום</span> <span class="tag">Claude · Anthropic</span></h4>
+    <div class="fld"><label>API key (x-api-key)</label><input type="password" data-k="key" placeholder="sk-ant-…"></div>
+    <div class="fld"><label>מודל</label><input data-k="model" placeholder="claude-sonnet-5"></div></div>
+  <div class="prov-set" data-seat="systems"><h4><span style="color:var(--seat-systems)">מערכות</span> <span class="tag">Gemini · Google</span></h4>
+    <div class="fld"><label>API key</label><input type="password" data-k="key" placeholder="AIza…"></div>
+    <div class="fld"><label>מודל</label><input data-k="model" placeholder="gemini-2.0-flash"></div></div>
+  <div class="prov-set" data-seat="translation"><h4><span style="color:var(--seat-translation)">תרגום</span> <span class="tag">ChatGPT · OpenAI</span></h4>
+    <div class="fld"><label>API key</label><input type="password" data-k="key" placeholder="sk-…"></div>
+    <div class="fld"><label>מודל</label><input data-k="model" placeholder="gpt-4o"></div></div>
+  <p class="note">בלי מפתחות — הכול נשמר ועובד ידנית; הכיסאות והמכבש פשוט ממתינים. הקריאות יוצאות ישירות מהדפדפן שלך אל הספקים; שום מפתח לא נשמר בקוד.</p>
+  <div class="foot"><button class="pill" id="setClose">סגור</button><button class="pill primary" id="setSave">שמור</button></div>
+</div></div>
 <div class="toast" id="toast"><div></div></div>
 
 <script>
 "use strict";
-/* ------------------------------------------------------------------ *
- * The Table — one table, four seats. L3 idea · L2 shared state · L1 seats.
- * The seat = an operation on the idea; it works privately and *surfaces*
- * into shared state. Tensions are held, never aggregated. The shelf is
- * the kernel: committed, immutable, recallable.
- * ------------------------------------------------------------------ */
-const KEY = "the-table.v1";
-const SEATS = [
-  {k:"reality",     role:"מציאות",  who:"עדי · הכיסא שלך", provider:null,
-   op:"בוחנת מול המציאות · שופטת מתי רעיון בשל · מתי המציאות מחליפה תיאוריה"},
-  {k:"reduction",   role:"צמצום",   who:"Claude",  provider:"anthropic",
-   op:"מסיר שכבות מיותרות · מחפש את הפרימיטיב היציב הקטן ביותר · מאתגר, לא מסכים"},
-  {k:"systems",     role:"מערכות",  who:"Gemini",  provider:"google",
-   op:"ניתוח כשל לטווח ארוך · סיכון מערכתי נסתר · התנהגות בקנה מידה"},
-  {k:"translation", role:"תרגום",   who:"ChatGPT", provider:"openai",
-   op:"הופך הפשטה למקומות, טקסים, מסעות ושפה · הופך את הרעיון לבַּר-מגורים"},
+/* ================================================================== *
+ * The Table — one table, four seats, a shelf (kernel), and a journal.
+ * The journal belongs to the PLACE. Hand pages are field notes that
+ * mature pencil->ink->print (confidence made visible). Printed pages
+ * are readings produced by the press: live = a standing instrument
+ * that keeps growing; frozen = a cached reading with coordinates.
+ * ================================================================== */
+const KEY="the-table.v2";
+const SEATS=[
+  {k:"reality",role:"מציאות",who:"עדי · הכיסא שלך",provider:null,op:"בוחנת מול המציאות · שופטת מתי רעיון בשל"},
+  {k:"reduction",role:"צמצום",who:"Claude",provider:"anthropic",op:"מסיר שכבות · מחפש את הפרימיטיב היציב הקטן ביותר"},
+  {k:"systems",role:"מערכות",who:"Gemini",provider:"google",op:"ניתוח כשל לטווח ארוך · סיכון מערכתי · קנה מידה"},
+  {k:"translation",role:"תרגום",who:"ChatGPT",provider:"openai",op:"הופך הפשטה למקומות, טקסים ושפה · בַּר-מגורים"},
 ];
-const KIND = {
-  tension:{sym:"⚡",he:"מתח"}, blocked:{sym:"⛔",he:"חסום"},
-  waiting:{sym:"⏳",he:"ממתין למציאות"}, request:{sym:"▸",he:"בקשה"},
-  observation:{sym:"◦",he:"תצפית"}, experiment:{sym:"⚗",he:"ניסוי"},
-};
-const SYS = {
-  reduction:"You are the Reduction seat at a rotating table where one idea sits at the center. Your single operation: remove unnecessary layers and find the smallest stable primitive. Challenge; do not flatter. If the idea hides a contradiction, name it plainly. Be concise. You operate on the idea and hand it back — you never own it. Answer in the language the person writes to you.",
-  systems:"You are the Systems seat at a rotating table. Your single operation: long-term failure analysis — hidden systemic risk, behavior at scale and over time, what breaks in a year or at 1000x or under divergence. Be concrete about the failure mode. You operate on the idea; you do not own it. Answer in the language the person writes to you.",
-  translation:"You are the Translation seat at a rotating table. Your single operation: turn the abstraction into places, rituals, journeys, and plain language a person can inhabit. Make it felt, not only understood. You operate on the idea; you do not own it. Answer in the language the person writes to you.",
-};
-const blank = () => ({
-  idea:{title:"",form:"",lineage:[]},
-  l2:[], active:"reality",
+const KIND={tension:{sym:"⚡",he:"מתח"},blocked:{sym:"⛔",he:"חסום"},waiting:{sym:"⏳",he:"ממתין למציאות"},
+  request:{sym:"▸",he:"בקשה"},observation:{sym:"◦",he:"תצפית"},experiment:{sym:"⚗",he:"ניסוי"}};
+const CATS=[
+  {k:"feeling",e:"❤️",he:"תחושה"},{k:"observation",e:"📓",he:"תצפית"},{k:"discovery",e:"💡",he:"תגלית"},
+  {k:"friction",e:"⚡",he:"חיכוך"},{k:"cultivation",e:"🌱",he:"טיפוח"},{k:"experiment",e:"🔬",he:"ניסוי"},
+  {k:"question",e:"❓",he:"שאלה פתוחה"}];
+const catOf=k=>CATS.find(c=>c.k===k)||{e:"·",he:k};
+const SYS={
+  reduction:"You are the Reduction seat at a rotating table where one idea sits at the center. Remove unnecessary layers; find the smallest stable primitive. Challenge; do not flatter. Name hidden contradictions. Be concise. You operate on the idea and hand it back; you never own it. Answer in the language the person writes in.",
+  systems:"You are the Systems seat at a rotating table. Long-term failure analysis: hidden systemic risk, behavior at scale and over time. Be concrete about the failure mode. You operate on the idea; you do not own it. Answer in the language the person writes in.",
+  translation:"You are the Translation seat at a rotating table. Turn the abstraction into places, rituals, journeys, and plain language a person can inhabit. Make it felt, not only understood. You operate on the idea; you do not own it. Answer in the language the person writes in."};
+const PRESS_SYS="You are the printing press of a laboratory's journal. Given the raw material of a journey — field notes, seat conversations, shelved ideas — produce ONE journal page that fulfils the request exactly. Begin with a single short title line. Then the collected material as a tight, clean list; quote verbatim where the request implies quoting; keep only what the request asks for. No preamble, no chat, no closing remarks — only the page. Answer in the language of the request.";
+
+const blank=()=>({
+  idea:{title:"",form:"",lineage:[]}, l2:[], active:"reality",
   seats:Object.fromEntries(SEATS.map(s=>[s.k,{thread:[]}])),
-  shelf:[],
+  shelf:[], journal:{open:0,dayZero:0,pages:[]},
+  capCat:"observation",
   cfg:{reduction:{key:"",model:"claude-sonnet-5"},systems:{key:"",model:"gemini-2.0-flash"},translation:{key:"",model:"gpt-4o"}},
 });
-let state = load();
-function load(){ try{const s=JSON.parse(localStorage.getItem(KEY)); if(s&&s.idea) return Object.assign(blank(),s);}catch(e){} return blank(); }
-function save(){ localStorage.setItem(KEY, JSON.stringify(state)); }
-const uid = () => Math.random().toString(36).slice(2,9);
-const $ = s => document.querySelector(s);
-const seat = k => SEATS.find(s=>s.k===k);
-function esc(t){return (t||"").replace(/[&<>]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;"}[c]));}
-function fmt(t){return esc(t).replace(/\*\*(.+?)\*\*/g,"<b>$1</b>").replace(/`([^`]+?)`/g,"<code>$1</code>").replace(/\n/g,"<br>");}
+let state=load();
+function load(){try{const s=JSON.parse(localStorage.getItem(KEY));if(s&&s.idea)return Object.assign(blank(),s);}catch(e){}return blank();}
+function save(){localStorage.setItem(KEY,JSON.stringify(state));}
+const uid=()=>Math.random().toString(36).slice(2,9);
+const $=s=>document.querySelector(s);
+const seat=k=>SEATS.find(s=>s.k===k);
+const esc=t=>(t||"").replace(/[&<>]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;"}[c]));
+const fmt=t=>esc(t).replace(/\*\*(.+?)\*\*/g,"<b>$1</b>").replace(/`([^`]+?)`/g,"<code>$1</code>").replace(/\n/g,"<br>");
 function toast(m){const t=$("#toast");t.firstElementChild.textContent=m;t.classList.add("on");clearTimeout(toast._);toast._=setTimeout(()=>t.classList.remove("on"),1900);}
+function dfmt(ts){const d=new Date(ts);return d.toLocaleDateString("he-IL")+" · "+d.toLocaleTimeString("he-IL",{hour:"2-digit",minute:"2-digit"});}
+function ddate(ts){return new Date(ts).toLocaleDateString("he-IL");}
+function jitter(id){let h=0;for(const c of id)h=(h*31+c.charCodeAt(0))>>>0;return((h%200)/200-0.5)*2;} // -1..1
 
-/* ---------- render ---------- */
-function renderRing(){
-  $("#ring").innerHTML = SEATS.map(s=>`
-    <button class="seat${s.k===state.active?" active":""}" data-seat="${s.k}">
-      <span class="dot"></span>
-      <span class="role">${s.role}</span>
-      <span class="who">${s.who}</span>
-    </button>`).join("");
-}
-function renderIdea(){
-  const t=$("#ideaTitle"); if(document.activeElement!==t) t.value=state.idea.title;
-  const f=$("#ideaForm"); if(document.activeElement!==f) f.value=state.idea.form;
-}
+/* ---------- seats / idea ---------- */
+function renderRing(){$("#ring").innerHTML=SEATS.map(s=>`<button class="seat${s.k===state.active?" active":""}" data-seat="${s.k}"><span class="dot"></span><span class="role">${s.role}</span><span class="who">${s.who}</span></button>`).join("");}
+function renderIdea(){const t=$("#ideaTitle");if(document.activeElement!==t)t.value=state.idea.title;const f=$("#ideaForm");if(document.activeElement!==f)f.value=state.idea.form;}
 function renderWork(){
-  const s=seat(state.active);
-  document.querySelector(".work").style.setProperty("--sc",`var(--seat-${s.k})`);
-  $("#workHead").innerHTML =
-    `<span class="wh-role">${s.role}</span><span class="wh-who">${s.who}</span><span class="wh-op">${s.op}</span>`;
-  const th=$("#thread"); const msgs=state.seats[s.k].thread;
-  if(!msgs.length){
-    th.innerHTML=`<div class="empty">${s.k==="reality"
-      ? "הכיסא שלך. כאן את חושבת בקול, שופטת, ומחליטה מתי הרעיון בשל למדף."
-      : "סובב לכאן ושאל. מה שיעלה — תוכלי «להעלות למצב המשותף» כדי שכל הכיסאות יראו."}</div>`;
-  } else {
-    th.innerHTML = msgs.map(m=>{
-      if(m.role==="err") return `<div class="msg err">${esc(m.text)}</div>`;
-      const who = m.role==="you" ? "עדי" : s.role;
-      const surf = m.role==="seat" ? `<button class="surface" data-surface="${m.id}">↥ העלה למצב המשותף</button>` : "";
-      return `<div class="msg ${m.role}"><div class="who">${who}</div>${fmt(m.text)}${surf}</div>`;
-    }).join("");
-  }
+  const s=seat(state.active);$(".work").style.setProperty("--sc",`var(--seat-${s.k})`);
+  $("#workHead").innerHTML=`<span class="wh-role">${s.role}</span><span class="wh-who">${s.who}</span><span class="wh-op">${s.op}</span>`;
+  const th=$("#thread"),msgs=state.seats[s.k].thread;
+  if(!msgs.length){th.innerHTML=`<div class="empty">${s.k==="reality"?"הכיסא שלך. כאן את חושבת בקול, שופטת, ומחליטה מתי הרעיון בשל למדף.":"סובב לכאן ושאל. מה שיעלה — «העלה למצב המשותף» או «רשום ביומן»."}</div>`;}
+  else{th.innerHTML=msgs.map(m=>{
+    if(m.role==="err")return `<div class="msg err">${esc(m.text)}</div>`;
+    const who=m.role==="you"?"עדי":s.role;
+    const acts=m.role==="seat"?`<div class="acts"><button class="act" data-surface="${m.id}">↥ למצב המשותף</button><button class="act" data-tojournal="${m.id}">📓 ליומן</button></div>`:"";
+    return `<div class="msg ${m.role}"><div class="who">${who}</div>${fmt(m.text)}${acts}</div>`;}).join("");}
   th.scrollTop=th.scrollHeight;
 }
 function renderL2(){
-  $("#l2count").textContent=state.l2.length;
-  const list=$("#l2list");
-  if(!state.l2.length){ list.innerHTML=`<div class="l2empty">עדיין ריק. המצב המשותף הוא התנאי הנוכחי של החקירה — מתחים, חסימות, מה שממתין למציאות.</div>`; return; }
-  list.innerHTML = state.l2.map(i=>`
-    <div class="l2${i.held?" held":""}" data-kind="${i.kind}">
-      <div class="k">${KIND[i.kind].sym} ${KIND[i.kind].he}</div>
-      <div class="txt">${fmt(i.text)}</div>
-      <div class="row">
-        <button class="mini" data-hold="${i.id}">${i.held?"שחרר":"החזק"}</button>
-        <button class="mini" data-del="${i.id}">הסר</button>
-      </div>
-    </div>`).join("");
+  $("#l2count").textContent=state.l2.length;const list=$("#l2list");
+  if(!state.l2.length){list.innerHTML=`<div class="l2empty">עדיין ריק. המצב המשותף הוא התנאי הנוכחי של החקירה.</div>`;return;}
+  list.innerHTML=state.l2.map(i=>`<div class="l2${i.held?" held":""}" data-kind="${i.kind}"><div class="k">${KIND[i.kind].sym} ${KIND[i.kind].he}</div><div class="txt">${fmt(i.text)}</div><div class="row"><button class="mini" data-hold="${i.id}">${i.held?"שחרר":"החזק"}</button><button class="mini" data-del="${i.id}">הסר</button></div></div>`).join("");
 }
 function renderShelf(){
-  $("#shelfcount").textContent=state.shelf.length;
-  const list=$("#shelflist");
-  if(!state.shelf.length){ list.innerHTML=`<div class="l2empty">המדף ריק. כשרעיון בשל — הנח אותו כאן. הוא נשאר לצמיתות, וחוזר לשולחן אם המציאות משתנה.</div>`; return; }
-  list.innerHTML = state.shelf.slice().reverse().map(e=>`
-    <div class="shelfitem">
-      <div class="st">${esc(e.title||"(ללא כותרת)")}</div>
-      <div class="sm">${new Date(e.ts).toLocaleString("he-IL")} · ${e.l2.length} פריטי מצב${e.lineage&&e.lineage.length?" · יורש":""}</div>
-      ${e.note?`<div class="sn">${fmt(e.note)}</div>`:""}
-      <div class="srow">
-        <button data-return="${e.id}">↩ החזר לשולחן</button>
-        <button class="g" data-view="${e.id}">הצג</button>
-      </div>
-    </div>`).join("");
+  $("#shelfcount").textContent=state.shelf.length;const list=$("#shelflist");
+  if(!state.shelf.length){list.innerHTML=`<div class="l2empty">המדף ריק. כשרעיון בשל — הנח אותו כאן.</div>`;return;}
+  list.innerHTML=state.shelf.slice().reverse().map(e=>`<div class="shelfitem"><div class="st">${esc(e.title||"(ללא כותרת)")}</div><div class="sm">${dfmt(e.ts)} · ${e.l2.length} פריטי מצב${e.lineage&&e.lineage.length?" · יורש":""}</div>${e.note?`<div class="sn">${fmt(e.note)}</div>`:""}<div class="srow"><button data-return="${e.id}">↩ החזר לשולחן</button><button class="g" data-view="${e.id}">הצג</button></div></div>`).join("");
 }
-function renderAll(){renderRing();renderIdea();renderWork();renderL2();renderShelf();}
 
-/* ---------- idea + rotation ---------- */
+/* ---------- the journal ---------- */
+function journeyDay(ts){const z=state.journal.dayZero||ts;return Math.floor((ts-z)/86400000)+1;}
+function patina(ts){const days=(Date.now()-ts)/86400000;return Math.max(0,Math.min(1,days/45));}
+function newFieldPage(){if(!state.journal.dayZero)state.journal.dayZero=Date.now();return{id:uid(),type:"field",created:Date.now(),entries:[],dayName:""};}
+function lastFieldPage(){for(let i=state.journal.pages.length-1;i>=0;i--)if(state.journal.pages[i].type==="field")return state.journal.pages[i];return null;}
+function renderCats(){$("#cats").innerHTML=CATS.map(c=>`<button class="cat${c.k===state.capCat?" on":""}" data-cat="${c.k}" title="${c.he}"><span>${c.e}</span><span class="lab">${c.he}</span></button>`).join("");}
+function renderJournal(){
+  $("#jcount").textContent=state.journal.pages.length;
+  const page=$("#page"),flip=$("#flip"),pages=state.journal.pages;
+  if(!pages.length){
+    page.className="page";page.style.setProperty("--patina",0);
+    page.innerHTML=`<div class="page-head"><div class="jday">יום ראשון</div><div class="jcreated">היומן פתוח · עדיין ריק</div></div><div class="pbody"><div class="jempty">מחברת שמונחת פתוחה על השולחן. רשום כאן רגע ששווה לזכור — תחושה, תצפית, תגלית, חיכוך, טיפוח. משפט אחד מספיק.</div></div>`;
+    flip.innerHTML="";return;
+  }
+  if(state.journal.open>=pages.length)state.journal.open=pages.length-1;
+  if(state.journal.open<0)state.journal.open=0;
+  const p=pages[state.journal.open];
+  page.className="page"+(p.type==="generated"?" gen":"");
+  page.style.setProperty("--patina",patina(p.created).toFixed(2));
+  const head=`<div class="page-head"><div class="jday" data-name="${p.id}">יום ${journeyDay(p.created)}${p.dayName?` · «${esc(p.dayName)}»`:""}</div><div class="jcreated">נוצר: ${dfmt(p.created)}</div></div>`;
+  let body="";
+  if(p.type==="field"){
+    body=`<div class="pbody">`+(p.entries.length?p.entries.map(e=>{
+      const rot=(e.maturity?0:jitter(e.id)*1.1).toFixed(2);
+      return `<div class="ent ink${e.maturity||0}" style="--rot:${rot}deg"><button class="eage" data-age="${e.id}" title="עיפרון → דיו → דפוס">✎</button><span class="eicon">${catOf(e.cat).e}</span><span class="etext">${fmt(e.text)}</span><span class="emeta">${new Date(e.ts).toLocaleTimeString("he-IL",{hour:"2-digit",minute:"2-digit"})}</span></div>`;
+    }).join(""):`<div class="jempty">עמוד ריק. רשום עליו רגע.</div>`)+`</div>`;
+  }else{
+    const cov=p.coverageFrom?`${ddate(p.coverageFrom)} – ${ddate(p.coverageTo)}`:"—";
+    const prov=`<div class="prov"><b>נוצר ע״י</b><span>${seat(p.createdBy).who}${p.live?'<span class="badge live">חי</span>':'<span class="badge frozen">קפוא</span>'}</span><b>לבקשת</b><span>עדי</span><b>תאריך</b><span>${dfmt(p.created)}</span><b>טווח כיסוי</b><span>${cov}</span><b>שושלת</b><span>${p.lineage&&p.lineage.length?p.lineage.join(" ← "):"—"}</span></div>`;
+    const reprint=p.live?`<div style="margin-top:8px"><button class="pill" data-reprint="${p.id}">↻ הדפס מחדש (גָדֵל)</button> <button class="pill" data-freeze="${p.id}">🧊 הקפא</button></div>`:"";
+    body=`<div class="pbody"><div class="gen-title">${esc(p.title||"עמוד מודפס")}</div><div class="gen-body">${p.body?fmt(p.body):'<span class="jempty">ממתין למכבש — הגדירי מפתח לכיסא, ואז «הדפס מחדש».</span>'}</div>${prov}${reprint}</div>`;
+  }
+  page.innerHTML=head+body;
+  flip.innerHTML=`<button data-flip="-1">‹ קודם</button><span class="pos">עמוד ${state.journal.open+1} / ${pages.length}</span><button data-flip="1">הבא ›</button><button data-flip="new">+ עמוד</button>`;
+}
+
+function captureMoment(text){
+  text=text.trim();if(!text)return;
+  let p=lastFieldPage();
+  if(!p){p=newFieldPage();state.journal.pages.push(p);}
+  p.entries.push({id:uid(),cat:state.capCat,text,maturity:0,ts:Date.now()});
+  state.journal.open=state.journal.pages.indexOf(p);
+  save();renderJournal();
+}
+
+/* corpus for the press: everything the journey has said, chronological */
+function corpus(){
+  const out=[];
+  state.journal.pages.forEach(p=>{if(p.type==="field")p.entries.forEach(e=>out.push({ts:e.ts,txt:`[יומן·${catOf(e.cat).he}] ${e.text}`}));});
+  Object.entries(state.seats).forEach(([k,s])=>{const who=seat(k).who;s.thread.forEach(m=>{if(m.role==="err")return;out.push({ts:m.ts||0,txt:`[${m.role==="you"?"עדי":who}] ${m.text}`});});});
+  state.shelf.forEach(e=>out.push({ts:e.ts,txt:`[מדף] ${e.title}: ${e.form}${e.note?" — "+e.note:""}`}));
+  out.sort((a,b)=>a.ts-b.ts);return out;
+}
+async function runPress(page){
+  const cfg=state.cfg[page.createdBy];const s=seat(page.createdBy);
+  const items=corpus();
+  page.coverageFrom=items.length?items[0].ts:page.created;page.coverageTo=Date.now();
+  if(!cfg||!cfg.key){page.body="";save();renderJournal();toast("אין מפתח ל"+s.role+" — פתחי ⚙");return;}
+  const material=items.map(x=>x.txt).join("\n").slice(-12000);
+  const user=`REQUEST:\n${page.prompt}\n\n=== RAW MATERIAL OF THE JOURNEY (chronological) ===\n${material||"(empty)"}`;
+  try{
+    const out=await callProvider(s.provider,cfg,PRESS_SYS,user);
+    const nl=out.indexOf("\n");
+    page.title=(nl>0?out.slice(0,nl):out).replace(/^#+\s*/,"").trim().slice(0,80);
+    page.body=(nl>0?out.slice(nl+1):"").trim()||out;
+    page.created=page.created||Date.now();save();renderJournal();toast("הודפס דף · "+s.role);
+  }catch(err){page.body="שגיאת מכבש: "+String(err.message||err);save();renderJournal();}
+}
+
+/* ---------- provider calls ---------- */
+async function callProvider(provider,cfg,system,userText){
+  if(provider==="anthropic"){
+    const r=await fetch("https://api.anthropic.com/v1/messages",{method:"POST",headers:{"content-type":"application/json","x-api-key":cfg.key,"anthropic-version":"2023-06-01","anthropic-dangerous-direct-browser-access":"true"},body:JSON.stringify({model:cfg.model||"claude-sonnet-5",max_tokens:2048,system,messages:[{role:"user",content:userText}]})});
+    if(!r.ok)throw new Error("Anthropic "+r.status+": "+(await r.text()).slice(0,180));
+    const d=await r.json();return(d.content||[]).map(b=>b.text||"").join("");
+  }
+  if(provider==="openai"){
+    const r=await fetch("https://api.openai.com/v1/chat/completions",{method:"POST",headers:{"content-type":"application/json","authorization":"Bearer "+cfg.key},body:JSON.stringify({model:cfg.model||"gpt-4o",messages:[{role:"system",content:system},{role:"user",content:userText}]})});
+    if(!r.ok)throw new Error("OpenAI "+r.status+": "+(await r.text()).slice(0,180));
+    const d=await r.json();return d.choices?.[0]?.message?.content||"";
+  }
+  if(provider==="google"){
+    const m=cfg.model||"gemini-2.0-flash";
+    const r=await fetch("https://generativelanguage.googleapis.com/v1beta/models/"+m+":generateContent?key="+encodeURIComponent(cfg.key),{method:"POST",headers:{"content-type":"application/json"},body:JSON.stringify({systemInstruction:{parts:[{text:system}]},contents:[{role:"user",parts:[{text:userText}]}]})});
+    if(!r.ok)throw new Error("Gemini "+r.status+": "+(await r.text()).slice(0,180));
+    const d=await r.json();return(d.candidates?.[0]?.content?.parts||[]).map(p=>p.text||"").join("");
+  }
+  throw new Error("unknown provider");
+}
+
+/* ================= events ================= */
 $("#ideaTitle").addEventListener("input",e=>{state.idea.title=e.target.value;save();});
-$("#ideaForm").addEventListener("input",e=>{state.idea.form=e.target.value;save();});
-$("#ideaForm").addEventListener("input",e=>{e.target.style.height="auto";e.target.style.height=Math.min(e.target.scrollHeight,120)+"px";});
-$("#ring").addEventListener("click",e=>{const b=e.target.closest(".seat");if(!b)return;rotateTo(b.dataset.seat);});
-function rotateTo(k){ if(k===state.active)return; state.active=k; save(); renderRing(); renderWork(); }
-$("#rotateBtn").addEventListener("click",()=>{
-  const i=SEATS.findIndex(s=>s.k===state.active); rotateTo(SEATS[(i+1)%SEATS.length].k);
-  toast("סובב · "+seat(state.active).role);
-});
+$("#ideaForm").addEventListener("input",e=>{state.idea.form=e.target.value;e.target.style.height="auto";e.target.style.height=Math.min(e.target.scrollHeight,110)+"px";save();});
+$("#ring").addEventListener("click",e=>{const b=e.target.closest(".seat");if(b)rotateTo(b.dataset.seat);});
+function rotateTo(k){if(k===state.active)return;state.active=k;save();renderRing();renderWork();}
+$("#rotateBtn").addEventListener("click",()=>{const i=SEATS.findIndex(s=>s.k===state.active);rotateTo(SEATS[(i+1)%SEATS.length].k);toast("סובב · "+seat(state.active).role);});
 
-/* ---------- L2 shared state ---------- */
-function addL2(kind,text){ if(!text.trim())return; state.l2.push({id:uid(),kind,text:text.trim(),held:false,ts:Date.now()}); save(); renderL2(); }
+function addL2(kind,text){if(!text.trim())return;state.l2.push({id:uid(),kind,text:text.trim(),held:false,ts:Date.now()});save();renderL2();}
 $("#l2add").addEventListener("click",()=>{const t=$("#l2text");addL2($("#l2kind").value,t.value);t.value="";});
-$("#l2text").addEventListener("keydown",e=>{if(e.key==="Enter"){$("#l2add").click();}});
-$("#l2list").addEventListener("click",e=>{
-  const h=e.target.dataset.hold,d=e.target.dataset.del;
-  if(h){const it=state.l2.find(x=>x.id===h);it.held=!it.held;save();renderL2();}
-  if(d){state.l2=state.l2.filter(x=>x.id!==d);save();renderL2();}
+$("#l2text").addEventListener("keydown",e=>{if(e.key==="Enter")$("#l2add").click();});
+$("#l2list").addEventListener("click",e=>{const h=e.target.dataset.hold,d=e.target.dataset.del;if(h){const it=state.l2.find(x=>x.id===h);it.held=!it.held;save();renderL2();}if(d){state.l2=state.l2.filter(x=>x.id!==d);save();renderL2();}});
+
+$("#thread").addEventListener("click",e=>{
+  const sf=e.target.dataset.surface,tj=e.target.dataset.tojournal;
+  const m=(sf||tj)&&state.seats[state.active].thread.find(x=>x.id===(sf||tj));if(!m)return;
+  if(sf){const k=prompt("להעלות למצב המשותף כ־ (tension/blocked/waiting/request/observation/experiment):","observation");if(!k)return;const kk=Object.keys(KIND).includes(k.trim())?k.trim():"observation";const t=prompt("הטקסט שיֵראה לכל הכיסאות:",m.text.slice(0,240));if(t===null)return;addL2(kk,t);toast("עלה למצב המשותף");}
+  if(tj){const t=prompt("לרשום ביומן (משפט קצר):",m.text.slice(0,180));if(t===null)return;state.capCat="discovery";renderCats();captureMoment(t);toast("נרשם ביומן");}
 });
 
-/* ---------- seats: ask a model, surface to L2 ---------- */
-$("#thread").addEventListener("click",e=>{
-  const id=e.target.dataset.surface; if(!id)return;
-  const m=state.seats[state.active].thread.find(x=>x.id===id); if(!m)return;
-  openSurface(m.text);
-});
-function openSurface(text){
-  const kind = prompt("להעלות למצב המשותף כ־ (tension / blocked / waiting / request / observation / experiment):","observation");
-  if(!kind)return; const k=Object.keys(KIND).includes(kind.trim())?kind.trim():"observation";
-  const t = prompt("הטקסט שיֵראה לכל הכיסאות:", text.slice(0,240));
-  if(t===null)return; addL2(k,t); toast("עלה למצב המשותף");
+async function ask(){
+  const s=seat(state.active),txt=$("#composer").value.trim();if(!txt)return;
+  const th=state.seats[s.k].thread;
+  th.push({id:uid(),role:"you",text:txt,ts:Date.now()});$("#composer").value="";$("#composer").style.height="auto";save();renderWork();
+  if(!s.provider){return;}
+  const cfg=state.cfg[s.k];
+  if(!cfg||!cfg.key){th.push({id:uid(),role:"err",text:"אין מפתח לכיסא הזה. פתחי ⚙ הגדרות — או השאירי אותו כמרחב פרטי."});save();renderWork();return;}
+  $("#sendBtn").disabled=true;const pend={id:uid(),role:"seat",text:"…",ts:Date.now()};th.push(pend);renderWork();
+  const el=document.querySelector("#thread .msg.seat:last-child");if(el)el.innerHTML=`<div class="who">${s.role}</div><span class="thinking"><i></i><i></i><i></i></span>`;
+  try{pend.text=(await callProvider(s.provider,cfg,SYS[s.k],buildContext(s.k,txt)))||"(ריק)";}
+  catch(err){th.splice(th.indexOf(pend),1);th.push({id:uid(),role:"err",text:String(err.message||err)});}
+  finally{$("#sendBtn").disabled=false;save();renderWork();}
 }
 function buildContext(seatKey,userText){
-  let c="THE IDEA AT THE CENTER OF THE TABLE\n";
-  c+="Title: "+(state.idea.title||"(untitled)")+"\n";
-  c+="Current formulation:\n"+(state.idea.form||"(empty)")+"\n\n";
-  if(state.l2.length){
-    c+="SHARED STATE — the current condition of the inquiry. Tensions are HELD, not resolved; do not collapse them.\n";
-    state.l2.forEach(i=>{c+="- ["+KIND[i.kind].he+(i.held?", held":"")+"] "+i.text+"\n";});
-    c+="\n";
-  }
+  let c="THE IDEA AT THE CENTER\nTitle: "+(state.idea.title||"(untitled)")+"\nFormulation:\n"+(state.idea.form||"(empty)")+"\n\n";
+  if(state.l2.length){c+="SHARED STATE (tensions are HELD, not resolved; do not collapse them):\n";state.l2.forEach(i=>{c+="- ["+KIND[i.kind].he+(i.held?", held":"")+"] "+i.text+"\n";});c+="\n";}
   const prior=state.seats[seatKey].thread.filter(m=>m.role!=="err").slice(-6);
   if(prior.length){c+="YOUR PRIOR NOTES AT THIS SEAT\n";prior.forEach(m=>{c+=(m.role==="you"?"Adi: ":"You: ")+m.text+"\n";});c+="\n";}
-  c+="ADI NOW ASKS THIS SEAT:\n"+userText;
-  return c;
-}
-async function ask(){
-  const s=seat(state.active), txt=$("#composer").value.trim(); if(!txt)return;
-  const th=state.seats[s.k].thread;
-  th.push({id:uid(),role:"you",text:txt}); $("#composer").value="";$("#composer").style.height="auto";
-  save(); renderWork();
-  if(!s.provider){ save(); return; } // reality seat = private space, no model
-  const cfg=state.cfg[s.k];
-  if(!cfg||!cfg.key){ th.push({id:uid(),role:"err",text:"אין מפתח לכיסא הזה. פתחי ⚙ הגדרות — או השאירי אותו כמרחב פרטי."}); save(); renderWork(); return; }
-  $("#sendBtn").disabled=true;
-  const pend={id:uid(),role:"seat",text:"…",pending:true}; th.push(pend); renderWork();
-  const el=document.querySelector("#thread .msg.seat:last-child");
-  if(el) el.innerHTML=`<div class="who">${s.role}</div><span class="thinking"><i></i><i></i><i></i></span>`;
-  try{
-    const out=await callProvider(s.provider,cfg,SYS[s.k],buildContext(s.k,txt));
-    pend.text=out||"(ריק)"; delete pend.pending;
-  }catch(err){
-    th.splice(th.indexOf(pend),1);
-    th.push({id:uid(),role:"err",text:String(err.message||err)});
-  }finally{
-    $("#sendBtn").disabled=false; save(); renderWork();
-  }
+  return c+"ADI NOW ASKS THIS SEAT:\n"+userText;
 }
 $("#sendBtn").addEventListener("click",ask);
 $("#composer").addEventListener("keydown",e=>{if((e.ctrlKey||e.metaKey)&&e.key==="Enter")ask();});
 $("#composer").addEventListener("input",e=>{e.target.style.height="auto";e.target.style.height=Math.min(e.target.scrollHeight,150)+"px";});
 
-async function callProvider(provider,cfg,system,userText){
-  if(provider==="anthropic"){
-    const r=await fetch("https://api.anthropic.com/v1/messages",{method:"POST",headers:{
-      "content-type":"application/json","x-api-key":cfg.key,"anthropic-version":"2023-06-01",
-      "anthropic-dangerous-direct-browser-access":"true"},
-      body:JSON.stringify({model:cfg.model||"claude-sonnet-5",max_tokens:2048,system,messages:[{role:"user",content:userText}]})});
-    if(!r.ok) throw new Error("Anthropic "+r.status+": "+(await r.text()).slice(0,200));
-    const d=await r.json(); return (d.content||[]).map(b=>b.text||"").join("");
-  }
-  if(provider==="openai"){
-    const r=await fetch("https://api.openai.com/v1/chat/completions",{method:"POST",headers:{
-      "content-type":"application/json","authorization":"Bearer "+cfg.key},
-      body:JSON.stringify({model:cfg.model||"gpt-4o",messages:[{role:"system",content:system},{role:"user",content:userText}]})});
-    if(!r.ok) throw new Error("OpenAI "+r.status+": "+(await r.text()).slice(0,200));
-    const d=await r.json(); return d.choices?.[0]?.message?.content||"";
-  }
-  if(provider==="google"){
-    const m=cfg.model||"gemini-2.0-flash";
-    const r=await fetch("https://generativelanguage.googleapis.com/v1beta/models/"+m+":generateContent?key="+encodeURIComponent(cfg.key),
-      {method:"POST",headers:{"content-type":"application/json"},
-      body:JSON.stringify({systemInstruction:{parts:[{text:system}]},contents:[{role:"user",parts:[{text:userText}]}]})});
-    if(!r.ok) throw new Error("Gemini "+r.status+": "+(await r.text()).slice(0,200));
-    const d=await r.json(); return (d.candidates?.[0]?.content?.parts||[]).map(p=>p.text||"").join("");
-  }
-  throw new Error("unknown provider");
-}
-
-/* ---------- shelf : commit (kernel) + return (supersession) ---------- */
+/* shelf */
 $("#shelfBtn").addEventListener("click",()=>{
-  if(!state.idea.title && !state.idea.form){ toast("אין רעיון להניח עדיין"); return; }
-  const note=prompt("שיפוט לפני ההנחה — מה בשל כאן? (הכיסא של מציאות)\nהרעיון והמתחים עוברים כמות שהם; שום דבר לא מְמֻצע.","");
+  if(!state.idea.title&&!state.idea.form){toast("אין רעיון להניח עדיין");return;}
+  const note=prompt("שיפוט לפני ההנחה — מה בשל כאן? (כיסא המציאות)\nהרעיון והמתחים עוברים כמות שהם; שום דבר לא ממוצע.","");
   if(note===null)return;
-  state.shelf.push({id:uid(),ts:Date.now(),title:state.idea.title,form:state.idea.form,
-    l2:JSON.parse(JSON.stringify(state.l2)),note:note.trim(),lineage:state.idea.lineage.slice()});
-  save(); renderShelf(); toast("הונח על המדף · נשאר חי");
+  state.shelf.push({id:uid(),ts:Date.now(),title:state.idea.title,form:state.idea.form,l2:JSON.parse(JSON.stringify(state.l2)),note:note.trim(),lineage:state.idea.lineage.slice()});
+  save();renderShelf();toast("הונח על המדף · נשאר חי");
 });
 $("#newBtn").addEventListener("click",()=>{
-  if((state.idea.title||state.idea.form) && !confirm("להתחיל רעיון חדש על השולחן? (הרעיון הנוכחי לא נשמר אלא אם הנחת אותו על המדף)")) return;
-  const keep={shelf:state.shelf,cfg:state.cfg}; state=Object.assign(blank(),keep); save(); renderAll();
-  $("#ideaTitle").focus();
+  if((state.idea.title||state.idea.form)&&!confirm("להתחיל רעיון חדש? (הנוכחי לא נשמר אלא אם הונח על המדף)"))return;
+  const keep={shelf:state.shelf,cfg:state.cfg,journal:state.journal};state=Object.assign(blank(),keep);save();renderAll();$("#ideaTitle").focus();
 });
 $("#shelflist").addEventListener("click",e=>{
-  const ret=e.target.dataset.return, view=e.target.dataset.view;
-  if(view){ const en=state.shelf.find(x=>x.id===view); if(en) alert((en.title||"")+"\n\n"+(en.form||"")+"\n\n— "+(en.note||"")); }
-  if(ret){
-    const en=state.shelf.find(x=>x.id===ret); if(!en)return;
-    if((state.idea.title||state.idea.form)&&!confirm("להחזיר את הרעיון הזה לשולחן? השולחן הנוכחי יתחלף (הנח אותו קודם אם צריך).")) return;
-    // return = a NEW table seeded by the shelf entry; shelf entry untouched (supersession w/ lineage)
-    state.idea={title:en.title,form:en.form,lineage:(en.lineage||[]).concat(en.id)};
-    state.l2=JSON.parse(JSON.stringify(en.l2)); state.active="reality";
-    state.seats=Object.fromEntries(SEATS.map(s=>[s.k,{thread:[]}]));
-    save(); renderAll(); toast("חזר לשולחן · המדף לא נגע");
-  }
+  const ret=e.target.dataset.return,view=e.target.dataset.view;
+  if(view){const en=state.shelf.find(x=>x.id===view);if(en)alert((en.title||"")+"\n\n"+(en.form||"")+"\n\n— "+(en.note||""));}
+  if(ret){const en=state.shelf.find(x=>x.id===ret);if(!en)return;if((state.idea.title||state.idea.form)&&!confirm("להחזיר לשולחן? השולחן הנוכחי יתחלף."))return;
+    state.idea={title:en.title,form:en.form,lineage:(en.lineage||[]).concat(en.id)};state.l2=JSON.parse(JSON.stringify(en.l2));state.active="reality";state.seats=Object.fromEntries(SEATS.map(s=>[s.k,{thread:[]}]));save();renderAll();toast("חזר לשולחן · המדף לא נגע");}
 });
 
-/* ---------- settings ---------- */
-function openSet(){
-  document.querySelectorAll(".prov").forEach(p=>{
-    const c=state.cfg[p.dataset.seat]||{};
-    p.querySelector('[data-k=key]').value=c.key||"";
-    p.querySelector('[data-k=model]').value=c.model||"";
-  });
-  $("#modalBg").classList.add("on");
-}
+/* journal events */
+$("#cats").addEventListener("click",e=>{const b=e.target.closest(".cat");if(!b)return;state.capCat=b.dataset.cat;save();renderCats();});
+$("#capWrite").addEventListener("click",()=>{const t=$("#capText");captureMoment(t.value);t.value="";t.style.height="auto";});
+$("#capText").addEventListener("keydown",e=>{if(e.key==="Enter"&&!e.shiftKey){e.preventDefault();$("#capWrite").click();}});
+$("#capText").addEventListener("input",e=>{e.target.style.height="auto";e.target.style.height=Math.min(e.target.scrollHeight,90)+"px";});
+$("#flip").addEventListener("click",e=>{const f=e.target.dataset.flip;if(!f)return;
+  if(f==="new"){state.journal.pages.push(newFieldPage());state.journal.open=state.journal.pages.length-1;}
+  else state.journal.open=Math.max(0,Math.min(state.journal.pages.length-1,state.journal.open+(+f)));
+  save();renderJournal();});
+$("#page").addEventListener("click",e=>{
+  const age=e.target.dataset.age,name=e.target.closest(".jday")?.dataset.name,rp=e.target.dataset.reprint,fz=e.target.dataset.freeze;
+  if(age){for(const p of state.journal.pages)if(p.type==="field"){const en=p.entries.find(x=>x.id===age);if(en){en.maturity=((en.maturity||0)+1)%3;save();renderJournal();return;}}}
+  if(name){const p=state.journal.pages.find(x=>x.id===name);if(p){const n=prompt("שם ליום הזה (למשל: «היום שמצאנו את המצלמה»):",p.dayName||"");if(n!==null){p.dayName=n.trim();save();renderJournal();}}}
+  if(rp){const p=state.journal.pages.find(x=>x.id===rp);if(p)runPress(p);}
+  if(fz){const p=state.journal.pages.find(x=>x.id===fz);if(p){p.live=false;save();renderJournal();toast("הוקפא · תצלום קבוע");}}
+});
+$("#pressGo").addEventListener("click",()=>{
+  const req=$("#pressReq").value.trim();if(!req){toast("כתבי בקשה למכבש");return;}
+  const who=$("#pressWho").value,live=$("#pressLive").checked;
+  const page={id:uid(),type:"generated",created:Date.now(),createdBy:who,provider:seat(who).provider,prompt:req,title:"",body:"",live,coverageFrom:0,coverageTo:0,lineage:[]};
+  if(!state.journal.dayZero)state.journal.dayZero=Date.now();
+  state.journal.pages.push(page);state.journal.open=state.journal.pages.length-1;
+  $("#pressReq").value="";save();renderJournal();runPress(page);
+});
+
+/* settings */
+function openSet(){document.querySelectorAll(".prov-set").forEach(p=>{const c=state.cfg[p.dataset.seat]||{};p.querySelector('[data-k=key]').value=c.key||"";p.querySelector('[data-k=model]').value=c.model||"";});$("#modalBg").classList.add("on");}
 $("#setBtn").addEventListener("click",openSet);
 $("#setClose").addEventListener("click",()=>$("#modalBg").classList.remove("on"));
 $("#modalBg").addEventListener("click",e=>{if(e.target.id==="modalBg")$("#modalBg").classList.remove("on");});
-$("#setSave").addEventListener("click",()=>{
-  document.querySelectorAll(".prov").forEach(p=>{
-    state.cfg[p.dataset.seat]={key:p.querySelector('[data-k=key]').value.trim(),model:p.querySelector('[data-k=model]').value.trim()};
-  });
-  save(); $("#modalBg").classList.remove("on"); toast("נשמר בדפדפן הזה");
-});
+$("#setSave").addEventListener("click",()=>{document.querySelectorAll(".prov-set").forEach(p=>{state.cfg[p.dataset.seat]={key:p.querySelector('[data-k=key]').value.trim(),model:p.querySelector('[data-k=model]').value.trim()};});save();$("#modalBg").classList.remove("on");toast("נשמר בדפדפן הזה");});
 
-/* ---------- language toggle (he/en, rtl/ltr) ---------- */
+/* language toggle */
 let lang="he";
-const EN={brand:'The Table',sub:'one table · not four windows',set:'⚙ Settings',lang:'עב',
-  ideaLbl:'THE IDEA · at the center',title:"What are we working on?",
-  form:"The idea's current formulation… (it evolves while on the table)",
-  rotate:'⟳ Rotate the table',shelf:'Place on shelf ↓',newi:'New idea',
-  compose:"Talk to the active seat…  (Ctrl+Enter to send)",send:'Ask',l2h:'SHARED STATE · L2',
-  l2ph:'What is in the shared state right now?',add:'Add',shelfh:'THE SHELF · living memory'};
 $("#langBtn").addEventListener("click",()=>{
-  lang = lang==="he"?"en":"he";
-  const en = lang==="en";
-  document.documentElement.lang=lang; document.documentElement.dir=en?"ltr":"rtl";
-  $("#langBtn").textContent = en?"עב":"EN";
+  lang=lang==="he"?"en":"he";const en=lang==="en";
+  document.documentElement.lang=lang;document.documentElement.dir=en?"ltr":"rtl";$("#langBtn").textContent=en?"עב":"EN";
   if(en){
-    $(".brand").innerHTML=`The Table<small>one table · not four windows</small>`;
-    $("#setBtn").textContent=EN.set; $("#ideaLbl").textContent=EN.ideaLbl;
-    $("#ideaTitle").placeholder=EN.title; $("#ideaForm").placeholder=EN.form;
-    $("#rotateBtn").textContent=EN.rotate; $("#shelfBtn").textContent=EN.shelf; $("#newBtn").textContent=EN.newi;
-    $("#composer").placeholder=EN.compose; $("#sendBtn").textContent=EN.send;
-    $("#l2text").placeholder=EN.l2ph; $("#l2add").textContent=EN.add;
-    document.querySelector('.rail-sec.grow .rail-head h3').textContent=EN.l2h;
-    document.querySelector('.shelf .rail-head h3').textContent=EN.shelfh;
-  } else { location.reload(); return; }
+    $(".brand").innerHTML=`The Table<small>one table · not four windows</small>`;$("#setBtn").textContent="⚙ Settings";
+    $("#ideaLbl").textContent="THE IDEA · at the center";$("#ideaTitle").placeholder="What are we working on?";
+    $("#ideaForm").placeholder="The idea's current formulation… (it evolves while on the table)";
+    $("#rotateBtn").textContent="⟳ Rotate the table";$("#shelfBtn").textContent="Place on shelf ↓";$("#newBtn").textContent="New idea";
+    $("#composer").placeholder="Talk to the active seat…  (Ctrl+Enter)";$("#sendBtn").textContent="Ask";
+    $("#l2text").placeholder="What is in the shared state now?";$("#l2add").textContent="Add";
+    document.querySelector('.rail-sec.grow .rail-head h3').textContent="SHARED STATE · L2";
+    document.querySelector('.shelf .rail-head h3').textContent="THE SHELF · living memory";
+    document.querySelector('.jhead h3').textContent="THE JOURNEY JOURNAL";
+    $("#capText").placeholder="Note a moment in pencil… (one sentence)";$("#capWrite").textContent="Write";
+  }else{location.reload();}
 });
-
-/* keyboard: Alt+R rotate */
 window.addEventListener("keydown",e=>{if(e.altKey&&(e.key==="r"||e.key==="R")){e.preventDefault();$("#rotateBtn").click();}});
 
+function renderAll(){renderRing();renderIdea();renderWork();renderL2();renderShelf();renderCats();renderJournal();}
 renderAll();
 </script>
 </body>
