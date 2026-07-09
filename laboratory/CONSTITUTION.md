@@ -97,6 +97,24 @@ network — the opposite. Both are constitutional; they cannot both be fully tru
 same artifact at once. This boundary must be crossed **consciously**, not drifted
 across. Nothing here is built yet; reality has not voted.
 
+### 8a. OPEN — a candidate that may dissolve the collision: an ecosystem of sovereign Places
+
+A later discovery: the collision may exist only under the assumption that multiple
+people inhabit **the same** Place simultaneously (shared live state). Drop that
+assumption and it may vanish.
+
+Reality Game may instead be an **ecosystem of sovereign Places**. Each Laboratory stays
+completely local and owns its own Table, Journal, Cabinet, Shelf, memory, and history.
+Laboratories interact by **exchanging Preservations** (§3) — packaged snapshots — not by
+sharing live state. The model is Git exchanging commits, not shared memory: asynchronous,
+sovereign, offline-first. Observers/Residents/Builders (§8) would then be roles *over the
+exchange*, not co-tenants of one live Place.
+
+If this holds, sovereignty and the larger world stop being contradictory: the world is a
+network of sovereign places passing preserved artifacts, never a shared mutable one.
+Still **OPEN** — recorded as a possibility, not adopted. Reality has not voted, and it is
+not built.
+
 ---
 
 ## Status
