@@ -12,13 +12,16 @@ no AI.
 
 ## The memory travels with the folder (this is the whole point)
 
-The laboratory's memory lives in a file **`laboratory.data.js`** that sits next
-to `index.html`.
+Two moments (see `../CONSTITUTION.md` §3):
 
-- Click **💾 שמור לתיקייה / Save to folder** → your browser downloads
-  `laboratory.data.js`. **Put it in this folder, beside `index.html`.**
-- Next time you open `index.html` — on this computer or any other — that file
-  **loads automatically**. The Place comes back.
+- **💾 Save** — quiet and continuous. Persists the current state and keeps going;
+  no ceremony. You *see* it, not read it: the Journal matures a little (paper
+  darkens, pencil settles toward ink) — visible change emerging from state.
+- **📦 Preserve** — a preservation event. Packages the entire Place into one
+  portable file that sits next to `index.html`. **Put that file in this folder.**
+  Next time you open `index.html` — on this or any other computer — it **loads
+  automatically** and the Place comes back. If Git is present, Preserve also
+  offers the optional `commit + push`. Git is optional; preservation is not.
 
 So the Definition of Done holds literally: **copy this folder to a USB, move it
 to another computer, double-click `index.html` — the laboratory opens, with its

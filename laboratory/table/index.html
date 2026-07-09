@@ -179,15 +179,19 @@
   .modal .foot{display:flex;gap:10px;justify-content:flex-end;margin-top:8px}
   .toast{position:fixed;inset-block-end:22px;inset-inline:0;display:flex;justify-content:center;pointer-events:none;z-index:40}
   .toast div{background:var(--ink);color:var(--bg);padding:8px 18px;border-radius:20px;font-size:13px;opacity:0;transform:translateY(8px);transition:.25s;box-shadow:var(--shadow)}.toast.on div{opacity:.94;transform:none}
+  .emg{font-size:11px;color:var(--muted);line-height:1.3;max-width:300px}.emg b{color:var(--accent);font-weight:600}
+  .hbtn.pulse{border-color:var(--seat-reality);color:var(--seat-reality);background:var(--card);transition:.1s}
 </style>
 </head>
 <body>
 <div class="app">
   <header>
     <div class="brand">השולחן<small>one table · לא ארבעה חלונות</small></div>
+    <span class="emg" id="emg">⛑ נשבר משהו? <b>שמור</b> · <b>שמר את המקום</b> · (Git) commit+push · המשך</span>
     <div class="spacer"></div>
     <button class="hbtn" id="cabBtn">🗄 הארון</button>
-    <button class="hbtn" id="saveBtn">💾 שמור לתיקייה</button>
+    <button class="hbtn" id="saveBtn">💾 שמור</button>
+    <button class="hbtn warn" id="preserveBtn">📦 שמר את המקום</button>
     <button class="hbtn" id="openBtn">📂 פתח</button>
     <button class="hbtn" id="langBtn">EN</button>
     <button class="hbtn" id="setBtn">⚙</button>
@@ -276,8 +280,19 @@
   <div class="prov-set" data-seat="reduction"><h4><span style="color:var(--seat-reduction)">צמצום</span> <span class="tag">Claude · Anthropic</span></h4><div class="fld"><label>API key</label><input type="password" data-k="key" placeholder="sk-ant-…"></div><div class="fld"><label>מודל</label><input data-k="model" placeholder="claude-sonnet-5"></div></div>
   <div class="prov-set" data-seat="systems"><h4><span style="color:var(--seat-systems)">מערכות</span> <span class="tag">Gemini · Google</span></h4><div class="fld"><label>API key</label><input type="password" data-k="key" placeholder="AIza…"></div><div class="fld"><label>מודל</label><input data-k="model" placeholder="gemini-2.0-flash"></div></div>
   <div class="prov-set" data-seat="translation"><h4><span style="color:var(--seat-translation)">תרגום</span> <span class="tag">ChatGPT · OpenAI</span></h4><div class="fld"><label>API key</label><input type="password" data-k="key" placeholder="sk-…"></div><div class="fld"><label>מודל</label><input data-k="model" placeholder="gpt-4o"></div></div>
-  <p class="note">ריבונות: הזיכרון האמיתי חי בקובץ <b>laboratory.data.js</b> שבתיקייה — «💾 שמור» מוריד אותו, שמרי אותו ליד index.html. הוא נטען לבד בפתיחה, בכל דפדפן, גם בלי אינטרנט. localStorage הוא רק מטמון של המצלמה.</p>
+  <p class="note">ריבונות: <b>💾 שמור</b> שומר בשקט וממשיך. <b>📦 שמר את המקום</b> אורז את כל המקום לחבילה אחת שנוסעת עם התיקייה ונטענת לבד בפתיחה — בכל דפדפן, גם בלי אינטרנט. איך המקום נשמר בפנים — נשאר פתוח; מה שמשנה הוא שהמקום זוכר.</p>
   <div class="foot"><button class="pill" id="setClose">סגור</button><button class="pill primary" id="setSave">שמור מפתחות</button></div>
+</div></div>
+<!-- preserve -->
+<div class="modal-bg" id="preBg"><div class="modal">
+  <h2>📦 המקום נארז</h2>
+  <p class="sub">כל המקום — יומן, ארון, מדף, מצב משותף, הגדרות — ירד כחבילה אחת. שמרי אותה בתיקיית המעבדה; היא תיטען לבד בפעם הבאה, בכל מחשב.</p>
+  <p class="note">אם יש Git בתיקייה — זו האפשרות (רשות; השימור כבר קרה):</p>
+  <div style="display:flex;gap:8px;align-items:center;margin:8px 0">
+    <code style="flex:1;background:var(--bg2);border:1px solid var(--line);border-radius:9px;padding:9px 11px;font-size:12.5px;direction:ltr;overflow-x:auto">git add laboratory.data.js && git commit -m "Preserve the Place" && git push</code>
+    <button class="hbtn" id="preCopy">העתק</button>
+  </div>
+  <div class="foot"><button class="pill primary" id="preClose">המשך</button></div>
 </div></div>
 <input type="file" id="openInput" accept=".js,.json,application/json,text/javascript" style="display:none">
 <div class="toast" id="toast"><div></div></div>
@@ -309,7 +324,7 @@ const PRESS_SYS="You are the printing press of a laboratory's journal. You are g
 
 const blank=()=>({idea:{title:"",form:"",lineage:[]},l2:[],active:"reality",
   seats:Object.fromEntries(SEATS.map(s=>[s.k,{thread:[]}])),shelf:[],
-  journal:{open:0,dayZero:0,pages:[]},capCat:"observation",cabinet:[],pressSel:[],
+  journal:{open:0,dayZero:0,pages:[]},capCat:"observation",cabinet:[],pressSel:[],saveCount:0,
   cfg:{reduction:{key:"",model:"claude-sonnet-5"},systems:{key:"",model:"gemini-2.0-flash"},translation:{key:"",model:"gpt-4o"}}});
 let state=load();
 function load(){
@@ -357,7 +372,10 @@ function renderShelf(){$("#shelfcount").textContent=state.shelf.length;const lis
 
 /* ---- render : journal ---- */
 function journeyDay(ts){const z=state.journal.dayZero||ts;return Math.floor((ts-z)/86400000)+1;}
-function patina(ts){return Math.max(0,Math.min(1,((Date.now()-ts)/86400000)/45));}
+/* patina = calendar age + a nudge per Save, so preserving visibly ages the paper */
+function patina(ts){return Math.max(0,Math.min(1,((Date.now()-ts)/86400000)/45+(state.saveCount||0)*0.012));}
+/* maturity emerges from state: a moment settles pencil->ink->print as it survives Saves */
+function entMaturity(e){const n=(state.saveCount||0)-(e.bornSave||0);return n>=6?2:n>=2?1:0;}
 function newFieldPage(){if(!state.journal.dayZero)state.journal.dayZero=Date.now();return{id:uid(),type:"field",created:Date.now(),entries:[],dayName:""};}
 function lastFieldPage(){for(let i=state.journal.pages.length-1;i>=0;i--)if(state.journal.pages[i].type==="field")return state.journal.pages[i];return null;}
 function renderCats(){$("#cats").innerHTML=CATS.map(c=>`<button class="cat${c.k===state.capCat?" on":""}" data-cat="${c.k}" title="${c.he}"><span>${c.e}</span></button>`).join("");}
@@ -375,8 +393,9 @@ function renderJournal(){
   let body;
   if(p.type==="field"){
     body=`<div class="pbody">`+(p.entries.length?p.entries.map(e=>{
-      const rot=(e.maturity?0:jitter(e.id)*1.1).toFixed(2);
-      return`<div class="ent ink${e.maturity||0}" style="--rot:${rot}deg"><span class="etools"><button data-age="${e.id}" title="עיפרון→דיו→דפוס">✎</button><button data-edit="${e.id}" title="ערוך">✍</button><button data-del="${e.id}" title="מחק">✕</button></span><span class="eicon">${catOf(e.cat).e}</span><span class="etext">${fmt(e.text)}</span><span class="emeta">${hhmm(e.ts)}</span></div>`;
+      const mat=entMaturity(e);
+      const rot=(mat?0:jitter(e.id)*1.1).toFixed(2);
+      return`<div class="ent ink${mat}" style="--rot:${rot}deg"><span class="etools"><button data-edit="${e.id}" title="ערוך">✍</button><button data-del="${e.id}" title="מחק">✕</button></span><span class="eicon">${catOf(e.cat).e}</span><span class="etext">${fmt(e.text)}</span><span class="emeta">${hhmm(e.ts)}</span></div>`;
     }).join(""):`<div class="jempty">עמוד ריק. רשום עליו רגע.</div>`)+`</div>`;
   }else{
     const cov=p.coverageFrom?`${ddate(p.coverageFrom)} – ${ddate(p.coverageTo)}`:"—";
@@ -387,7 +406,7 @@ function renderJournal(){
   page.innerHTML=head+body;
   flip.innerHTML=`<button data-flip="-1">‹ קודם</button><span class="pos">עמוד ${state.journal.open+1} / ${pages.length}</span><button data-flip="1">הבא ›</button><button data-flip="new">+ עמוד</button>`;
 }
-function captureMoment(text){text=text.trim();if(!text)return;let p=lastFieldPage();if(!p){p=newFieldPage();state.journal.pages.push(p);}p.entries.push({id:uid(),cat:state.capCat,text,maturity:0,ts:Date.now()});state.journal.open=state.journal.pages.indexOf(p);deposit("journal",catOf(state.capCat).he,text);renderJournal();}
+function captureMoment(text){text=text.trim();if(!text)return;let p=lastFieldPage();if(!p){p=newFieldPage();state.journal.pages.push(p);}p.entries.push({id:uid(),cat:state.capCat,text,bornSave:(state.saveCount||0),ts:Date.now()});state.journal.open=state.journal.pages.indexOf(p);deposit("journal",catOf(state.capCat).he,text);renderJournal();}
 
 /* ---- the press : pages from material EXPLICITLY retrieved from the cabinet ---- */
 function pressGather(page){let items=(page.selection&&page.selection.length)?state.cabinet.filter(c=>page.selection.includes(c.id)):state.cabinet.slice();items.sort((a,b)=>a.ts-b.ts);return items;}
@@ -486,9 +505,8 @@ $("#capText").addEventListener("keydown",e=>{if(e.key==="Enter"&&!e.shiftKey){e.
 $("#capText").addEventListener("input",e=>{e.target.style.height="auto";e.target.style.height=Math.min(e.target.scrollHeight,90)+"px";});
 $("#flip").addEventListener("click",e=>{const f=e.target.dataset.flip;if(!f)return;if(f==="new"){state.journal.pages.push(newFieldPage());state.journal.open=state.journal.pages.length-1;}else state.journal.open=Math.max(0,Math.min(state.journal.pages.length-1,state.journal.open+(+f)));save();renderJournal();});
 $("#page").addEventListener("click",e=>{
-  const age=e.target.dataset.age,ed=e.target.dataset.edit,del=e.target.dataset.del,name=e.target.closest(".jday")?.dataset.name,rp=e.target.dataset.reprint,fz=e.target.dataset.freeze;
+  const ed=e.target.dataset.edit,del=e.target.dataset.del,name=e.target.closest(".jday")?.dataset.name,rp=e.target.dataset.reprint,fz=e.target.dataset.freeze;
   const findEnt=id=>{for(const p of state.journal.pages)if(p.type==="field"){const en=p.entries.find(x=>x.id===id);if(en)return[p,en];}return[];};
-  if(age){const[,en]=findEnt(age);if(en){en.maturity=((en.maturity||0)+1)%3;save();renderJournal();}return;}
   if(ed){const[,en]=findEnt(ed);if(en){const t=prompt("ערוך את הרגע:",en.text);if(t!==null&&t.trim()){en.text=t.trim();save();renderJournal();}}return;}
   if(del){const[p,en]=findEnt(del);if(en&&confirm("למחוק את הרגע? (מהיומן; הארון עדיין זוכר)")){p.entries=p.entries.filter(x=>x.id!==del);save();renderJournal();}return;}
   if(name){const p=state.journal.pages.find(x=>x.id===name);if(p){const n=prompt("שם ליום הזה (למשל: «היום שמצאנו את המצלמה»):",p.dayName||"");if(n!==null){p.dayName=n.trim();save();renderJournal();}}return;}
@@ -520,11 +538,18 @@ $("#cabFile").addEventListener("change",e=>{const f=e.target.files[0];if(!f)retu
   e.target.value="";});
 $("#cabTake").addEventListener("click",()=>{$("#cabBg").classList.remove("on");renderPressMat();toast(state.pressSel.length+" פריטים ממתינים למכבש · כתבי בקשה");$("#pressReq").focus();});
 
-/* sovereign persistence : save/open the Place's file */
-$("#saveBtn").addEventListener("click",()=>{
-  const data="/* Laboratory memory — the Place travels with this file. Keep it beside index.html. */\nwindow.__LAB__="+JSON.stringify(state)+";\n";
-  const a=document.createElement("a");a.href=URL.createObjectURL(new Blob([data],{type:"text/javascript"}));a.download="laboratory.data.js";a.click();setTimeout(()=>URL.revokeObjectURL(a.href),1500);
-  toast("שמרי את laboratory.data.js לתוך תיקיית המעבדה (ליד index.html)");});
+/* 💾 Save — quiet, continuous, no ceremony. No "Saved." message: the Place matures
+   (§4) — saveCount is state, rendering reveals the consequence. */
+function pulse(el){el.classList.add("pulse");setTimeout(()=>el.classList.remove("pulse"),480);}
+$("#saveBtn").addEventListener("click",()=>{state.saveCount=(state.saveCount||0)+1;save();renderJournal();pulse($("#saveBtn"));});
+/* 📦 Preserve — a preservation event: package the whole Place; Git optional. */
+function packPlace(){return "/* The Place — preserved. Keep this beside the laboratory so it loads on open. */\nwindow.__LAB__="+JSON.stringify(state)+";\n";}
+$("#preserveBtn").addEventListener("click",()=>{
+  const a=document.createElement("a");a.href=URL.createObjectURL(new Blob([packPlace()],{type:"text/javascript"}));a.download="laboratory.data.js";a.click();setTimeout(()=>URL.revokeObjectURL(a.href),1500);
+  state.saveCount=(state.saveCount||0)+1;save();renderJournal();$("#preBg").classList.add("on");});
+$("#preClose").addEventListener("click",()=>$("#preBg").classList.remove("on"));
+$("#preBg").addEventListener("click",e=>{if(e.target.id==="preBg")$("#preBg").classList.remove("on");});
+$("#preCopy").addEventListener("click",()=>{const t='git add laboratory.data.js && git commit -m "Preserve the Place" && git push';navigator.clipboard&&navigator.clipboard.writeText(t);pulse($("#preCopy"));});
 $("#openBtn").addEventListener("click",()=>$("#openInput").click());
 $("#openInput").addEventListener("change",e=>{const f=e.target.files[0];if(!f)return;const r=new FileReader();r.onload=()=>{let txt=String(r.result),obj=null;try{const i=txt.indexOf("{"),j=txt.lastIndexOf("}");obj=JSON.parse(txt.slice(i,j+1));}catch(x){}if(obj&&obj.idea){if(confirm("לטעון מעבדה מהקובץ? המצב הנוכחי יוחלף.")){state=Object.assign(blank(),obj);save();renderAll();toast("המעבדה נטענה מהקובץ");}}else toast("הקובץ לא נראה כמו מעבדה");};r.readAsText(f);e.target.value="";});
 
@@ -537,7 +562,7 @@ $("#setSave").addEventListener("click",()=>{document.querySelectorAll(".prov-set
 /* language */
 let lang="he";
 $("#langBtn").addEventListener("click",()=>{lang=lang==="he"?"en":"he";const en=lang==="en";document.documentElement.lang=lang;document.documentElement.dir=en?"ltr":"rtl";$("#langBtn").textContent=en?"עב":"EN";
-  if(en){$(".brand").innerHTML=`The Table<small>one table · not four windows</small>`;$("#ideaLbl").textContent="THE IDEA · at the center";$("#ideaTitle").placeholder="What are we working on?";$("#ideaForm").placeholder="The idea's current formulation…";$("#rotateBtn").textContent="⟳ Rotate the table";$("#shelfBtn").textContent="Place on shelf ↓";$("#newBtn").textContent="New idea";$("#composer").placeholder="Talk to the active seat…  (Ctrl+Enter)";$("#sendBtn").textContent="Ask";$("#l2text").placeholder="What is in the shared state now?";$("#l2add").textContent="Add";document.querySelector('.rail-sec.grow .rail-head h3').textContent="SHARED STATE · L2";document.querySelector('.shelf .rail-head h3').textContent="THE SHELF";document.querySelector('.jhead h3').textContent="THE JOURNEY JOURNAL";$("#capText").placeholder="Note a moment in pencil… (one sentence)";$("#capWrite").textContent="Write";$("#cabBtn").textContent="🗄 Cabinet";$("#saveBtn").textContent="💾 Save to folder";$("#openBtn").textContent="📂 Open";}
+  if(en){$(".brand").innerHTML=`The Table<small>one table · not four windows</small>`;$("#ideaLbl").textContent="THE IDEA · at the center";$("#ideaTitle").placeholder="What are we working on?";$("#ideaForm").placeholder="The idea's current formulation…";$("#rotateBtn").textContent="⟳ Rotate the table";$("#shelfBtn").textContent="Place on shelf ↓";$("#newBtn").textContent="New idea";$("#composer").placeholder="Talk to the active seat…  (Ctrl+Enter)";$("#sendBtn").textContent="Ask";$("#l2text").placeholder="What is in the shared state now?";$("#l2add").textContent="Add";document.querySelector('.rail-sec.grow .rail-head h3').textContent="SHARED STATE · L2";document.querySelector('.shelf .rail-head h3').textContent="THE SHELF";document.querySelector('.jhead h3').textContent="THE JOURNEY JOURNAL";$("#capText").placeholder="Note a moment in pencil… (one sentence)";$("#capWrite").textContent="Write";$("#cabBtn").textContent="🗄 Cabinet";$("#saveBtn").textContent="💾 Save";$("#preserveBtn").textContent="📦 Preserve the Place";$("#openBtn").textContent="📂 Open";$("#emg").innerHTML="⛑ broke? <b>Save</b> · <b>Preserve</b> · (Git) commit+push · continue";}
   else location.reload();});
 window.addEventListener("keydown",e=>{if(e.altKey&&(e.key==="r"||e.key==="R")){e.preventDefault();$("#rotateBtn").click();}});
 
