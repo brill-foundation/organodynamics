@@ -4,105 +4,81 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>השולחן — The Table</title>
+<!-- Sovereign memory: the Place travels with this file. Loads on double-click, offline, every browser.
+     If laboratory.data.js is absent (first run) this simply does nothing. -->
+<script>window.__LAB__=null;</script>
+<script src="laboratory.data.js" onerror="void 0"></script>
 <style>
   :root{
-    --bg:#f4efe6; --bg2:#efe8db; --ink:#2b2622; --muted:#7d746a; --line:#d9cfbe;
-    --card:#fffdf8; --accent:#a6642f; --accent-soft:#e7d3bf;
-    --tension:#b4472d; --blocked:#8a5a2b; --waiting:#5a6b8a; --observation:#6a7d5f;
-    --request:#8a6f2b; --experiment:#6a5a8a; --held:#9a8f7a;
-    --seat-reality:#3f6b52; --seat-reduction:#a6642f; --seat-systems:#3f5f8a; --seat-translation:#8a4f6b;
-    /* journal media */
-    --paper:#efe4c8; --paper2:#e7dab8; --rule:#cdb98c; --marginline:#c68b7a;
-    --pencil:#6a6155; --inkc:#38506f; --shadow:0 1px 2px rgba(60,45,25,.06),0 8px 30px rgba(60,45,25,.08);
+    --bg:#f4efe6;--bg2:#efe8db;--ink:#2b2622;--muted:#7d746a;--line:#d9cfbe;--card:#fffdf8;
+    --accent:#a6642f;--accent-soft:#e7d3bf;
+    --tension:#b4472d;--blocked:#8a5a2b;--waiting:#5a6b8a;--observation:#6a7d5f;--request:#8a6f2b;--experiment:#6a5a8a;--held:#9a8f7a;
+    --seat-reality:#3f6b52;--seat-reduction:#a6642f;--seat-systems:#3f5f8a;--seat-translation:#8a4f6b;
+    --paper:#efe4c8;--paper2:#e7dab8;--rule:#cdb98c;--marginline:#c68b7a;--pencil:#6a6155;--inkc:#38506f;
+    --shadow:0 1px 2px rgba(60,45,25,.06),0 8px 30px rgba(60,45,25,.08);
     --serif:"Iowan Old Style",Georgia,"Times New Roman",serif;
     --sans:-apple-system,BlinkMacSystemFont,"Segoe UI","Assistant","Heebo",system-ui,sans-serif;
     --hand:"Bradley Hand","Segoe Print","Snell Roundhand","Comic Sans MS",cursive;
   }
-  @media (prefers-color-scheme: dark){
-    :root{
-      --bg:#1c1a17; --bg2:#211e1a; --ink:#ece5d8; --muted:#9a9184; --line:#3a352d;
-      --card:#26231e; --accent:#d68a4e; --accent-soft:#3a2f24;
-      --paper:#2b2721; --paper2:#322d25; --rule:#413a2e; --marginline:#7a4f45;
-      --pencil:#b3a992; --inkc:#8fb0d8;
-      --shadow:0 1px 2px rgba(0,0,0,.3),0 8px 30px rgba(0,0,0,.35);
-    }
-  }
-  *{box-sizing:border-box}
-  html,body{margin:0;height:100%}
-  body{background:radial-gradient(120% 90% at 50% -10%,var(--bg2),var(--bg));color:var(--ink);
-    font-family:var(--sans);font-size:15px;line-height:1.55;-webkit-font-smoothing:antialiased;overflow:hidden}
+  @media (prefers-color-scheme:dark){:root{
+    --bg:#1c1a17;--bg2:#211e1a;--ink:#ece5d8;--muted:#9a9184;--line:#3a352d;--card:#26231e;--accent:#d68a4e;--accent-soft:#3a2f24;
+    --paper:#2b2721;--paper2:#322d25;--rule:#413a2e;--marginline:#7a4f45;--pencil:#b3a992;--inkc:#8fb0d8;
+    --shadow:0 1px 2px rgba(0,0,0,.3),0 8px 30px rgba(0,0,0,.35);}}
+  *{box-sizing:border-box}html,body{margin:0;height:100%}
+  body{background:radial-gradient(120% 90% at 50% -10%,var(--bg2),var(--bg));color:var(--ink);font-family:var(--sans);font-size:15px;line-height:1.55;-webkit-font-smoothing:antialiased;overflow:hidden}
   button{font-family:inherit;font-size:inherit;color:inherit;cursor:pointer;border:none;background:none}
   textarea,input,select{font-family:inherit;font-size:inherit;color:var(--ink)}
   ::selection{background:var(--accent-soft)}
 
   .app{display:flex;flex-direction:column;height:100vh}
-  header{display:flex;align-items:center;gap:14px;padding:12px 22px;border-bottom:1px solid var(--line);
-    background:color-mix(in srgb,var(--card) 60%,transparent);backdrop-filter:blur(6px)}
-  header .brand{font-family:var(--serif);font-size:20px;font-weight:600;letter-spacing:.02em}
+  header{display:flex;align-items:center;gap:10px;padding:11px 20px;border-bottom:1px solid var(--line);background:color-mix(in srgb,var(--card) 60%,transparent);backdrop-filter:blur(6px);flex-wrap:wrap}
+  header .brand{font-family:var(--serif);font-size:20px;font-weight:600}
   header .brand small{color:var(--muted);font-weight:400;font-size:13px;margin-inline-start:8px;font-family:var(--sans)}
   header .spacer{flex:1}
-  .hbtn{padding:6px 12px;border-radius:9px;border:1px solid var(--line);color:var(--muted);font-size:13px;transition:.15s}
+  .hbtn{padding:6px 11px;border-radius:9px;border:1px solid var(--line);color:var(--muted);font-size:13px;transition:.15s}
   .hbtn:hover{color:var(--ink);border-color:var(--accent);background:var(--card)}
+  .hbtn.warn{border-color:var(--accent);color:var(--accent)}
 
   .stage{flex:1;display:grid;grid-template-columns:300px minmax(420px,1fr) 384px;min-height:0}
   .rail{order:1}.center{order:2}.journal{order:3}
-  @media (max-width:1180px){
-    .stage{display:flex;flex-direction:column;overflow-y:auto}
-    .center{order:1}.journal{order:2}.rail{order:3;border-inline-start:none;border-top:1px solid var(--line)}
-    .journal{border-inline:none;border-block:1px solid var(--line)}
-  }
+  @media (max-width:1180px){.stage{display:flex;flex-direction:column;overflow-y:auto}
+    .center{order:1}.journal{order:2;border-inline:none;border-block:1px solid var(--line)}.rail{order:3;border-inline-start:none;border-top:1px solid var(--line)}}
 
-  /* ---------- center : seats + idea + work ---------- */
   .center{display:flex;flex-direction:column;min-height:0;padding:20px 22px;gap:14px;overflow:hidden}
   .ring{display:flex;gap:8px;flex-wrap:wrap}
-  .seat{flex:1;min-width:118px;padding:9px 12px;border-radius:12px;border:1px solid var(--line);
-    background:var(--card);transition:.18s;display:flex;flex-direction:column;gap:2px;position:relative;overflow:hidden}
+  .seat{flex:1;min-width:118px;padding:9px 12px;border-radius:12px;border:1px solid var(--line);background:var(--card);transition:.18s;display:flex;flex-direction:column;gap:2px;position:relative;overflow:hidden}
   .seat .role{font-weight:600;font-size:13.5px}.seat .who{font-size:11.5px;color:var(--muted)}
   .seat::before{content:"";position:absolute;inset-block:0;inset-inline-start:0;width:3px;background:var(--sc,var(--line))}
-  .seat[data-seat=reality]{--sc:var(--seat-reality)}.seat[data-seat=reduction]{--sc:var(--seat-reduction)}
-  .seat[data-seat=systems]{--sc:var(--seat-systems)}.seat[data-seat=translation]{--sc:var(--seat-translation)}
-  .seat.active{border-color:var(--sc);box-shadow:0 0 0 1px var(--sc) inset,var(--shadow);transform:translateY(-1px)}
-  .seat.active .role{color:var(--sc)}
-  .seat .dot{position:absolute;inset-block-start:9px;inset-inline-end:10px;width:7px;height:7px;border-radius:50%;background:var(--sc);opacity:0;transition:.2s}
-  .seat.active .dot{opacity:1}
+  .seat[data-seat=reality]{--sc:var(--seat-reality)}.seat[data-seat=reduction]{--sc:var(--seat-reduction)}.seat[data-seat=systems]{--sc:var(--seat-systems)}.seat[data-seat=translation]{--sc:var(--seat-translation)}
+  .seat.active{border-color:var(--sc);box-shadow:0 0 0 1px var(--sc) inset,var(--shadow);transform:translateY(-1px)}.seat.active .role{color:var(--sc)}
+  .seat .dot{position:absolute;inset-block-start:9px;inset-inline-end:10px;width:7px;height:7px;border-radius:50%;background:var(--sc);opacity:0;transition:.2s}.seat.active .dot{opacity:1}
 
-  .idea{background:var(--card);border:1px solid var(--line);border-radius:16px;box-shadow:var(--shadow);
-    padding:15px 20px;display:flex;flex-direction:column;gap:5px;position:relative}
+  .idea{background:var(--card);border:1px solid var(--line);border-radius:16px;box-shadow:var(--shadow);padding:15px 20px;display:flex;flex-direction:column;gap:5px;position:relative}
   .idea::after{content:"";position:absolute;inset:6px;border:1px solid color-mix(in srgb,var(--accent) 22%,transparent);border-radius:12px;pointer-events:none;opacity:.5}
   .idea .lbl{font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
-  .idea-title{font-family:var(--serif);font-size:23px;font-weight:600;border:none;background:none;outline:none;width:100%;padding:0}
-  .idea-title::placeholder{color:var(--held)}
+  .idea-title{font-family:var(--serif);font-size:23px;font-weight:600;border:none;background:none;outline:none;width:100%;padding:0}.idea-title::placeholder{color:var(--held)}
   .idea-form{border:none;background:none;outline:none;width:100%;resize:none;font-size:15px;color:var(--ink);min-height:40px;max-height:110px}
   .idea-actions{display:flex;gap:8px;margin-top:2px;flex-wrap:wrap}
   .pill{padding:6px 13px;border-radius:20px;font-size:13px;border:1px solid var(--line);color:var(--muted);transition:.15s;white-space:nowrap}
-  .pill:hover{border-color:var(--accent);color:var(--ink);background:var(--bg2)}
-  .pill.primary{background:var(--accent);color:#fff;border-color:var(--accent)}
-  .pill.primary:hover{filter:brightness(1.06)}
+  .pill:hover{border-color:var(--accent);color:var(--ink);background:var(--bg2)}.pill.primary{background:var(--accent);color:#fff;border-color:var(--accent)}.pill.primary:hover{filter:brightness(1.06)}
 
   .work{flex:1;display:flex;flex-direction:column;min-height:0;background:var(--card);border:1px solid var(--line);border-radius:16px;box-shadow:var(--shadow);overflow:hidden}
   .work-head{padding:11px 18px;border-bottom:1px solid var(--line);display:flex;align-items:center;gap:10px;background:color-mix(in srgb,var(--sc,var(--card)) 8%,var(--card))}
-  .work-head .wh-role{font-weight:600;color:var(--sc,var(--ink))}.work-head .wh-who{font-size:12px;color:var(--muted)}
-  .work-head .wh-op{font-size:12px;color:var(--muted);flex:1}
+  .work-head .wh-role{font-weight:600;color:var(--sc,var(--ink))}.work-head .wh-who{font-size:12px;color:var(--muted)}.work-head .wh-op{font-size:12px;color:var(--muted);flex:1}
   .thread{flex:1;overflow-y:auto;padding:14px 18px;display:flex;flex-direction:column;gap:12px}
   .msg{max-width:88%;padding:9px 13px;border-radius:13px;white-space:pre-wrap;word-break:break-word;font-size:14.5px;position:relative}
   .msg.you{align-self:flex-start;background:var(--bg2);border:1px solid var(--line)}
   .msg.seat{align-self:flex-end;background:color-mix(in srgb,var(--sc) 10%,var(--card));border:1px solid color-mix(in srgb,var(--sc) 28%,var(--line))}
   .msg.err{align-self:center;background:color-mix(in srgb,var(--tension) 12%,var(--card));border:1px solid var(--tension);color:var(--tension);font-size:13px}
   .msg .who{font-size:10.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin-bottom:3px}
-  .msg .acts{margin-top:7px;display:flex;gap:6px;flex-wrap:wrap}
-  .msg .act{font-size:11.5px;color:var(--accent);border:1px dashed color-mix(in srgb,var(--accent) 50%,transparent);border-radius:7px;padding:2px 8px;opacity:.75}
-  .msg .act:hover{opacity:1;background:var(--accent-soft)}
+  .msg .acts{margin-top:7px;display:flex;gap:6px;flex-wrap:wrap}.msg .act{font-size:11.5px;color:var(--accent);border:1px dashed color-mix(in srgb,var(--accent) 50%,transparent);border-radius:7px;padding:2px 8px;opacity:.75}.msg .act:hover{opacity:1;background:var(--accent-soft)}
   .thread .empty{color:var(--held);font-size:13.5px;text-align:center;margin:auto;max-width:280px;font-family:var(--serif);font-style:italic}
   .composer{border-top:1px solid var(--line);padding:10px 14px;display:flex;gap:9px;align-items:flex-end;background:var(--bg2)}
-  .composer textarea{flex:1;border:1px solid var(--line);border-radius:11px;background:var(--card);padding:9px 12px;resize:none;min-height:40px;max-height:150px;outline:none}
-  .composer textarea:focus{border-color:var(--accent)}
-  .send{padding:9px 16px;border-radius:11px;background:var(--accent);color:#fff;font-weight:600;align-self:stretch;transition:.15s}
-  .send:hover{filter:brightness(1.06)}.send:disabled{opacity:.5;cursor:default;filter:none}
-  .thinking{display:inline-flex;gap:3px}.thinking i{width:5px;height:5px;border-radius:50%;background:var(--sc,var(--accent));animation:bp 1s infinite}
-  .thinking i:nth-child(2){animation-delay:.15s}.thinking i:nth-child(3){animation-delay:.3s}
+  .composer textarea{flex:1;border:1px solid var(--line);border-radius:11px;background:var(--card);padding:9px 12px;resize:none;min-height:40px;max-height:150px;outline:none}.composer textarea:focus{border-color:var(--accent)}
+  .send{padding:9px 16px;border-radius:11px;background:var(--accent);color:#fff;font-weight:600;align-self:stretch}.send:hover{filter:brightness(1.06)}.send:disabled{opacity:.5;cursor:default;filter:none}
+  .thinking{display:inline-flex;gap:3px}.thinking i{width:5px;height:5px;border-radius:50%;background:var(--sc,var(--accent));animation:bp 1s infinite}.thinking i:nth-child(2){animation-delay:.15s}.thinking i:nth-child(3){animation-delay:.3s}
   @keyframes bp{0%,100%{opacity:.25;transform:translateY(0)}50%{opacity:1;transform:translateY(-3px)}}
 
-  /* ---------- rail : shared state + shelf ---------- */
   .rail{border-inline-start:1px solid var(--line);background:var(--bg2);display:flex;flex-direction:column;min-height:0}
   .rail-sec{display:flex;flex-direction:column;min-height:0}.rail-sec.grow{flex:1}
   .rail-head{padding:12px 16px 8px;display:flex;align-items:center;gap:8px}
@@ -110,125 +86,99 @@
   .rail-head .count{font-size:11px;color:var(--held);background:var(--card);border:1px solid var(--line);border-radius:20px;padding:0 7px}
   .l2list{overflow-y:auto;padding:0 12px 10px;display:flex;flex-direction:column;gap:7px}
   .l2{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:8px 10px;font-size:13.5px;position:relative;border-inline-start:3px solid var(--kc,var(--line))}
-  .l2[data-kind=tension]{--kc:var(--tension)}.l2[data-kind=blocked]{--kc:var(--blocked)}
-  .l2[data-kind=waiting]{--kc:var(--waiting)}.l2[data-kind=observation]{--kc:var(--observation)}
-  .l2[data-kind=request]{--kc:var(--request)}.l2[data-kind=experiment]{--kc:var(--experiment)}
-  .l2 .k{font-size:10.5px;letter-spacing:.06em;text-transform:uppercase;color:var(--kc);font-weight:700}
-  .l2 .txt{margin-top:2px;white-space:pre-wrap;word-break:break-word}
+  .l2[data-kind=tension]{--kc:var(--tension)}.l2[data-kind=blocked]{--kc:var(--blocked)}.l2[data-kind=waiting]{--kc:var(--waiting)}.l2[data-kind=observation]{--kc:var(--observation)}.l2[data-kind=request]{--kc:var(--request)}.l2[data-kind=experiment]{--kc:var(--experiment)}
+  .l2 .k{font-size:10.5px;letter-spacing:.06em;text-transform:uppercase;color:var(--kc);font-weight:700}.l2 .txt{margin-top:2px;white-space:pre-wrap;word-break:break-word}
   .l2 .row{display:flex;gap:8px;margin-top:5px}.l2 .mini{font-size:11px;color:var(--muted)}.l2 .mini:hover{color:var(--ink)}
-  .l2.held{opacity:.72;background:repeating-linear-gradient(135deg,var(--card),var(--card) 7px,var(--bg2) 7px,var(--bg2) 8px)}
-  .l2.held .k::after{content:" · מוחזק"}
+  .l2.held{opacity:.72;background:repeating-linear-gradient(135deg,var(--card),var(--card) 7px,var(--bg2) 7px,var(--bg2) 8px)}.l2.held .k::after{content:" · מוחזק"}
   .l2empty,.jempty{color:var(--held);font-size:13px;font-style:italic;padding:6px 4px;font-family:var(--serif)}
   .l2add{padding:8px 12px;border-top:1px solid var(--line);display:flex;gap:6px;flex-wrap:wrap}
-  .l2add select,.l2add input{border:1px solid var(--line);border-radius:9px;background:var(--card);padding:6px 9px;outline:none}
-  .l2add input{flex:1;min-width:110px}
+  .l2add select,.l2add input{border:1px solid var(--line);border-radius:9px;background:var(--card);padding:6px 9px;outline:none}.l2add input{flex:1;min-width:110px}
   .l2add .go{padding:6px 12px;border-radius:9px;border:1px solid var(--line);color:var(--muted)}.l2add .go:hover{border-color:var(--accent);color:var(--ink)}
   .shelf{border-top:1px solid var(--line);max-height:40%;display:flex;flex-direction:column}
   .shelfitem{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:8px 11px;font-size:13px}
-  .shelfitem .st{font-family:var(--serif);font-weight:600;font-size:14.5px}
-  .shelfitem .sm{color:var(--muted);font-size:11.5px;margin-top:2px}
+  .shelfitem .st{font-family:var(--serif);font-weight:600;font-size:14.5px}.shelfitem .sm{color:var(--muted);font-size:11.5px;margin-top:2px}
   .shelfitem .sn{margin-top:5px;font-size:12.5px;border-inline-start:2px solid var(--accent-soft);padding-inline-start:8px}
   .shelfitem .srow{display:flex;gap:10px;margin-top:6px}.shelfitem .srow button{font-size:11.5px;color:var(--accent)}.shelfitem .srow button.g{color:var(--muted)}
 
-  /* ---------- the journal : a notebook that lies open on the table ---------- */
-  .journal{border-inline-start:1px solid var(--line);display:flex;flex-direction:column;min-height:0;
-    background:linear-gradient(180deg,#6b4a2c 0%,#5c3f26 100%);padding:12px 10px 10px}
-  @media (prefers-color-scheme: dark){.journal{background:linear-gradient(180deg,#2a2018,#211a13)}}
+  /* journal */
+  .journal{border-inline-start:1px solid var(--line);display:flex;flex-direction:column;min-height:0;background:linear-gradient(180deg,#6b4a2c,#5c3f26);padding:12px 10px 10px}
+  @media (prefers-color-scheme:dark){.journal{background:linear-gradient(180deg,#2a2018,#211a13)}}
   .jhead{display:flex;align-items:center;gap:8px;padding:0 4px 9px;color:#efe4cf}
   .jhead h3{margin:0;font-size:13px;letter-spacing:.1em;text-transform:uppercase;font-weight:600}
-  .jhead .count{font-size:11px;color:#e6d6b8;border:1px solid #8a6a45;border-radius:20px;padding:0 7px}
-  .jhead .spacer{flex:1}
-  .book{flex:1;display:flex;flex-direction:column;min-height:0;border-radius:4px 10px 10px 4px;position:relative;
-    box-shadow:0 10px 26px rgba(0,0,0,.34);overflow:hidden}
-  /* the page */
-  .page{flex:1;min-height:0;display:flex;flex-direction:column;position:relative;overflow:hidden;
-    background:
-      linear-gradient(90deg,rgba(0,0,0,.10),rgba(0,0,0,0) 26px),
-      repeating-linear-gradient(180deg,transparent,transparent 27px,var(--rule) 27px,var(--rule) 28px),
-      linear-gradient(180deg,var(--paper),var(--paper2));
-    background-blend-mode:multiply,normal,normal}
-  /* foxing / patina grows with age via --patina 0..1 */
-  .page::before{content:"";position:absolute;inset:0;pointer-events:none;opacity:calc(var(--patina,0)*.9);
-    background:radial-gradient(60% 40% at 88% 8%,rgba(120,86,40,.20),transparent 60%),
-              radial-gradient(50% 40% at 10% 92%,rgba(120,86,40,.16),transparent 60%),
-              radial-gradient(30% 20% at 40% 60%,rgba(120,86,40,.10),transparent 60%)}
-  /* red margin line near the binding (inline-start) */
+  .jhead .count{font-size:11px;color:#e6d6b8;border:1px solid #8a6a45;border-radius:20px;padding:0 7px}.jhead .spacer{flex:1}
+  .book{flex:1;display:flex;flex-direction:column;min-height:0;border-radius:4px 10px 10px 4px;position:relative;box-shadow:0 10px 26px rgba(0,0,0,.34);overflow:hidden}
+  .page{flex:1;min-height:0;display:flex;flex-direction:column;position:relative;overflow:hidden;background:linear-gradient(90deg,rgba(0,0,0,.10),rgba(0,0,0,0) 26px),repeating-linear-gradient(180deg,transparent,transparent 27px,var(--rule) 27px,var(--rule) 28px),linear-gradient(180deg,var(--paper),var(--paper2));background-blend-mode:multiply,normal,normal}
+  .page::before{content:"";position:absolute;inset:0;pointer-events:none;opacity:calc(var(--patina,0)*.9);background:radial-gradient(60% 40% at 88% 8%,rgba(120,86,40,.20),transparent 60%),radial-gradient(50% 40% at 10% 92%,rgba(120,86,40,.16),transparent 60%),radial-gradient(30% 20% at 40% 60%,rgba(120,86,40,.10),transparent 60%)}
   .page::after{content:"";position:absolute;inset-block:0;inset-inline-start:34px;width:1px;background:var(--marginline);opacity:.5}
   .page-head{padding:12px 16px 8px 16px;padding-inline-start:44px;display:flex;flex-direction:column;gap:1px;position:relative;z-index:1}
-  .jday{font-family:var(--hand);font-size:15px;color:var(--inkc);cursor:pointer}
-  .jday:hover{text-decoration:underline dotted}
-  .jcreated{font-size:11px;color:var(--pencil);font-family:var(--sans);letter-spacing:.02em}
+  .jday{font-family:var(--hand);font-size:15px;color:var(--inkc);cursor:pointer}.jday:hover{text-decoration:underline dotted}
+  .jcreated{font-size:11px;color:var(--pencil);font-family:var(--sans)}
   .pbody{flex:1;overflow-y:auto;padding:6px 16px 12px;padding-inline-start:44px;position:relative;z-index:1}
-
   .ent{display:block;margin:0 0 14px;position:relative;transform:rotate(var(--rot,0deg));transform-origin:right top}
-  .ent .eicon{font-size:15px;margin-inline-end:6px;filter:saturate(.85)}
-  .ent .etext{white-space:pre-wrap;word-break:break-word}
+  .ent .eicon{font-size:15px;margin-inline-end:6px;filter:saturate(.85)}.ent .etext{white-space:pre-wrap;word-break:break-word}
   .ent .emeta{display:block;font-size:10px;color:var(--pencil);opacity:.7;margin-top:2px;font-family:var(--sans)}
-  .ent .eage{position:absolute;inset-inline-end:-2px;inset-block-start:-2px;font-size:12px;opacity:0;transition:.15s;color:var(--pencil)}
-  .ent:hover .eage{opacity:.7}.ent .eage:hover{opacity:1;color:var(--accent)}
-  /* maturity mediums : pencil -> ink -> print */
-  .ent.ink0 .etext{font-family:var(--hand);color:var(--pencil);font-size:15.5px;letter-spacing:.1px}
-  .ent.ink1{--rot:0deg}
-  .ent.ink1 .etext{font-family:var(--hand);color:var(--inkc);font-size:15.5px;font-weight:600}
-  .ent.ink2{--rot:0deg}
-  .ent.ink2 .etext{font-family:var(--serif);color:var(--ink);font-size:14.5px;line-height:1.5}
+  .ent .etools{position:absolute;inset-inline-end:-2px;inset-block-start:-4px;display:flex;gap:5px;opacity:0;transition:.15s}
+  .ent:hover .etools{opacity:.75}.ent .etools button{font-size:12px;color:var(--pencil)}.ent .etools button:hover{color:var(--accent)}
+  .ent.ink0 .etext{font-family:var(--hand);color:var(--pencil);font-size:15.5px}
+  .ent.ink1{--rot:0deg}.ent.ink1 .etext{font-family:var(--hand);color:var(--inkc);font-size:15.5px;font-weight:600}
+  .ent.ink2{--rot:0deg}.ent.ink2 .etext{font-family:var(--serif);color:var(--ink);font-size:14.5px;line-height:1.5}
   .ent.ink2{border-inline-start:2px solid color-mix(in srgb,var(--accent) 30%,transparent);padding-inline-start:8px;margin-inline-start:-8px}
-
-  /* generated (printed) page */
   .gen .pbody{font-family:var(--serif)}
-  .gen-title{font-family:var(--serif);font-weight:700;font-size:17px;margin-bottom:6px}
-  .gen-body{white-space:pre-wrap;word-break:break-word;font-size:14px;color:var(--ink)}
+  .gen-title{font-family:var(--serif);font-weight:700;font-size:17px;margin-bottom:6px}.gen-body{white-space:pre-wrap;word-break:break-word;font-size:14px}
   .prov{margin-top:12px;border-top:1px dashed var(--rule);padding-top:8px;font-family:var(--sans);font-size:11px;color:var(--pencil);display:grid;grid-template-columns:auto 1fr;gap:2px 10px}
   .prov b{color:var(--inkc);font-weight:600}
-  .badge{display:inline-block;font-size:10px;padding:1px 7px;border-radius:20px;border:1px solid currentColor;margin-inline-start:6px}
-  .badge.live{color:#3f6b52}.badge.frozen{color:#5a6b8a}
-
-  .flip{display:flex;align-items:center;gap:6px;padding:7px 10px;background:color-mix(in srgb,var(--paper2) 80%,#000 4%);
-    border-top:1px solid var(--rule);position:relative;z-index:2;font-size:12px;color:var(--pencil)}
-  .flip button{padding:3px 9px;border-radius:8px;border:1px solid var(--rule);color:var(--pencil)}
-  .flip button:hover{border-color:var(--accent);color:var(--accent)}
-  .flip .pos{flex:1;text-align:center;font-family:var(--hand);font-size:13px}
-
-  /* capture (belongs to the place) */
-  .jcapture{margin-top:9px;background:#efe4cf;border-radius:10px;padding:8px 9px;box-shadow:var(--shadow)}
-  @media (prefers-color-scheme: dark){.jcapture{background:#2b2620}}
+  .badge{display:inline-block;font-size:10px;padding:1px 7px;border-radius:20px;border:1px solid currentColor;margin-inline-start:6px}.badge.live{color:#3f6b52}.badge.frozen{color:#5a6b8a}
+  .flip{display:flex;align-items:center;gap:6px;padding:7px 10px;background:color-mix(in srgb,var(--paper2) 80%,#000 4%);border-top:1px solid var(--rule);position:relative;z-index:2;font-size:12px;color:var(--pencil)}
+  .flip button{padding:3px 9px;border-radius:8px;border:1px solid var(--rule);color:var(--pencil)}.flip button:hover{border-color:var(--accent);color:var(--accent)}.flip .pos{flex:1;text-align:center;font-family:var(--hand);font-size:13px}
+  .jcapture,.jpress{margin-top:9px;background:#efe4cf;border-radius:10px;padding:8px 9px;box-shadow:var(--shadow)}
+  @media (prefers-color-scheme:dark){.jcapture,.jpress{background:#2b2620}}
   .cats{display:flex;gap:3px;flex-wrap:wrap;margin-bottom:6px}
-  .cat{font-size:15px;line-height:1;padding:4px 6px;border-radius:8px;border:1px solid transparent;opacity:.5;transition:.12s;position:relative}
-  .cat:hover{opacity:.9;background:rgba(0,0,0,.04)}
-  .cat.on{opacity:1;border-color:var(--accent);background:var(--card)}
-  .cat .lab{display:none}
+  .cat{font-size:15px;line-height:1;padding:4px 6px;border-radius:8px;border:1px solid transparent;opacity:.5;transition:.12s}.cat:hover{opacity:.9;background:rgba(0,0,0,.04)}.cat.on{opacity:1;border-color:var(--accent);background:var(--card)}
   .caprow{display:flex;gap:6px;align-items:flex-end}
-  .caprow textarea{flex:1;border:1px solid var(--rule);border-radius:9px;background:var(--card);padding:7px 10px;resize:none;min-height:36px;max-height:90px;outline:none;font-family:var(--hand);font-size:15px;color:var(--inkc)}
-  .caprow textarea:focus{border-color:var(--accent)}
+  .caprow textarea{flex:1;border:1px solid var(--rule);border-radius:9px;background:var(--card);padding:7px 10px;resize:none;min-height:36px;max-height:90px;outline:none;font-family:var(--hand);font-size:15px;color:var(--inkc)}.caprow textarea:focus{border-color:var(--accent)}
   .caprow .write{padding:8px 12px;border-radius:9px;background:var(--inkc);color:#fff;font-weight:600;font-size:13px}
-  .caphint{font-size:10.5px;color:#c9bfa8;margin-top:4px;text-align:center;font-family:var(--sans)}
-
-  /* printing press */
-  .jpress{margin-top:8px;background:#efe4cf;border-radius:10px;padding:8px 9px;box-shadow:var(--shadow)}
-  @media (prefers-color-scheme: dark){.jpress{background:#2b2620}}
-  .jpress .ph{font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--pencil);margin-bottom:6px;display:flex;align-items:center;gap:6px}
-  .jpress .prow{display:flex;gap:6px;margin-bottom:6px}
+  .caphint{font-size:10.5px;color:#c9bfa8;margin-top:4px;text-align:center}
+  .jpress .ph{font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--pencil);margin-bottom:6px}
+  .jpress .prow{display:flex;gap:6px;margin-bottom:6px;align-items:center}
   .jpress select{border:1px solid var(--rule);border-radius:9px;background:var(--card);padding:6px 8px;outline:none}
+  .jpress .mat{font-size:11.5px;color:var(--pencil);flex:1}.jpress .mat b{color:var(--inkc)}
+  .jpress .pickcab{font-size:12px;color:var(--accent);border:1px solid var(--rule);border-radius:8px;padding:4px 8px}.jpress .pickcab:hover{border-color:var(--accent)}
   .jpress textarea{width:100%;border:1px solid var(--rule);border-radius:9px;background:var(--card);padding:7px 10px;resize:none;min-height:38px;max-height:90px;outline:none;font-size:13.5px}
   .jpress .prow2{display:flex;gap:8px;align-items:center;margin-top:6px}
   .jpress label.lf{font-size:12px;color:var(--pencil);display:flex;gap:4px;align-items:center;cursor:pointer}
-  .jpress .print{margin-inline-start:auto;padding:7px 14px;border-radius:9px;background:var(--accent);color:#fff;font-weight:600;font-size:13px}
-  .jpress .print:disabled{opacity:.5}
+  .jpress .print{margin-inline-start:auto;padding:7px 14px;border-radius:9px;background:var(--accent);color:#fff;font-weight:600;font-size:13px}.jpress .print:disabled{opacity:.5}
 
-  /* settings + toast (unchanged) */
-  .modal-bg{position:fixed;inset:0;background:rgba(30,22,12,.5);display:none;align-items:center;justify-content:center;z-index:20;padding:20px}
-  .modal-bg.on{display:flex}
+  /* the cabinet (a drawer you walk to) */
+  .drawer-bg{position:fixed;inset:0;background:rgba(30,22,12,.42);display:none;z-index:24}.drawer-bg.on{display:flex}
+  .drawer{background:var(--bg);width:min(500px,96vw);height:100%;display:flex;flex-direction:column;box-shadow:var(--shadow);border-inline-end:1px solid var(--line)}
+  .dhead{padding:14px 18px 10px;border-bottom:1px solid var(--line)}
+  .dhead .t{font-family:var(--serif);font-size:20px;font-weight:600;display:flex;align-items:center;gap:8px}
+  .dhead .s{font-size:12px;color:var(--muted);margin-top:2px}
+  .dsearch{display:flex;gap:8px;margin-top:10px}
+  .dsearch input{flex:1;border:1px solid var(--line);border-radius:9px;background:var(--card);padding:8px 11px;outline:none}.dsearch input:focus{border-color:var(--accent)}
+  .dsearch .x{border:1px solid var(--line);border-radius:9px;padding:0 12px;color:var(--muted)}
+  .cablist{flex:1;overflow-y:auto}
+  .cab{display:flex;gap:9px;padding:9px 14px;border-bottom:1px solid var(--line);align-items:flex-start;cursor:pointer}
+  .cab:hover{background:var(--bg2)}.cab.sel{background:var(--accent-soft)}
+  .cab .ck{font-size:16px;line-height:1.4}.cab .cbody{flex:1;min-width:0}
+  .cab .cmeta{font-size:11px;color:var(--muted)}.cab .ctext{font-size:13.5px;white-space:pre-wrap;word-break:break-word;max-height:4.6em;overflow:hidden}
+  .cab img{max-width:88px;max-height:64px;border-radius:6px;border:1px solid var(--line);display:block;margin-top:3px}
+  .cabempty{padding:22px 16px;color:var(--held);font-style:italic;font-family:var(--serif);text-align:center}
+  .dfoot{border-top:1px solid var(--line);padding:10px 14px;display:flex;flex-direction:column;gap:8px;background:var(--bg2)}
+  .dimport{display:flex;gap:6px}
+  .dimport input[type=text]{flex:1;border:1px solid var(--line);border-radius:9px;background:var(--card);padding:7px 10px;outline:none}
+  .dimport .b{border:1px solid var(--line);border-radius:9px;padding:7px 11px;color:var(--muted)}.dimport .b:hover{border-color:var(--accent);color:var(--ink)}
+  .dfoot .take{padding:9px;border-radius:10px;background:var(--accent);color:#fff;font-weight:600;text-align:center}.dfoot .take:disabled{opacity:.5}
+
+  .modal-bg{position:fixed;inset:0;background:rgba(30,22,12,.5);display:none;align-items:center;justify-content:center;z-index:26;padding:20px}.modal-bg.on{display:flex}
   .modal{background:var(--card);border:1px solid var(--line);border-radius:18px;box-shadow:var(--shadow);max-width:560px;width:100%;max-height:88vh;overflow-y:auto;padding:22px 24px}
   .modal h2{margin:0 0 4px;font-family:var(--serif);font-size:21px}.modal p.sub{margin:0 0 16px;color:var(--muted);font-size:13.5px}
-  .prov-set{border:1px solid var(--line);border-radius:12px;padding:12px 14px;margin-bottom:12px}
-  .prov-set h4{margin:0 0 8px;font-size:14px;display:flex;align-items:center;gap:8px}.prov-set h4 .tag{font-size:11px;color:var(--muted);font-weight:400}
-  .fld{display:flex;flex-direction:column;gap:3px;margin-bottom:8px}.fld label{font-size:12px;color:var(--muted)}
-  .fld input{border:1px solid var(--line);border-radius:9px;background:var(--bg2);padding:8px 10px;outline:none}.fld input:focus{border-color:var(--accent)}
+  .prov-set{border:1px solid var(--line);border-radius:12px;padding:12px 14px;margin-bottom:12px}.prov-set h4{margin:0 0 8px;font-size:14px;display:flex;gap:8px}.prov-set h4 .tag{font-size:11px;color:var(--muted);font-weight:400}
+  .fld{display:flex;flex-direction:column;gap:3px;margin-bottom:8px}.fld label{font-size:12px;color:var(--muted)}.fld input{border:1px solid var(--line);border-radius:9px;background:var(--bg2);padding:8px 10px;outline:none}.fld input:focus{border-color:var(--accent)}
   .modal .note{font-size:12px;color:var(--muted);background:var(--bg2);border:1px solid var(--line);border-radius:10px;padding:9px 12px;line-height:1.5}
   .modal .foot{display:flex;gap:10px;justify-content:flex-end;margin-top:8px}
-  .toast{position:fixed;inset-block-end:22px;inset-inline:0;display:flex;justify-content:center;pointer-events:none;z-index:30}
-  .toast div{background:var(--ink);color:var(--bg);padding:8px 18px;border-radius:20px;font-size:13px;opacity:0;transform:translateY(8px);transition:.25s;box-shadow:var(--shadow)}
-  .toast.on div{opacity:.94;transform:none}
+  .toast{position:fixed;inset-block-end:22px;inset-inline:0;display:flex;justify-content:center;pointer-events:none;z-index:40}
+  .toast div{background:var(--ink);color:var(--bg);padding:8px 18px;border-radius:20px;font-size:13px;opacity:0;transform:translateY(8px);transition:.25s;box-shadow:var(--shadow)}.toast.on div{opacity:.94;transform:none}
 </style>
 </head>
 <body>
@@ -236,12 +186,14 @@
   <header>
     <div class="brand">השולחן<small>one table · לא ארבעה חלונות</small></div>
     <div class="spacer"></div>
+    <button class="hbtn" id="cabBtn">🗄 הארון</button>
+    <button class="hbtn" id="saveBtn">💾 שמור לתיקייה</button>
+    <button class="hbtn" id="openBtn">📂 פתח</button>
     <button class="hbtn" id="langBtn">EN</button>
-    <button class="hbtn" id="setBtn">⚙ הגדרות</button>
+    <button class="hbtn" id="setBtn">⚙</button>
   </header>
 
   <div class="stage">
-    <!-- center -->
     <div class="center">
       <div class="ring" id="ring"></div>
       <div class="idea">
@@ -257,24 +209,16 @@
       <div class="work" id="work">
         <div class="work-head" id="workHead"></div>
         <div class="thread" id="thread"></div>
-        <div class="composer">
-          <textarea id="composer" rows="1" placeholder="דבר עם הכיסא הפעיל…  (Ctrl+Enter לשליחה)"></textarea>
-          <button class="send" id="sendBtn">שאל</button>
-        </div>
+        <div class="composer"><textarea id="composer" rows="1" placeholder="דבר עם הכיסא הפעיל…  (Ctrl+Enter)"></textarea><button class="send" id="sendBtn">שאל</button></div>
       </div>
     </div>
 
-    <!-- rail -->
     <aside class="rail">
       <div class="rail-sec grow">
         <div class="rail-head"><h3>מצב משותף · L2</h3><span class="count" id="l2count">0</span></div>
         <div class="l2list" id="l2list"></div>
         <div class="l2add">
-          <select id="l2kind">
-            <option value="tension">⚡ מתח</option><option value="blocked">⛔ חסום</option>
-            <option value="waiting">⏳ ממתין למציאות</option><option value="request">▸ בקשה</option>
-            <option value="observation">◦ תצפית</option><option value="experiment">⚗ ניסוי</option>
-          </select>
+          <select id="l2kind"><option value="tension">⚡ מתח</option><option value="blocked">⛔ חסום</option><option value="waiting">⏳ ממתין למציאות</option><option value="request">▸ בקשה</option><option value="observation">◦ תצפית</option><option value="experiment">⚗ ניסוי</option></select>
           <input id="l2text" placeholder="מה במצב המשותף כרגע?"><button class="go" id="l2add">הוסף</button>
         </div>
       </div>
@@ -284,219 +228,209 @@
       </div>
     </aside>
 
-    <!-- the journal -->
     <aside class="journal">
       <div class="jhead"><h3>יומן המסע</h3><span class="count" id="jcount">0</span><span class="spacer"></span></div>
       <div class="book"><div class="page" id="page"></div><div class="flip" id="flip"></div></div>
-
       <div class="jcapture">
         <div class="cats" id="cats"></div>
-        <div class="caprow">
-          <textarea id="capText" rows="1" placeholder="רשום רגע בעיפרון… (משפט אחד)"></textarea>
-          <button class="write" id="capWrite">רשום</button>
-        </div>
-        <div class="caphint">היומן שייך למקום, לא לכיסא. הוא נשאר פתוח על אותו עמוד כשמסובבים.</div>
+        <div class="caprow"><textarea id="capText" rows="1" placeholder="רשום רגע בעיפרון… (משפט אחד)"></textarea><button class="write" id="capWrite">רשום</button></div>
+        <div class="caphint">היומן שייך למקום. עובד לגמרי בלי AI — כתיבה, עריכה, עמודים. נשאר על אותו עמוד כשמסובבים.</div>
       </div>
-
       <div class="jpress">
         <div class="ph">🖋️ המכבש — בקשה שהופכת לעמוד</div>
         <div class="prow">
-          <select id="pressWho">
-            <option value="reduction">אל צמצום · Claude</option>
-            <option value="systems">אל מערכות · Gemini</option>
-            <option value="translation">אל תרגום · ChatGPT</option>
-          </select>
+          <select id="pressWho"><option value="manual">✋ ידני (בלי AI)</option><option value="reduction">אל צמצום · Claude</option><option value="systems">אל מערכות · Gemini</option><option value="translation">אל תרגום · ChatGPT</option></select>
+          <span class="mat" id="pressMat">חומר: כל הארון</span>
+          <button class="pickcab" id="pressPick">בחר בארון</button>
         </div>
         <textarea id="pressReq" rows="2" placeholder="למשל: אספי כל מטאפורה שהופיעה במסע · או: כל משפט שבו ציטטנו את Claude"></textarea>
-        <div class="prow2">
-          <label class="lf"><input type="checkbox" id="pressLive" checked> עמוד חי (ממשיך לגדול)</label>
-          <button class="print" id="pressGo">הדפס דף</button>
-        </div>
+        <div class="prow2"><label class="lf"><input type="checkbox" id="pressLive" checked> עמוד חי (ממשיך לגדול)</label><button class="print" id="pressGo">הדפס דף</button></div>
       </div>
     </aside>
   </div>
 </div>
 
+<!-- the cabinet -->
+<div class="drawer-bg" id="cabBg"><div class="drawer">
+  <div class="dhead">
+    <div class="t">🗄 הארון <span style="font-size:12px;color:var(--muted);font-weight:400">— מה שנכנס נשמר, כפי שהוא</span></div>
+    <div class="s">הזיכרון השמור של המעבדה. שום דבר לא מפורש, לא מסוכם, לא מסודר אוטומטית. הוא פשוט זוכר.</div>
+    <div class="dsearch"><input id="cabSearch" placeholder="חפש בארון…"><button class="x" id="cabClear">נקה</button><button class="x" id="cabClose">סגור</button></div>
+  </div>
+  <div class="cablist" id="cablist"></div>
+  <div class="dfoot">
+    <div class="dimport">
+      <input type="text" id="cabNote" placeholder="הכנס פתק / חומר ידני לארון…">
+      <button class="b" id="cabAddNote">הכנס</button>
+      <button class="b" id="cabAttach">📎 קובץ/תמונה</button>
+      <input type="file" id="cabFile" style="display:none" accept="image/*,text/*,.md,.txt">
+    </div>
+    <button class="take" id="cabTake" disabled>קח את הנבחרים למכבש</button>
+  </div>
+</div></div>
+
 <!-- settings -->
 <div class="modal-bg" id="modalBg"><div class="modal">
-  <h2>הכיסאות</h2>
-  <p class="sub">הכיסא שלך הוא <b>מציאות</b> — כאן את חושבת ושופטת. השאר עונים כאן, בחלון אחד, אם תיתני מפתח. המפתחות נשמרים רק בדפדפן הזה.</p>
-  <div class="prov-set" data-seat="reduction"><h4><span style="color:var(--seat-reduction)">צמצום</span> <span class="tag">Claude · Anthropic</span></h4>
-    <div class="fld"><label>API key (x-api-key)</label><input type="password" data-k="key" placeholder="sk-ant-…"></div>
-    <div class="fld"><label>מודל</label><input data-k="model" placeholder="claude-sonnet-5"></div></div>
-  <div class="prov-set" data-seat="systems"><h4><span style="color:var(--seat-systems)">מערכות</span> <span class="tag">Gemini · Google</span></h4>
-    <div class="fld"><label>API key</label><input type="password" data-k="key" placeholder="AIza…"></div>
-    <div class="fld"><label>מודל</label><input data-k="model" placeholder="gemini-2.0-flash"></div></div>
-  <div class="prov-set" data-seat="translation"><h4><span style="color:var(--seat-translation)">תרגום</span> <span class="tag">ChatGPT · OpenAI</span></h4>
-    <div class="fld"><label>API key</label><input type="password" data-k="key" placeholder="sk-…"></div>
-    <div class="fld"><label>מודל</label><input data-k="model" placeholder="gpt-4o"></div></div>
-  <p class="note">בלי מפתחות — הכול נשמר ועובד ידנית; הכיסאות והמכבש פשוט ממתינים. הקריאות יוצאות ישירות מהדפדפן שלך אל הספקים; שום מפתח לא נשמר בקוד.</p>
-  <div class="foot"><button class="pill" id="setClose">סגור</button><button class="pill primary" id="setSave">שמור</button></div>
+  <h2>הכיסאות · הספרנים המוזמנים</h2>
+  <p class="sub">הכיסא שלך הוא <b>מציאות</b>. השאר הם craftspeople מוזמנים — AI הוא רשות, לא תשתית. הכול עובד גם בלעדיהם. המפתחות נשמרים רק כאן.</p>
+  <div class="prov-set" data-seat="reduction"><h4><span style="color:var(--seat-reduction)">צמצום</span> <span class="tag">Claude · Anthropic</span></h4><div class="fld"><label>API key</label><input type="password" data-k="key" placeholder="sk-ant-…"></div><div class="fld"><label>מודל</label><input data-k="model" placeholder="claude-sonnet-5"></div></div>
+  <div class="prov-set" data-seat="systems"><h4><span style="color:var(--seat-systems)">מערכות</span> <span class="tag">Gemini · Google</span></h4><div class="fld"><label>API key</label><input type="password" data-k="key" placeholder="AIza…"></div><div class="fld"><label>מודל</label><input data-k="model" placeholder="gemini-2.0-flash"></div></div>
+  <div class="prov-set" data-seat="translation"><h4><span style="color:var(--seat-translation)">תרגום</span> <span class="tag">ChatGPT · OpenAI</span></h4><div class="fld"><label>API key</label><input type="password" data-k="key" placeholder="sk-…"></div><div class="fld"><label>מודל</label><input data-k="model" placeholder="gpt-4o"></div></div>
+  <p class="note">ריבונות: הזיכרון האמיתי חי בקובץ <b>laboratory.data.js</b> שבתיקייה — «💾 שמור» מוריד אותו, שמרי אותו ליד index.html. הוא נטען לבד בפתיחה, בכל דפדפן, גם בלי אינטרנט. localStorage הוא רק מטמון של המצלמה.</p>
+  <div class="foot"><button class="pill" id="setClose">סגור</button><button class="pill primary" id="setSave">שמור מפתחות</button></div>
 </div></div>
+<input type="file" id="openInput" accept=".js,.json,application/json,text/javascript" style="display:none">
 <div class="toast" id="toast"><div></div></div>
 
 <script>
 "use strict";
 /* ================================================================== *
- * The Table — one table, four seats, a shelf (kernel), and a journal.
- * The journal belongs to the PLACE. Hand pages are field notes that
- * mature pencil->ink->print (confidence made visible). Printed pages
- * are readings produced by the press: live = a standing instrument
- * that keeps growing; frozen = a cached reading with coordinates.
+ * The laboratory. Furniture, not UI. Sovereign: the Place lives in a
+ * folder file and travels with it; participants (incl. AI) are invited
+ * craftspeople, never infrastructure. The furniture stays dumb — the
+ * Cabinet remembers (never interprets), the press only collates/asks.
  * ================================================================== */
-const KEY="the-table.v2";
+const KEY="the-table.v3";
 const SEATS=[
   {k:"reality",role:"מציאות",who:"עדי · הכיסא שלך",provider:null,op:"בוחנת מול המציאות · שופטת מתי רעיון בשל"},
   {k:"reduction",role:"צמצום",who:"Claude",provider:"anthropic",op:"מסיר שכבות · מחפש את הפרימיטיב היציב הקטן ביותר"},
   {k:"systems",role:"מערכות",who:"Gemini",provider:"google",op:"ניתוח כשל לטווח ארוך · סיכון מערכתי · קנה מידה"},
   {k:"translation",role:"תרגום",who:"ChatGPT",provider:"openai",op:"הופך הפשטה למקומות, טקסים ושפה · בַּר-מגורים"},
 ];
-const KIND={tension:{sym:"⚡",he:"מתח"},blocked:{sym:"⛔",he:"חסום"},waiting:{sym:"⏳",he:"ממתין למציאות"},
-  request:{sym:"▸",he:"בקשה"},observation:{sym:"◦",he:"תצפית"},experiment:{sym:"⚗",he:"ניסוי"}};
-const CATS=[
-  {k:"feeling",e:"❤️",he:"תחושה"},{k:"observation",e:"📓",he:"תצפית"},{k:"discovery",e:"💡",he:"תגלית"},
-  {k:"friction",e:"⚡",he:"חיכוך"},{k:"cultivation",e:"🌱",he:"טיפוח"},{k:"experiment",e:"🔬",he:"ניסוי"},
-  {k:"question",e:"❓",he:"שאלה פתוחה"}];
+const KIND={tension:{sym:"⚡",he:"מתח"},blocked:{sym:"⛔",he:"חסום"},waiting:{sym:"⏳",he:"ממתין למציאות"},request:{sym:"▸",he:"בקשה"},observation:{sym:"◦",he:"תצפית"},experiment:{sym:"⚗",he:"ניסוי"}};
+const CATS=[{k:"feeling",e:"❤️",he:"תחושה"},{k:"observation",e:"📓",he:"תצפית"},{k:"discovery",e:"💡",he:"תגלית"},{k:"friction",e:"⚡",he:"חיכוך"},{k:"cultivation",e:"🌱",he:"טיפוח"},{k:"experiment",e:"🔬",he:"ניסוי"},{k:"question",e:"❓",he:"שאלה פתוחה"}];
+const CKIND={message:{e:"💬",he:"שיחה"},journal:{e:"📓",he:"יומן"},shelf:{e:"📚",he:"מדף"},page:{e:"📄",he:"עמוד"},document:{e:"📎",he:"מסמך"},image:{e:"🖼️",he:"תמונה"},note:{e:"✎",he:"פתק"}};
 const catOf=k=>CATS.find(c=>c.k===k)||{e:"·",he:k};
 const SYS={
-  reduction:"You are the Reduction seat at a rotating table where one idea sits at the center. Remove unnecessary layers; find the smallest stable primitive. Challenge; do not flatter. Name hidden contradictions. Be concise. You operate on the idea and hand it back; you never own it. Answer in the language the person writes in.",
-  systems:"You are the Systems seat at a rotating table. Long-term failure analysis: hidden systemic risk, behavior at scale and over time. Be concrete about the failure mode. You operate on the idea; you do not own it. Answer in the language the person writes in.",
-  translation:"You are the Translation seat at a rotating table. Turn the abstraction into places, rituals, journeys, and plain language a person can inhabit. Make it felt, not only understood. You operate on the idea; you do not own it. Answer in the language the person writes in."};
-const PRESS_SYS="You are the printing press of a laboratory's journal. Given the raw material of a journey — field notes, seat conversations, shelved ideas — produce ONE journal page that fulfils the request exactly. Begin with a single short title line. Then the collected material as a tight, clean list; quote verbatim where the request implies quoting; keep only what the request asks for. No preamble, no chat, no closing remarks — only the page. Answer in the language of the request.";
+  reduction:"You are the Reduction seat. Remove unnecessary layers; find the smallest stable primitive. Challenge; do not flatter; name hidden contradictions. Concise. You operate on the idea and hand it back. Answer in the person's language.",
+  systems:"You are the Systems seat. Long-term failure analysis: hidden systemic risk, behavior at scale and over time. Be concrete about the failure mode. You operate on the idea; you do not own it. Answer in the person's language.",
+  translation:"You are the Translation seat. Turn the abstraction into places, rituals, journeys and plain language a person can inhabit. Make it felt. You operate on the idea; you do not own it. Answer in the person's language."};
+const PRESS_SYS="You are the printing press of a laboratory's journal. You are given material EXPLICITLY RETRIEVED FROM THE CABINET. Produce ONE journal page fulfilling the request, using ONLY that material. Begin with a single short title line, then a tight clean list; quote verbatim where implied. No preamble, no chat. Answer in the language of the request.";
 
-const blank=()=>({
-  idea:{title:"",form:"",lineage:[]}, l2:[], active:"reality",
-  seats:Object.fromEntries(SEATS.map(s=>[s.k,{thread:[]}])),
-  shelf:[], journal:{open:0,dayZero:0,pages:[]},
-  capCat:"observation",
-  cfg:{reduction:{key:"",model:"claude-sonnet-5"},systems:{key:"",model:"gemini-2.0-flash"},translation:{key:"",model:"gpt-4o"}},
-});
+const blank=()=>({idea:{title:"",form:"",lineage:[]},l2:[],active:"reality",
+  seats:Object.fromEntries(SEATS.map(s=>[s.k,{thread:[]}])),shelf:[],
+  journal:{open:0,dayZero:0,pages:[]},capCat:"observation",cabinet:[],pressSel:[],
+  cfg:{reduction:{key:"",model:"claude-sonnet-5"},systems:{key:"",model:"gemini-2.0-flash"},translation:{key:"",model:"gpt-4o"}}});
 let state=load();
-function load(){try{const s=JSON.parse(localStorage.getItem(KEY));if(s&&s.idea)return Object.assign(blank(),s);}catch(e){}return blank();}
-function save(){localStorage.setItem(KEY,JSON.stringify(state));}
+function load(){
+  try{const s=JSON.parse(localStorage.getItem(KEY));if(s&&s.idea)return Object.assign(blank(),s);}catch(e){}
+  if(window.__LAB__&&window.__LAB__.idea)return Object.assign(blank(),window.__LAB__);
+  return blank();
+}
+function save(){try{localStorage.setItem(KEY,JSON.stringify(state));}catch(e){toast("מטמון הדפדפן מלא — «💾 שמור לתיקייה»");}}
 const uid=()=>Math.random().toString(36).slice(2,9);
 const $=s=>document.querySelector(s);
 const seat=k=>SEATS.find(s=>s.k===k);
+const whoOf=k=>k==="manual"?"ידני (בלי AI)":(seat(k)?seat(k).who:k);
 const esc=t=>(t||"").replace(/[&<>]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;"}[c]));
 const fmt=t=>esc(t).replace(/\*\*(.+?)\*\*/g,"<b>$1</b>").replace(/`([^`]+?)`/g,"<code>$1</code>").replace(/\n/g,"<br>");
-function toast(m){const t=$("#toast");t.firstElementChild.textContent=m;t.classList.add("on");clearTimeout(toast._);toast._=setTimeout(()=>t.classList.remove("on"),1900);}
+function toast(m){const t=$("#toast");t.firstElementChild.textContent=m;t.classList.add("on");clearTimeout(toast._);toast._=setTimeout(()=>t.classList.remove("on"),2100);}
 function dfmt(ts){const d=new Date(ts);return d.toLocaleDateString("he-IL")+" · "+d.toLocaleTimeString("he-IL",{hour:"2-digit",minute:"2-digit"});}
 function ddate(ts){return new Date(ts).toLocaleDateString("he-IL");}
-function jitter(id){let h=0;for(const c of id)h=(h*31+c.charCodeAt(0))>>>0;return((h%200)/200-0.5)*2;} // -1..1
+function hhmm(ts){return new Date(ts).toLocaleTimeString("he-IL",{hour:"2-digit",minute:"2-digit"});}
+function jitter(id){let h=0;for(const c of id)h=(h*31+c.charCodeAt(0))>>>0;return((h%200)/200-0.5)*2;}
 
-/* ---------- seats / idea ---------- */
+/* ---- the cabinet : it simply remembers (no intelligence) ---- */
+function deposit(kind,source,text,img){state.cabinet.push({id:uid(),ts:Date.now(),kind,source:source||"",text:text||"",img:img||""});save();}
+
+/* ---- render : seats / idea / work ---- */
 function renderRing(){$("#ring").innerHTML=SEATS.map(s=>`<button class="seat${s.k===state.active?" active":""}" data-seat="${s.k}"><span class="dot"></span><span class="role">${s.role}</span><span class="who">${s.who}</span></button>`).join("");}
 function renderIdea(){const t=$("#ideaTitle");if(document.activeElement!==t)t.value=state.idea.title;const f=$("#ideaForm");if(document.activeElement!==f)f.value=state.idea.form;}
 function renderWork(){
   const s=seat(state.active);$(".work").style.setProperty("--sc",`var(--seat-${s.k})`);
   $("#workHead").innerHTML=`<span class="wh-role">${s.role}</span><span class="wh-who">${s.who}</span><span class="wh-op">${s.op}</span>`;
   const th=$("#thread"),msgs=state.seats[s.k].thread;
-  if(!msgs.length){th.innerHTML=`<div class="empty">${s.k==="reality"?"הכיסא שלך. כאן את חושבת בקול, שופטת, ומחליטה מתי הרעיון בשל למדף.":"סובב לכאן ושאל. מה שיעלה — «העלה למצב המשותף» או «רשום ביומן»."}</div>`;}
+  if(!msgs.length){th.innerHTML=`<div class="empty">${s.k==="reality"?"הכיסא שלך. כאן את חושבת, שופטת, ומחליטה מתי הרעיון בשל למדף.":"סובב לכאן ושאל. מה שיעלה — «למצב המשותף» או «ליומן». (זקוק למפתח; רשות בלבד.)"}</div>`;}
   else{th.innerHTML=msgs.map(m=>{
-    if(m.role==="err")return `<div class="msg err">${esc(m.text)}</div>`;
+    if(m.role==="err")return`<div class="msg err">${esc(m.text)}</div>`;
     const who=m.role==="you"?"עדי":s.role;
     const acts=m.role==="seat"?`<div class="acts"><button class="act" data-surface="${m.id}">↥ למצב המשותף</button><button class="act" data-tojournal="${m.id}">📓 ליומן</button></div>`:"";
-    return `<div class="msg ${m.role}"><div class="who">${who}</div>${fmt(m.text)}${acts}</div>`;}).join("");}
+    return`<div class="msg ${m.role}"><div class="who">${who}</div>${fmt(m.text)}${acts}</div>`;}).join("");}
   th.scrollTop=th.scrollHeight;
 }
-function renderL2(){
-  $("#l2count").textContent=state.l2.length;const list=$("#l2list");
+function renderL2(){$("#l2count").textContent=state.l2.length;const list=$("#l2list");
   if(!state.l2.length){list.innerHTML=`<div class="l2empty">עדיין ריק. המצב המשותף הוא התנאי הנוכחי של החקירה.</div>`;return;}
-  list.innerHTML=state.l2.map(i=>`<div class="l2${i.held?" held":""}" data-kind="${i.kind}"><div class="k">${KIND[i.kind].sym} ${KIND[i.kind].he}</div><div class="txt">${fmt(i.text)}</div><div class="row"><button class="mini" data-hold="${i.id}">${i.held?"שחרר":"החזק"}</button><button class="mini" data-del="${i.id}">הסר</button></div></div>`).join("");
-}
-function renderShelf(){
-  $("#shelfcount").textContent=state.shelf.length;const list=$("#shelflist");
+  list.innerHTML=state.l2.map(i=>`<div class="l2${i.held?" held":""}" data-kind="${i.kind}"><div class="k">${KIND[i.kind].sym} ${KIND[i.kind].he}</div><div class="txt">${fmt(i.text)}</div><div class="row"><button class="mini" data-hold="${i.id}">${i.held?"שחרר":"החזק"}</button><button class="mini" data-del="${i.id}">הסר</button></div></div>`).join("");}
+function renderShelf(){$("#shelfcount").textContent=state.shelf.length;const list=$("#shelflist");
   if(!state.shelf.length){list.innerHTML=`<div class="l2empty">המדף ריק. כשרעיון בשל — הנח אותו כאן.</div>`;return;}
-  list.innerHTML=state.shelf.slice().reverse().map(e=>`<div class="shelfitem"><div class="st">${esc(e.title||"(ללא כותרת)")}</div><div class="sm">${dfmt(e.ts)} · ${e.l2.length} פריטי מצב${e.lineage&&e.lineage.length?" · יורש":""}</div>${e.note?`<div class="sn">${fmt(e.note)}</div>`:""}<div class="srow"><button data-return="${e.id}">↩ החזר לשולחן</button><button class="g" data-view="${e.id}">הצג</button></div></div>`).join("");
-}
+  list.innerHTML=state.shelf.slice().reverse().map(e=>`<div class="shelfitem"><div class="st">${esc(e.title||"(ללא כותרת)")}</div><div class="sm">${dfmt(e.ts)} · ${e.l2.length} פריטי מצב${e.lineage&&e.lineage.length?" · יורש":""}</div>${e.note?`<div class="sn">${fmt(e.note)}</div>`:""}<div class="srow"><button data-return="${e.id}">↩ החזר לשולחן</button><button class="g" data-view="${e.id}">הצג</button></div></div>`).join("");}
 
-/* ---------- the journal ---------- */
+/* ---- render : journal ---- */
 function journeyDay(ts){const z=state.journal.dayZero||ts;return Math.floor((ts-z)/86400000)+1;}
-function patina(ts){const days=(Date.now()-ts)/86400000;return Math.max(0,Math.min(1,days/45));}
+function patina(ts){return Math.max(0,Math.min(1,((Date.now()-ts)/86400000)/45));}
 function newFieldPage(){if(!state.journal.dayZero)state.journal.dayZero=Date.now();return{id:uid(),type:"field",created:Date.now(),entries:[],dayName:""};}
 function lastFieldPage(){for(let i=state.journal.pages.length-1;i>=0;i--)if(state.journal.pages[i].type==="field")return state.journal.pages[i];return null;}
-function renderCats(){$("#cats").innerHTML=CATS.map(c=>`<button class="cat${c.k===state.capCat?" on":""}" data-cat="${c.k}" title="${c.he}"><span>${c.e}</span><span class="lab">${c.he}</span></button>`).join("");}
+function renderCats(){$("#cats").innerHTML=CATS.map(c=>`<button class="cat${c.k===state.capCat?" on":""}" data-cat="${c.k}" title="${c.he}"><span>${c.e}</span></button>`).join("");}
 function renderJournal(){
   $("#jcount").textContent=state.journal.pages.length;
   const page=$("#page"),flip=$("#flip"),pages=state.journal.pages;
-  if(!pages.length){
-    page.className="page";page.style.setProperty("--patina",0);
-    page.innerHTML=`<div class="page-head"><div class="jday">יום ראשון</div><div class="jcreated">היומן פתוח · עדיין ריק</div></div><div class="pbody"><div class="jempty">מחברת שמונחת פתוחה על השולחן. רשום כאן רגע ששווה לזכור — תחושה, תצפית, תגלית, חיכוך, טיפוח. משפט אחד מספיק.</div></div>`;
-    flip.innerHTML="";return;
-  }
-  if(state.journal.open>=pages.length)state.journal.open=pages.length-1;
-  if(state.journal.open<0)state.journal.open=0;
+  if(!pages.length){page.className="page";page.style.setProperty("--patina",0);
+    page.innerHTML=`<div class="page-head"><div class="jday">יום ראשון</div><div class="jcreated">היומן פתוח · עדיין ריק</div></div><div class="pbody"><div class="jempty">מחברת שמונחת פתוחה על השולחן. רשום רגע ששווה לזכור — תחושה, תצפית, תגלית, חיכוך, טיפוח. משפט אחד מספיק.</div></div>`;
+    flip.innerHTML="";return;}
+  state.journal.open=Math.max(0,Math.min(pages.length-1,state.journal.open));
   const p=pages[state.journal.open];
   page.className="page"+(p.type==="generated"?" gen":"");
   page.style.setProperty("--patina",patina(p.created).toFixed(2));
   const head=`<div class="page-head"><div class="jday" data-name="${p.id}">יום ${journeyDay(p.created)}${p.dayName?` · «${esc(p.dayName)}»`:""}</div><div class="jcreated">נוצר: ${dfmt(p.created)}</div></div>`;
-  let body="";
+  let body;
   if(p.type==="field"){
     body=`<div class="pbody">`+(p.entries.length?p.entries.map(e=>{
       const rot=(e.maturity?0:jitter(e.id)*1.1).toFixed(2);
-      return `<div class="ent ink${e.maturity||0}" style="--rot:${rot}deg"><button class="eage" data-age="${e.id}" title="עיפרון → דיו → דפוס">✎</button><span class="eicon">${catOf(e.cat).e}</span><span class="etext">${fmt(e.text)}</span><span class="emeta">${new Date(e.ts).toLocaleTimeString("he-IL",{hour:"2-digit",minute:"2-digit"})}</span></div>`;
+      return`<div class="ent ink${e.maturity||0}" style="--rot:${rot}deg"><span class="etools"><button data-age="${e.id}" title="עיפרון→דיו→דפוס">✎</button><button data-edit="${e.id}" title="ערוך">✍</button><button data-del="${e.id}" title="מחק">✕</button></span><span class="eicon">${catOf(e.cat).e}</span><span class="etext">${fmt(e.text)}</span><span class="emeta">${hhmm(e.ts)}</span></div>`;
     }).join(""):`<div class="jempty">עמוד ריק. רשום עליו רגע.</div>`)+`</div>`;
   }else{
     const cov=p.coverageFrom?`${ddate(p.coverageFrom)} – ${ddate(p.coverageTo)}`:"—";
-    const prov=`<div class="prov"><b>נוצר ע״י</b><span>${seat(p.createdBy).who}${p.live?'<span class="badge live">חי</span>':'<span class="badge frozen">קפוא</span>'}</span><b>לבקשת</b><span>עדי</span><b>תאריך</b><span>${dfmt(p.created)}</span><b>טווח כיסוי</b><span>${cov}</span><b>שושלת</b><span>${p.lineage&&p.lineage.length?p.lineage.join(" ← "):"—"}</span></div>`;
-    const reprint=p.live?`<div style="margin-top:8px"><button class="pill" data-reprint="${p.id}">↻ הדפס מחדש (גָדֵל)</button> <button class="pill" data-freeze="${p.id}">🧊 הקפא</button></div>`:"";
-    body=`<div class="pbody"><div class="gen-title">${esc(p.title||"עמוד מודפס")}</div><div class="gen-body">${p.body?fmt(p.body):'<span class="jempty">ממתין למכבש — הגדירי מפתח לכיסא, ואז «הדפס מחדש».</span>'}</div>${prov}${reprint}</div>`;
+    const prov=`<div class="prov"><b>נוצר ע״י</b><span>${whoOf(p.createdBy)}${p.live?'<span class="badge live">חי</span>':'<span class="badge frozen">קפוא</span>'}</span><b>לבקשת</b><span>עדי</span><b>תאריך</b><span>${dfmt(p.created)}</span><b>טווח כיסוי</b><span>${cov}</span><b>חומר מהארון</b><span>${(p.selection&&p.selection.length)?p.selection.length+" פריטים נבחרים":"כל הארון"}</span><b>שושלת</b><span>${p.lineage&&p.lineage.length?p.lineage.join(" ← "):"—"}</span></div>`;
+    const rp=p.live?`<div style="margin-top:8px"><button class="pill" data-reprint="${p.id}">↻ הדפס מחדש (גָדֵל)</button> <button class="pill" data-freeze="${p.id}">🧊 הקפא</button></div>`:"";
+    body=`<div class="pbody"><div class="gen-title">${esc(p.title||"עמוד מודפס")}</div><div class="gen-body">${p.body?fmt(p.body):'<span class="jempty">ממתין למכבש. בחרי ✋ ידני לאסוף מהארון בלי AI, או הגדירי מפתח ואז «הדפס מחדש».</span>'}</div>${prov}${rp}</div>`;
   }
   page.innerHTML=head+body;
   flip.innerHTML=`<button data-flip="-1">‹ קודם</button><span class="pos">עמוד ${state.journal.open+1} / ${pages.length}</span><button data-flip="1">הבא ›</button><button data-flip="new">+ עמוד</button>`;
 }
+function captureMoment(text){text=text.trim();if(!text)return;let p=lastFieldPage();if(!p){p=newFieldPage();state.journal.pages.push(p);}p.entries.push({id:uid(),cat:state.capCat,text,maturity:0,ts:Date.now()});state.journal.open=state.journal.pages.indexOf(p);deposit("journal",catOf(state.capCat).he,text);renderJournal();}
 
-function captureMoment(text){
-  text=text.trim();if(!text)return;
-  let p=lastFieldPage();
-  if(!p){p=newFieldPage();state.journal.pages.push(p);}
-  p.entries.push({id:uid(),cat:state.capCat,text,maturity:0,ts:Date.now()});
-  state.journal.open=state.journal.pages.indexOf(p);
-  save();renderJournal();
-}
-
-/* corpus for the press: everything the journey has said, chronological */
-function corpus(){
-  const out=[];
-  state.journal.pages.forEach(p=>{if(p.type==="field")p.entries.forEach(e=>out.push({ts:e.ts,txt:`[יומן·${catOf(e.cat).he}] ${e.text}`}));});
-  Object.entries(state.seats).forEach(([k,s])=>{const who=seat(k).who;s.thread.forEach(m=>{if(m.role==="err")return;out.push({ts:m.ts||0,txt:`[${m.role==="you"?"עדי":who}] ${m.text}`});});});
-  state.shelf.forEach(e=>out.push({ts:e.ts,txt:`[מדף] ${e.title}: ${e.form}${e.note?" — "+e.note:""}`}));
-  out.sort((a,b)=>a.ts-b.ts);return out;
-}
+/* ---- the press : pages from material EXPLICITLY retrieved from the cabinet ---- */
+function pressGather(page){let items=(page.selection&&page.selection.length)?state.cabinet.filter(c=>page.selection.includes(c.id)):state.cabinet.slice();items.sort((a,b)=>a.ts-b.ts);return items;}
 async function runPress(page){
-  const cfg=state.cfg[page.createdBy];const s=seat(page.createdBy);
-  const items=corpus();
-  page.coverageFrom=items.length?items[0].ts:page.created;page.coverageTo=Date.now();
-  if(!cfg||!cfg.key){page.body="";save();renderJournal();toast("אין מפתח ל"+s.role+" — פתחי ⚙");return;}
-  const material=items.map(x=>x.txt).join("\n").slice(-12000);
-  const user=`REQUEST:\n${page.prompt}\n\n=== RAW MATERIAL OF THE JOURNEY (chronological) ===\n${material||"(empty)"}`;
-  try{
-    const out=await callProvider(s.provider,cfg,PRESS_SYS,user);
-    const nl=out.indexOf("\n");
+  const items=pressGather(page);
+  page.coverageFrom=items.length?items[0].ts:page.created;page.coverageTo=items.length?items[items.length-1].ts:Date.now();
+  const material=items.map(x=>`[${(CKIND[x.kind]||{he:x.kind}).he}·${x.source}] ${x.text}`).join("\n");
+  if(page.createdBy==="manual"){
+    page.title=(page.prompt||"עמוד ידני").slice(0,80);
+    page.body=items.length?material:"(לא נמצא חומר בארון)";
+    save();renderJournal();deposit("page","ידני",page.title);toast("הודפס דף ידני מהארון");return;
+  }
+  const cfg=state.cfg[page.createdBy],s=seat(page.createdBy);
+  if(!cfg||!cfg.key){page.body="";save();renderJournal();toast("אין מפתח ל"+s.role+" — או בחרי ✋ ידני");return;}
+  const user=`REQUEST:\n${page.prompt}\n\n=== MATERIAL RETRIEVED FROM THE CABINET (chronological) ===\n${(material||"(empty)").slice(0,12000)}`;
+  try{const out=await callProvider(s.provider,cfg,PRESS_SYS,user);const nl=out.indexOf("\n");
     page.title=(nl>0?out.slice(0,nl):out).replace(/^#+\s*/,"").trim().slice(0,80);
-    page.body=(nl>0?out.slice(nl+1):"").trim()||out;
-    page.created=page.created||Date.now();save();renderJournal();toast("הודפס דף · "+s.role);
+    page.body=(nl>0?out.slice(nl+1):"").trim()||out;save();renderJournal();deposit("page",s.who,page.title);toast("הודפס דף · "+s.role);
   }catch(err){page.body="שגיאת מכבש: "+String(err.message||err);save();renderJournal();}
 }
+function renderPressMat(){const n=state.pressSel.length;$("#pressMat").innerHTML=n?`חומר: <b>${n} נבחרים</b> מהארון`:"חומר: כל הארון";}
 
-/* ---------- provider calls ---------- */
+/* ---- the cabinet drawer ---- */
+let cabQuery="";
+function renderCabinet(){
+  const list=$("#cablist");const q=cabQuery.trim().toLowerCase();
+  let items=state.cabinet.slice().reverse();
+  if(q)items=items.filter(c=>(c.text||"").toLowerCase().includes(q)||(c.source||"").toLowerCase().includes(q)||(CKIND[c.kind]||{he:""}).he.includes(q));
+  $("#cabTake").disabled=!state.pressSel.length;$("#cabTake").textContent=`קח את הנבחרים למכבש${state.pressSel.length?` (${state.pressSel.length})`:""}`;
+  if(!items.length){list.innerHTML=`<div class="cabempty">${state.cabinet.length?"אין תוצאות לחיפוש.":"הארון ריק עדיין. כל מה שנכנס למעבדה — שיחות, רגעי יומן, מדף, עמודים, קבצים — יישמר כאן כפי שהוא."}</div>`;return;}
+  list.innerHTML=items.map(c=>{
+    const sel=state.pressSel.includes(c.id);
+    const body=c.img?`<img src="${c.img}" alt="">`:`<div class="ctext">${fmt(c.text)}</div>`;
+    return`<label class="cab${sel?" sel":""}"><input type="checkbox" data-pick="${c.id}"${sel?" checked":""}><span class="ck">${(CKIND[c.kind]||{e:"·"}).e}</span><span class="cbody"><div class="cmeta">${(CKIND[c.kind]||{he:c.kind}).he} · ${esc(c.source)} · ${dfmt(c.ts)}</div>${body}</span></label>`;
+  }).join("");
+}
+function openCab(){renderCabinet();$("#cabBg").classList.add("on");}
+
+/* ---- providers (invited librarians; optional) ---- */
 async function callProvider(provider,cfg,system,userText){
-  if(provider==="anthropic"){
-    const r=await fetch("https://api.anthropic.com/v1/messages",{method:"POST",headers:{"content-type":"application/json","x-api-key":cfg.key,"anthropic-version":"2023-06-01","anthropic-dangerous-direct-browser-access":"true"},body:JSON.stringify({model:cfg.model||"claude-sonnet-5",max_tokens:2048,system,messages:[{role:"user",content:userText}]})});
-    if(!r.ok)throw new Error("Anthropic "+r.status+": "+(await r.text()).slice(0,180));
-    const d=await r.json();return(d.content||[]).map(b=>b.text||"").join("");
-  }
-  if(provider==="openai"){
-    const r=await fetch("https://api.openai.com/v1/chat/completions",{method:"POST",headers:{"content-type":"application/json","authorization":"Bearer "+cfg.key},body:JSON.stringify({model:cfg.model||"gpt-4o",messages:[{role:"system",content:system},{role:"user",content:userText}]})});
-    if(!r.ok)throw new Error("OpenAI "+r.status+": "+(await r.text()).slice(0,180));
-    const d=await r.json();return d.choices?.[0]?.message?.content||"";
-  }
-  if(provider==="google"){
-    const m=cfg.model||"gemini-2.0-flash";
-    const r=await fetch("https://generativelanguage.googleapis.com/v1beta/models/"+m+":generateContent?key="+encodeURIComponent(cfg.key),{method:"POST",headers:{"content-type":"application/json"},body:JSON.stringify({systemInstruction:{parts:[{text:system}]},contents:[{role:"user",parts:[{text:userText}]}]})});
-    if(!r.ok)throw new Error("Gemini "+r.status+": "+(await r.text()).slice(0,180));
-    const d=await r.json();return(d.candidates?.[0]?.content?.parts||[]).map(p=>p.text||"").join("");
-  }
+  if(provider==="anthropic"){const r=await fetch("https://api.anthropic.com/v1/messages",{method:"POST",headers:{"content-type":"application/json","x-api-key":cfg.key,"anthropic-version":"2023-06-01","anthropic-dangerous-direct-browser-access":"true"},body:JSON.stringify({model:cfg.model||"claude-sonnet-5",max_tokens:2048,system,messages:[{role:"user",content:userText}]})});if(!r.ok)throw new Error("Anthropic "+r.status+": "+(await r.text()).slice(0,180));const d=await r.json();return(d.content||[]).map(b=>b.text||"").join("");}
+  if(provider==="openai"){const r=await fetch("https://api.openai.com/v1/chat/completions",{method:"POST",headers:{"content-type":"application/json","authorization":"Bearer "+cfg.key},body:JSON.stringify({model:cfg.model||"gpt-4o",messages:[{role:"system",content:system},{role:"user",content:userText}]})});if(!r.ok)throw new Error("OpenAI "+r.status+": "+(await r.text()).slice(0,180));const d=await r.json();return d.choices?.[0]?.message?.content||"";}
+  if(provider==="google"){const m=cfg.model||"gemini-2.0-flash";const r=await fetch("https://generativelanguage.googleapis.com/v1beta/models/"+m+":generateContent?key="+encodeURIComponent(cfg.key),{method:"POST",headers:{"content-type":"application/json"},body:JSON.stringify({systemInstruction:{parts:[{text:system}]},contents:[{role:"user",parts:[{text:userText}]}]})});if(!r.ok)throw new Error("Gemini "+r.status+": "+(await r.text()).slice(0,180));const d=await r.json();return(d.candidates?.[0]?.content?.parts||[]).map(p=>p.text||"").join("");}
   throw new Error("unknown provider");
 }
 
@@ -512,109 +446,102 @@ $("#l2add").addEventListener("click",()=>{const t=$("#l2text");addL2($("#l2kind"
 $("#l2text").addEventListener("keydown",e=>{if(e.key==="Enter")$("#l2add").click();});
 $("#l2list").addEventListener("click",e=>{const h=e.target.dataset.hold,d=e.target.dataset.del;if(h){const it=state.l2.find(x=>x.id===h);it.held=!it.held;save();renderL2();}if(d){state.l2=state.l2.filter(x=>x.id!==d);save();renderL2();}});
 
-$("#thread").addEventListener("click",e=>{
-  const sf=e.target.dataset.surface,tj=e.target.dataset.tojournal;
-  const m=(sf||tj)&&state.seats[state.active].thread.find(x=>x.id===(sf||tj));if(!m)return;
+$("#thread").addEventListener("click",e=>{const sf=e.target.dataset.surface,tj=e.target.dataset.tojournal;const m=(sf||tj)&&state.seats[state.active].thread.find(x=>x.id===(sf||tj));if(!m)return;
   if(sf){const k=prompt("להעלות למצב המשותף כ־ (tension/blocked/waiting/request/observation/experiment):","observation");if(!k)return;const kk=Object.keys(KIND).includes(k.trim())?k.trim():"observation";const t=prompt("הטקסט שיֵראה לכל הכיסאות:",m.text.slice(0,240));if(t===null)return;addL2(kk,t);toast("עלה למצב המשותף");}
-  if(tj){const t=prompt("לרשום ביומן (משפט קצר):",m.text.slice(0,180));if(t===null)return;state.capCat="discovery";renderCats();captureMoment(t);toast("נרשם ביומן");}
-});
+  if(tj){const t=prompt("לרשום ביומן (משפט קצר):",m.text.slice(0,180));if(t===null)return;state.capCat="discovery";renderCats();captureMoment(t);toast("נרשם ביומן");}});
 
 async function ask(){
   const s=seat(state.active),txt=$("#composer").value.trim();if(!txt)return;
-  const th=state.seats[s.k].thread;
-  th.push({id:uid(),role:"you",text:txt,ts:Date.now()});$("#composer").value="";$("#composer").style.height="auto";save();renderWork();
-  if(!s.provider){return;}
-  const cfg=state.cfg[s.k];
-  if(!cfg||!cfg.key){th.push({id:uid(),role:"err",text:"אין מפתח לכיסא הזה. פתחי ⚙ הגדרות — או השאירי אותו כמרחב פרטי."});save();renderWork();return;}
+  const th=state.seats[s.k].thread;th.push({id:uid(),role:"you",text:txt,ts:Date.now()});$("#composer").value="";$("#composer").style.height="auto";
+  deposit("message","עדי · אל "+s.role,txt);renderWork();
+  if(!s.provider)return;
+  const cfg=state.cfg[s.k];if(!cfg||!cfg.key){th.push({id:uid(),role:"err",text:"אין מפתח לכיסא הזה. פתחי ⚙ — או השאירי אותו כמרחב פרטי."});save();renderWork();return;}
   $("#sendBtn").disabled=true;const pend={id:uid(),role:"seat",text:"…",ts:Date.now()};th.push(pend);renderWork();
   const el=document.querySelector("#thread .msg.seat:last-child");if(el)el.innerHTML=`<div class="who">${s.role}</div><span class="thinking"><i></i><i></i><i></i></span>`;
-  try{pend.text=(await callProvider(s.provider,cfg,SYS[s.k],buildContext(s.k,txt)))||"(ריק)";}
+  try{pend.text=(await callProvider(s.provider,cfg,SYS[s.k],buildContext(s.k,txt)))||"(ריק)";deposit("message",s.who,pend.text);}
   catch(err){th.splice(th.indexOf(pend),1);th.push({id:uid(),role:"err",text:String(err.message||err)});}
   finally{$("#sendBtn").disabled=false;save();renderWork();}
 }
-function buildContext(seatKey,userText){
-  let c="THE IDEA AT THE CENTER\nTitle: "+(state.idea.title||"(untitled)")+"\nFormulation:\n"+(state.idea.form||"(empty)")+"\n\n";
-  if(state.l2.length){c+="SHARED STATE (tensions are HELD, not resolved; do not collapse them):\n";state.l2.forEach(i=>{c+="- ["+KIND[i.kind].he+(i.held?", held":"")+"] "+i.text+"\n";});c+="\n";}
-  const prior=state.seats[seatKey].thread.filter(m=>m.role!=="err").slice(-6);
-  if(prior.length){c+="YOUR PRIOR NOTES AT THIS SEAT\n";prior.forEach(m=>{c+=(m.role==="you"?"Adi: ":"You: ")+m.text+"\n";});c+="\n";}
-  return c+"ADI NOW ASKS THIS SEAT:\n"+userText;
-}
+function buildContext(sk,userText){let c="THE IDEA\nTitle: "+(state.idea.title||"(untitled)")+"\nFormulation:\n"+(state.idea.form||"(empty)")+"\n\n";
+  if(state.l2.length){c+="SHARED STATE (tensions are HELD, not resolved):\n";state.l2.forEach(i=>{c+="- ["+KIND[i.kind].he+(i.held?", held":"")+"] "+i.text+"\n";});c+="\n";}
+  const prior=state.seats[sk].thread.filter(m=>m.role!=="err").slice(-6);if(prior.length){c+="YOUR PRIOR NOTES\n";prior.forEach(m=>{c+=(m.role==="you"?"Adi: ":"You: ")+m.text+"\n";});c+="\n";}
+  return c+"ADI NOW ASKS:\n"+userText;}
 $("#sendBtn").addEventListener("click",ask);
 $("#composer").addEventListener("keydown",e=>{if((e.ctrlKey||e.metaKey)&&e.key==="Enter")ask();});
 $("#composer").addEventListener("input",e=>{e.target.style.height="auto";e.target.style.height=Math.min(e.target.scrollHeight,150)+"px";});
 
-/* shelf */
-$("#shelfBtn").addEventListener("click",()=>{
-  if(!state.idea.title&&!state.idea.form){toast("אין רעיון להניח עדיין");return;}
-  const note=prompt("שיפוט לפני ההנחה — מה בשל כאן? (כיסא המציאות)\nהרעיון והמתחים עוברים כמות שהם; שום דבר לא ממוצע.","");
-  if(note===null)return;
-  state.shelf.push({id:uid(),ts:Date.now(),title:state.idea.title,form:state.idea.form,l2:JSON.parse(JSON.stringify(state.l2)),note:note.trim(),lineage:state.idea.lineage.slice()});
-  save();renderShelf();toast("הונח על המדף · נשאר חי");
-});
-$("#newBtn").addEventListener("click",()=>{
-  if((state.idea.title||state.idea.form)&&!confirm("להתחיל רעיון חדש? (הנוכחי לא נשמר אלא אם הונח על המדף)"))return;
-  const keep={shelf:state.shelf,cfg:state.cfg,journal:state.journal};state=Object.assign(blank(),keep);save();renderAll();$("#ideaTitle").focus();
-});
-$("#shelflist").addEventListener("click",e=>{
-  const ret=e.target.dataset.return,view=e.target.dataset.view;
+$("#shelfBtn").addEventListener("click",()=>{if(!state.idea.title&&!state.idea.form){toast("אין רעיון להניח עדיין");return;}
+  const note=prompt("שיפוט לפני ההנחה — מה בשל כאן? (כיסא המציאות)\nהרעיון והמתחים עוברים כמות שהם.","");if(note===null)return;
+  const rec={id:uid(),ts:Date.now(),title:state.idea.title,form:state.idea.form,l2:JSON.parse(JSON.stringify(state.l2)),note:note.trim(),lineage:state.idea.lineage.slice()};
+  state.shelf.push(rec);deposit("shelf",rec.title,rec.form+(rec.note?" — "+rec.note:""));renderShelf();toast("הונח על המדף · נשאר חי");});
+$("#newBtn").addEventListener("click",()=>{if((state.idea.title||state.idea.form)&&!confirm("להתחיל רעיון חדש? (הנוכחי לא נשמר אלא אם הונח על המדף)"))return;const keep={shelf:state.shelf,cfg:state.cfg,journal:state.journal,cabinet:state.cabinet,pressSel:state.pressSel};state=Object.assign(blank(),keep);save();renderAll();$("#ideaTitle").focus();});
+$("#shelflist").addEventListener("click",e=>{const ret=e.target.dataset.return,view=e.target.dataset.view;
   if(view){const en=state.shelf.find(x=>x.id===view);if(en)alert((en.title||"")+"\n\n"+(en.form||"")+"\n\n— "+(en.note||""));}
-  if(ret){const en=state.shelf.find(x=>x.id===ret);if(!en)return;if((state.idea.title||state.idea.form)&&!confirm("להחזיר לשולחן? השולחן הנוכחי יתחלף."))return;
-    state.idea={title:en.title,form:en.form,lineage:(en.lineage||[]).concat(en.id)};state.l2=JSON.parse(JSON.stringify(en.l2));state.active="reality";state.seats=Object.fromEntries(SEATS.map(s=>[s.k,{thread:[]}]));save();renderAll();toast("חזר לשולחן · המדף לא נגע");}
-});
+  if(ret){const en=state.shelf.find(x=>x.id===ret);if(!en)return;if((state.idea.title||state.idea.form)&&!confirm("להחזיר לשולחן? השולחן הנוכחי יתחלף."))return;state.idea={title:en.title,form:en.form,lineage:(en.lineage||[]).concat(en.id)};state.l2=JSON.parse(JSON.stringify(en.l2));state.active="reality";state.seats=Object.fromEntries(SEATS.map(s=>[s.k,{thread:[]}]));save();renderAll();toast("חזר לשולחן · המדף לא נגע");}});
 
-/* journal events */
+/* journal */
 $("#cats").addEventListener("click",e=>{const b=e.target.closest(".cat");if(!b)return;state.capCat=b.dataset.cat;save();renderCats();});
 $("#capWrite").addEventListener("click",()=>{const t=$("#capText");captureMoment(t.value);t.value="";t.style.height="auto";});
 $("#capText").addEventListener("keydown",e=>{if(e.key==="Enter"&&!e.shiftKey){e.preventDefault();$("#capWrite").click();}});
 $("#capText").addEventListener("input",e=>{e.target.style.height="auto";e.target.style.height=Math.min(e.target.scrollHeight,90)+"px";});
-$("#flip").addEventListener("click",e=>{const f=e.target.dataset.flip;if(!f)return;
-  if(f==="new"){state.journal.pages.push(newFieldPage());state.journal.open=state.journal.pages.length-1;}
-  else state.journal.open=Math.max(0,Math.min(state.journal.pages.length-1,state.journal.open+(+f)));
-  save();renderJournal();});
+$("#flip").addEventListener("click",e=>{const f=e.target.dataset.flip;if(!f)return;if(f==="new"){state.journal.pages.push(newFieldPage());state.journal.open=state.journal.pages.length-1;}else state.journal.open=Math.max(0,Math.min(state.journal.pages.length-1,state.journal.open+(+f)));save();renderJournal();});
 $("#page").addEventListener("click",e=>{
-  const age=e.target.dataset.age,name=e.target.closest(".jday")?.dataset.name,rp=e.target.dataset.reprint,fz=e.target.dataset.freeze;
-  if(age){for(const p of state.journal.pages)if(p.type==="field"){const en=p.entries.find(x=>x.id===age);if(en){en.maturity=((en.maturity||0)+1)%3;save();renderJournal();return;}}}
-  if(name){const p=state.journal.pages.find(x=>x.id===name);if(p){const n=prompt("שם ליום הזה (למשל: «היום שמצאנו את המצלמה»):",p.dayName||"");if(n!==null){p.dayName=n.trim();save();renderJournal();}}}
-  if(rp){const p=state.journal.pages.find(x=>x.id===rp);if(p)runPress(p);}
-  if(fz){const p=state.journal.pages.find(x=>x.id===fz);if(p){p.live=false;save();renderJournal();toast("הוקפא · תצלום קבוע");}}
+  const age=e.target.dataset.age,ed=e.target.dataset.edit,del=e.target.dataset.del,name=e.target.closest(".jday")?.dataset.name,rp=e.target.dataset.reprint,fz=e.target.dataset.freeze;
+  const findEnt=id=>{for(const p of state.journal.pages)if(p.type==="field"){const en=p.entries.find(x=>x.id===id);if(en)return[p,en];}return[];};
+  if(age){const[,en]=findEnt(age);if(en){en.maturity=((en.maturity||0)+1)%3;save();renderJournal();}return;}
+  if(ed){const[,en]=findEnt(ed);if(en){const t=prompt("ערוך את הרגע:",en.text);if(t!==null&&t.trim()){en.text=t.trim();save();renderJournal();}}return;}
+  if(del){const[p,en]=findEnt(del);if(en&&confirm("למחוק את הרגע? (מהיומן; הארון עדיין זוכר)")){p.entries=p.entries.filter(x=>x.id!==del);save();renderJournal();}return;}
+  if(name){const p=state.journal.pages.find(x=>x.id===name);if(p){const n=prompt("שם ליום הזה (למשל: «היום שמצאנו את המצלמה»):",p.dayName||"");if(n!==null){p.dayName=n.trim();save();renderJournal();}}return;}
+  if(rp){const p=state.journal.pages.find(x=>x.id===rp);if(p)runPress(p);return;}
+  if(fz){const p=state.journal.pages.find(x=>x.id===fz);if(p){p.live=false;save();renderJournal();toast("הוקפא · תצלום קבוע");}return;}
 });
-$("#pressGo").addEventListener("click",()=>{
-  const req=$("#pressReq").value.trim();if(!req){toast("כתבי בקשה למכבש");return;}
+$("#pressPick").addEventListener("click",openCab);
+$("#pressGo").addEventListener("click",()=>{const req=$("#pressReq").value.trim();if(!req){toast("כתבי בקשה למכבש");return;}
   const who=$("#pressWho").value,live=$("#pressLive").checked;
-  const page={id:uid(),type:"generated",created:Date.now(),createdBy:who,provider:seat(who).provider,prompt:req,title:"",body:"",live,coverageFrom:0,coverageTo:0,lineage:[]};
+  const page={id:uid(),type:"generated",created:Date.now(),createdBy:who,provider:seat(who)?seat(who).provider:null,prompt:req,title:"",body:"",live,coverageFrom:0,coverageTo:0,selection:state.pressSel.slice(),lineage:[]};
   if(!state.journal.dayZero)state.journal.dayZero=Date.now();
-  state.journal.pages.push(page);state.journal.open=state.journal.pages.length-1;
-  $("#pressReq").value="";save();renderJournal();runPress(page);
-});
+  state.journal.pages.push(page);state.journal.open=state.journal.pages.length-1;$("#pressReq").value="";save();renderJournal();runPress(page);});
+
+/* cabinet events */
+$("#cabBtn").addEventListener("click",openCab);
+$("#cabClose").addEventListener("click",()=>$("#cabBg").classList.remove("on"));
+$("#cabBg").addEventListener("click",e=>{if(e.target.id==="cabBg")$("#cabBg").classList.remove("on");});
+$("#cabSearch").addEventListener("input",e=>{cabQuery=e.target.value;renderCabinet();});
+$("#cabClear").addEventListener("click",()=>{cabQuery="";$("#cabSearch").value="";renderCabinet();});
+$("#cablist").addEventListener("change",e=>{const id=e.target.dataset.pick;if(!id)return;if(e.target.checked){if(!state.pressSel.includes(id))state.pressSel.push(id);}else state.pressSel=state.pressSel.filter(x=>x!==id);save();renderCabinet();renderPressMat();});
+$("#cabAddNote").addEventListener("click",()=>{const t=$("#cabNote");if(!t.value.trim())return;deposit("note","עדי",t.value.trim());t.value="";renderCabinet();toast("נכנס לארון");});
+$("#cabNote").addEventListener("keydown",e=>{if(e.key==="Enter")$("#cabAddNote").click();});
+$("#cabAttach").addEventListener("click",()=>$("#cabFile").click());
+$("#cabFile").addEventListener("change",e=>{const f=e.target.files[0];if(!f)return;
+  if(f.size>1600000){toast("קובץ גדול מדי (>1.5MB) — הזיכרון המקומי מוגבל; שמרי אותו בתיקייה ליד המעבדה");e.target.value="";return;}
+  const r=new FileReader();
+  if(f.type.startsWith("image/")){r.onload=()=>{deposit("image","עדי",f.name||"תמונה",r.result);renderCabinet();toast("תמונה נכנסה לארון");};r.readAsDataURL(f);}
+  else{r.onload=()=>{deposit("document",f.name||"מסמך",String(r.result).slice(0,20000));renderCabinet();toast("מסמך נכנס לארון");};r.readAsText(f);}
+  e.target.value="";});
+$("#cabTake").addEventListener("click",()=>{$("#cabBg").classList.remove("on");renderPressMat();toast(state.pressSel.length+" פריטים ממתינים למכבש · כתבי בקשה");$("#pressReq").focus();});
+
+/* sovereign persistence : save/open the Place's file */
+$("#saveBtn").addEventListener("click",()=>{
+  const data="/* Laboratory memory — the Place travels with this file. Keep it beside index.html. */\nwindow.__LAB__="+JSON.stringify(state)+";\n";
+  const a=document.createElement("a");a.href=URL.createObjectURL(new Blob([data],{type:"text/javascript"}));a.download="laboratory.data.js";a.click();setTimeout(()=>URL.revokeObjectURL(a.href),1500);
+  toast("שמרי את laboratory.data.js לתוך תיקיית המעבדה (ליד index.html)");});
+$("#openBtn").addEventListener("click",()=>$("#openInput").click());
+$("#openInput").addEventListener("change",e=>{const f=e.target.files[0];if(!f)return;const r=new FileReader();r.onload=()=>{let txt=String(r.result),obj=null;try{const i=txt.indexOf("{"),j=txt.lastIndexOf("}");obj=JSON.parse(txt.slice(i,j+1));}catch(x){}if(obj&&obj.idea){if(confirm("לטעון מעבדה מהקובץ? המצב הנוכחי יוחלף.")){state=Object.assign(blank(),obj);save();renderAll();toast("המעבדה נטענה מהקובץ");}}else toast("הקובץ לא נראה כמו מעבדה");};r.readAsText(f);e.target.value="";});
 
 /* settings */
-function openSet(){document.querySelectorAll(".prov-set").forEach(p=>{const c=state.cfg[p.dataset.seat]||{};p.querySelector('[data-k=key]').value=c.key||"";p.querySelector('[data-k=model]').value=c.model||"";});$("#modalBg").classList.add("on");}
-$("#setBtn").addEventListener("click",openSet);
+$("#setBtn").addEventListener("click",()=>{document.querySelectorAll(".prov-set").forEach(p=>{const c=state.cfg[p.dataset.seat]||{};p.querySelector('[data-k=key]').value=c.key||"";p.querySelector('[data-k=model]').value=c.model||"";});$("#modalBg").classList.add("on");});
 $("#setClose").addEventListener("click",()=>$("#modalBg").classList.remove("on"));
 $("#modalBg").addEventListener("click",e=>{if(e.target.id==="modalBg")$("#modalBg").classList.remove("on");});
 $("#setSave").addEventListener("click",()=>{document.querySelectorAll(".prov-set").forEach(p=>{state.cfg[p.dataset.seat]={key:p.querySelector('[data-k=key]').value.trim(),model:p.querySelector('[data-k=model]').value.trim()};});save();$("#modalBg").classList.remove("on");toast("נשמר בדפדפן הזה");});
 
-/* language toggle */
+/* language */
 let lang="he";
-$("#langBtn").addEventListener("click",()=>{
-  lang=lang==="he"?"en":"he";const en=lang==="en";
-  document.documentElement.lang=lang;document.documentElement.dir=en?"ltr":"rtl";$("#langBtn").textContent=en?"עב":"EN";
-  if(en){
-    $(".brand").innerHTML=`The Table<small>one table · not four windows</small>`;$("#setBtn").textContent="⚙ Settings";
-    $("#ideaLbl").textContent="THE IDEA · at the center";$("#ideaTitle").placeholder="What are we working on?";
-    $("#ideaForm").placeholder="The idea's current formulation… (it evolves while on the table)";
-    $("#rotateBtn").textContent="⟳ Rotate the table";$("#shelfBtn").textContent="Place on shelf ↓";$("#newBtn").textContent="New idea";
-    $("#composer").placeholder="Talk to the active seat…  (Ctrl+Enter)";$("#sendBtn").textContent="Ask";
-    $("#l2text").placeholder="What is in the shared state now?";$("#l2add").textContent="Add";
-    document.querySelector('.rail-sec.grow .rail-head h3').textContent="SHARED STATE · L2";
-    document.querySelector('.shelf .rail-head h3').textContent="THE SHELF · living memory";
-    document.querySelector('.jhead h3').textContent="THE JOURNEY JOURNAL";
-    $("#capText").placeholder="Note a moment in pencil… (one sentence)";$("#capWrite").textContent="Write";
-  }else{location.reload();}
-});
+$("#langBtn").addEventListener("click",()=>{lang=lang==="he"?"en":"he";const en=lang==="en";document.documentElement.lang=lang;document.documentElement.dir=en?"ltr":"rtl";$("#langBtn").textContent=en?"עב":"EN";
+  if(en){$(".brand").innerHTML=`The Table<small>one table · not four windows</small>`;$("#ideaLbl").textContent="THE IDEA · at the center";$("#ideaTitle").placeholder="What are we working on?";$("#ideaForm").placeholder="The idea's current formulation…";$("#rotateBtn").textContent="⟳ Rotate the table";$("#shelfBtn").textContent="Place on shelf ↓";$("#newBtn").textContent="New idea";$("#composer").placeholder="Talk to the active seat…  (Ctrl+Enter)";$("#sendBtn").textContent="Ask";$("#l2text").placeholder="What is in the shared state now?";$("#l2add").textContent="Add";document.querySelector('.rail-sec.grow .rail-head h3').textContent="SHARED STATE · L2";document.querySelector('.shelf .rail-head h3').textContent="THE SHELF";document.querySelector('.jhead h3').textContent="THE JOURNEY JOURNAL";$("#capText").placeholder="Note a moment in pencil… (one sentence)";$("#capWrite").textContent="Write";$("#cabBtn").textContent="🗄 Cabinet";$("#saveBtn").textContent="💾 Save to folder";$("#openBtn").textContent="📂 Open";}
+  else location.reload();});
 window.addEventListener("keydown",e=>{if(e.altKey&&(e.key==="r"||e.key==="R")){e.preventDefault();$("#rotateBtn").click();}});
 
-function renderAll(){renderRing();renderIdea();renderWork();renderL2();renderShelf();renderCats();renderJournal();}
+function renderAll(){renderRing();renderIdea();renderWork();renderL2();renderShelf();renderCats();renderJournal();renderPressMat();}
 renderAll();
 </script>
 </body>

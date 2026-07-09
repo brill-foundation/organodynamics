@@ -1,48 +1,65 @@
-# The Table — how to run it
+# The Laboratory — how to run it
 
-One self-contained page. No build, no compile, no backend. But **use a local
-server**, not a double-click — here is why, and the one line that does it.
+One folder. No build, no npm, no git, no server, no cloud. The laboratory is
+**sovereign**: if Claude, Gemini, ChatGPT, GitHub, and the Internet all vanish,
+it still opens and still works.
 
-## Run it (recommended)
+## Run it — double-click
 
-```bash
-cd laboratory/table
-python3 -m http.server 8000
-```
+Open **`index.html`** in a browser. That's the laboratory. The Table, the
+Journey Journal, the Shelf, and the Cabinet all work offline, with no server and
+no AI.
 
-Open **http://localhost:8000/** . That's it.
+## The memory travels with the folder (this is the whole point)
 
-- Windows: `py -m http.server 8000`
-- Node instead of Python: `npx serve` (then open the URL it prints)
-- VS Code: the "Live Server" extension → *Open with Live Server*
+The laboratory's memory lives in a file **`laboratory.data.js`** that sits next
+to `index.html`.
 
-## Can I just double-click `index.html`?
+- Click **💾 שמור לתיקייה / Save to folder** → your browser downloads
+  `laboratory.data.js`. **Put it in this folder, beside `index.html`.**
+- Next time you open `index.html` — on this computer or any other — that file
+  **loads automatically**. The Place comes back.
 
-You can, and the interface will appear — idea, shared state, shelf, rotating
-seats, private seat notes. But opened directly the page has the origin `file://`
-(the browser calls it `null`), and two things break:
+So the Definition of Done holds literally: **copy this folder to a USB, move it
+to another computer, double-click `index.html` — the laboratory opens, with its
+memory.** (Also use **📂 פתח / Open** to load a `laboratory.data.js` by hand.)
 
-1. **The model-seats won't answer.** Calls to Claude / Gemini / ChatGPT are
-   gated by CORS, which keys on origin; a `null` origin is refused. (This is the
-   providers' gate, not something the page can override.)
-2. **Memory is unreliable.** `localStorage` is disabled on `file://` in Safari
-   (works in Chrome/Firefox). On `http://localhost` it is reliable everywhere.
+> Why a *file* and not the browser's storage: `localStorage` lives in the
+> browser (the *camera*), not the folder (the *Place*). It does not travel and
+> Safari drops it on `file://`. The folder file is the sovereign memory; browser
+> storage is only a convenience cache. One honest limit of a double-clicked
+> page: it cannot *silently* write to the folder (browser sandbox), so saving is
+> one click. Loading is automatic.
 
-A local static server gives the page a normal `http://localhost` origin, which
-fixes both. It serves the same file unchanged — it is not a build and not a
-server-side app. It exists only to give the page a real origin.
+## The Cabinet
 
-## The seats answering (optional)
+Everything that enters the laboratory — seat conversations, journal moments,
+shelved ideas, printed pages, and files you attach — is kept in the **🗄 Cabinet**,
+exactly as it was. Nothing is interpreted, summarized, or auto-organized. It
+simply remembers. Open it, search it, select material, and **take it to the
+press** to make a new journal page from it. The press only ever builds pages
+from material **explicitly retrieved from the Cabinet** — never from hidden AI
+memory.
 
-Without any keys the table is still one window: every seat is a private
-workspace and nothing is lost. To make the three model-seats answer, open
-**⚙ הגדרות / Settings** and paste your own API keys:
+## The craftspeople (AI) are optional
+
+The three model-seats and the AI-assisted press are **invited librarians**, never
+the furniture. The laboratory is complete without them.
+
+To invite them, open **⚙** and paste your own API keys (stored only in this
+browser):
 
 - **צמצום / Reduction** → Anthropic (Claude)
 - **מערכות / Systems** → Google (Gemini)
 - **תרגום / Translation** → OpenAI (ChatGPT)
 
-Keys are stored **only in this browser** (`localStorage`), never in the file and
-never sent anywhere except directly to the provider you configured. The
-**מציאות / Reality** seat is yours — it has no model; it is where you think and
-judge.
+One caveat: a browser may block these API calls from a `file://` page (its origin
+is `null`, which CORS refuses). If a seat won't answer, serve the folder locally
+so the page has a real origin —
+
+```bash
+cd laboratory/table && python3 -m http.server 8000   # then open http://localhost:8000/
+```
+
+— but this is **only** needed to invite the AI. The laboratory itself needs
+nothing: double-click, and it lives.
