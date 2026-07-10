@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>The Constitution — Organodynamics</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🔭</text></svg>">
+<link rel="stylesheet" href="../assets/door.css">
+</head>
+<body>
+<!-- Reading room. Renders laboratory/CONSTITUTION.md from the Record, verbatim. -->
+<header class="top">
+  <div class="wordmark"><a href="../">← THE DOOR</a></div>
+  <nav>
+    <a href="../rfcs/">RFCs</a>
+    <a href="https://github.com/brill-foundation/organodynamics">The Record</a>
+  </nav>
+</header>
+<div class="pagewrap">
+  <article class="doc prose" id="doc"><p class="quiet">Fetching the Constitution from the Record…</p></article>
+</div>
+<footer>
+  <span>This page renders <code>laboratory/CONSTITUTION.md</code> verbatim — the Record is the source of truth.</span>
+</footer>
+<script src="../assets/md.js"></script>
+<script>
+(async()=>{
+  const el=document.getElementById("doc");
+  try{
+    const r=await fetch("../laboratory/CONSTITUTION.md",{cache:"no-store"});
+    if(!r.ok)throw 0;
+    el.innerHTML=mdParse(await r.text()).html;
+  }catch(e){
+    el.innerHTML='<p class="quiet">The Constitution lives at <code>laboratory/CONSTITUTION.md</code> in the Record. '+
+      'Reading it here needs the deployed door or a local server — or open the file directly in the repository.</p>';
+  }
+})();
+</script>
+</body>
+</html>
