@@ -16,7 +16,21 @@ window.LAB_LANGS = {
       arrival:  { name: "Arrival",    note: "The process — the transition where the Place reveals what changed while you were away." },
       habitat:  { name: "Habitat",    note: "An environment that enables a form of life — not a room." },
       realityVote: { name: "Reality Vote", note: "Validation that arrives from reality, never from authority." },
-      butterfly:{ name: "The Butterfly", note: "A sustained symbiosis of different intelligences — protected research." }
+      butterfly:{ name: "The Butterfly", note: "A sustained symbiosis of different intelligences — protected research." },
+      rfc:      { name: "RFC",        note: "A principles document that matures by challenge and revision — and keeps its rejections." },
+      specification: { name: "Specification", note: "What follows understanding; never precedes it." },
+      discovery:{ name: "Discovery",  note: "Not invention — the idea waits; the research arrives at it (the attractor hypothesis)." },
+      principle:{ name: "Principle",  note: "A discovery that survived challenge long enough to bear weight." },
+      constitution: { name: "The Constitution", note: "What reality ratified — with its OPEN questions kept visible." },
+      knowledgeBase: { name: "Knowledge Base", note: "The stable body of knowledge — the Press medium's shelf." },
+      research: { name: "Research",   note: "The laboratory's mode of being; never a feature." },
+      cabinet:  { name: "The Cabinet", note: "What entered is kept, as it was. Deposits are authored; nothing is interpreted." },
+      journal:  { name: "The Journal", note: "Belongs to the place, not to a seat. Field notes, not reports." },
+      conceptRegistry: { name: "Concept Registry", note: "Records explanatory failures — a concept is born only when existing language fails." },
+      pencil:   { name: "Pencil",     note: "The living research space — nothing fixed, everything may still disappear." },
+      ink:      { name: "Ink",        note: "Authored responsibility — a conscious commitment to a formulation." },
+      press:    { name: "Press",      note: "The idea becomes reproducible — part of the stable body of knowledge." },
+      broadcast:{ name: "Broadcast",  note: "The idea leaves the laboratory; the Reality Vote turns external. Protected research." }
     }
   },
   he: {
@@ -24,7 +38,7 @@ window.LAB_LANGS = {
     ui: {
       "brand.sub": "· המעבדה של קרן בְּריל",
       "nav.constitution": "החוקה",
-      "nav.rfcs": "RFCs",
+      "nav.rfcs": "מסמכי עקרונות",
       "nav.record": "הרשומה",
       "nav.cabinet": "הארון",
       "door.kicker": "אתם עומדים בפתחה של",
@@ -38,7 +52,7 @@ window.LAB_LANGS = {
       "room.constitution": "החוקה",
       "room.constitution.p": "אובייקטים מחזיקים אחריות; הרהיטים נשארים לא־חכמים; שימור אינו רשות. כמה שאלות נשארות פתוחות בכוונה.",
       "tag.rfcs": "תחת אתגור",
-      "room.rfcs": "ה־RFCs",
+      "room.rfcs": "מסמכי העקרונות <small>RFC</small>",
       "room.rfcs.p": "המכשיר · החקירה · שכבת הניווט. הצעות שמבשילות באתגור וברוויזיה — ושומרות את הדחיות שלהן.",
       "tag.release": "שחרור ריבוני",
       "room.release": "קחו את המקום הביתה",
@@ -52,7 +66,7 @@ window.LAB_LANGS = {
       "signals.h2": "סימני חיים",
       "signals.preserve": "שימורים אחרונים",
       "signals.open": "שאלות חוקתיות פתוחות",
-      "signals.rfc": "RFCs",
+      "signals.rfc": "מסמכי עקרונות",
       "signals.note": "האותות מוצגים זה לצד זה, לעולם לא משולבים — אי־הסכמה היא מידע.",
       "footer.a": "אורגנודינמיקה · קרן בריל",
       "footer.b": "הכניסה היא מצלמה; המקום נוסע בתיקייה.",
@@ -70,7 +84,21 @@ window.LAB_LANGS = {
       arrival:  { name: "הַגָּעָה", note: "התהליך — המעבר שבו המקום חושף מה השתנה בהיעדרכם. העברית מבחינה בין 'הגעה' (האירוע) ל'בוא' (ההזמנה) — הבחנה שהאנגלית מוחקת." },
       habitat:  { name: "בית גידול", note: "סביבה שמאפשרת צורת חיים — לא חדר. המונח העברי נושא את הגידול בתוכו." },
       realityVote: { name: "הצבעת המציאות", note: "אימות שמגיע מהמציאות, לא מסמכות. בעברית ההצבעה קרובה ל'הצבעה על' — המציאות גם מצביעה וגם מורה באצבע." },
-      butterfly:{ name: "הפרפר", note: "סימביוזה מתמשכת של תבונות שונות — מחקר מוגן." }
+      butterfly:{ name: "הפרפר", note: "סימביוזה מתמשכת של תבונות שונות — מחקר מוגן." },
+      rfc:      { name: "מסמך עקרונות (RFC)", note: "לפי הקשר: RFC כשם טכני, מסמך עקרונות כשפה חיה. מבשיל באתגור וברוויזיה — ושומר את דחיותיו." },
+      specification: { name: "מפרט", note: "בא אחרי ההבנה; לעולם לא לפניה." },
+      discovery:{ name: "גילוי", note: "לא המצאה — גילוי. העברית מדייקת כאן יותר מהאנגלית: הרעיון ממתין, והמחקר מגיע אליו (השערת האטרקטורים)." },
+      principle:{ name: "עיקרון", note: "גילוי ששרד אתגור די זמן כדי לשאת משקל." },
+      constitution: { name: "החוקה", note: "מה שהמציאות אשררה — והשאלות הפתוחות נשמרות גלויות." },
+      knowledgeBase: { name: "בסיס הידע", note: "גוף הידע היציב — מדף מדיום הדפוס." },
+      research: { name: "מחקר", note: "אופן הקיום של המעבדה; לעולם לא פיצ'ר." },
+      cabinet:  { name: "הארון", note: "מה שנכנס נשמר, כפי שהוא. הפקדה היא מעשה מחבר; דבר אינו מפורש." },
+      journal:  { name: "היומן", note: "שייך למקום, לא לכיסא. רשימות שדה, לא דוחות." },
+      conceptRegistry: { name: "מרשם המושגים", note: "רושם כשלים הסבריים — מושג נולד רק כשהשפה הקיימת נכשלת מול המציאות." },
+      pencil:   { name: "עיפרון", note: "מרחב המחקר החי — דבר אינו קבוע, הכול עוד עשוי להיעלם." },
+      ink:      { name: "דיו", note: "אחריות מחבר — התחייבות מודעת לניסוח." },
+      press:    { name: "דפוס", note: "הרעיון נעשה ניתן לשחזור — חלק מגוף הידע היציב." },
+      broadcast:{ name: "שידור", note: "הרעיון עוזב את המעבדה; הצבעת המציאות נעשית חיצונית. מחקר מוגן." }
     }
   }
 };
