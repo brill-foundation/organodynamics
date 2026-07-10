@@ -10,11 +10,12 @@
 <body>
 <!-- Reading room. Renders the RFC markdown files living in this same folder, verbatim. -->
 <header class="top">
-  <div class="wordmark"><a href="../">← THE DOOR</a></div>
+  <div class="wordmark"><a href="../" data-i18n="reader.back">← THE DOOR</a></div>
   <nav>
-    <a href="../constitution/">Constitution</a>
-    <a href="https://github.com/brill-foundation/organodynamics">The Record</a>
+    <a href="../constitution/" data-i18n="nav.constitution">Constitution</a>
+    <a href="https://github.com/brill-foundation/organodynamics" data-i18n="nav.record">The Record</a>
   </nav>
+  <button class="hbtn" id="langToggle">עברית</button>
 </header>
 <div class="pagewrap">
   <div id="docs"><p class="quiet" style="margin-top:34px">Fetching the RFCs from the Record…</p></div>
@@ -23,6 +24,7 @@
   <span>These pages render the <code>rfcs/*.md</code> files verbatim — the Record is the source of truth.</span>
 </footer>
 <script src="../assets/md.js"></script>
+<script src="../assets/lang.js"></script>
 <script>
 (async()=>{
   const host=document.getElementById("docs");

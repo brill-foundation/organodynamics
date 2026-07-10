@@ -13,78 +13,88 @@
   The Door — the canonical entrance to the laboratory.
   It is a Camera, not the Place: build-less, read-only, storing nothing,
   judging nothing. The Place itself lives in /laboratory and travels as a
-  sovereign folder. Constitution: laboratory/CONSTITUTION.md
+  sovereign folder. Language is an interpretive layer (assets/lang.js), not
+  localization. Constitution: laboratory/CONSTITUTION.md
 -->
 <header class="top">
-  <div class="wordmark">ORGANODYNAMICS <span>· the laboratory of the Brill Foundation</span></div>
+  <div class="wordmark">ORGANODYNAMICS <span data-i18n="brand.sub">· the laboratory of the Brill Foundation</span></div>
   <nav>
-    <a href="constitution/">Constitution</a>
-    <a href="rfcs/">RFCs</a>
-    <a href="https://github.com/brill-foundation/organodynamics">The Record</a>
+    <a href="constitution/" data-i18n="nav.constitution">Constitution</a>
+    <a href="rfcs/" data-i18n="nav.rfcs">RFCs</a>
+    <a href="cabinet/" data-i18n="nav.cabinet">Cabinet</a>
+    <a href="https://github.com/brill-foundation/organodynamics" data-i18n="nav.record">The Record</a>
   </nav>
+  <button class="hbtn" id="langToggle">עברית</button>
 </header>
 
 <main>
   <section class="arrival">
-    <p class="kicker">You are at the door of</p>
-    <h1 class="door">A living laboratory<span class="pulse" id="alive" title="signs of life"></span></h1>
-    <p class="lede">Organodynamics is an engineering discipline for evolving representations
+    <p class="kicker" data-i18n="door.kicker">You are at the door of</p>
+    <h1 class="door"><span data-i18n="door.title">A living laboratory</span><span class="pulse" id="alive" title="signs of life"></span></h1>
+    <p class="lede" data-i18n="door.lede">Organodynamics is an engineering discipline for evolving representations
     of reality. It is practiced here, at one table with four seats, by humans and invited
     AI craftspeople. Ideas mature from pencil to ink to print; what happened is never
     renegotiated. This is not software to operate — it is a place to inhabit.</p>
-    <p class="vote">Reality has the final vote.</p>
+    <p class="vote" data-i18n="door.vote">Reality has the final vote.</p>
   </section>
 
   <div class="hall">
     <section class="rooms" aria-label="Rooms">
       <a class="room" href="laboratory/table/">
-        <span class="tag">Inhabit</span>
-        <h3>The Laboratory <small>השולחן</small></h3>
-        <p>The Place itself — the Table, the Journal, the Cabinet, the Shelf, the Press.
+        <span class="tag" data-i18n="tag.inhabit">Inhabit</span>
+        <h3 data-i18n="room.lab">The Laboratory <small>השולחן</small></h3>
+        <p data-i18n="room.lab.p">The Place itself — the Table, the Journal, the Cabinet, the Shelf, the Press.
         Works offline; the AI seats are invited guests, never infrastructure.</p>
       </a>
       <a class="room" href="constitution/">
-        <span class="tag">What reality ratified</span>
-        <h3>The Constitution</h3>
-        <p>Objects own responsibilities; furniture stays unintelligent; preservation is
+        <span class="tag" data-i18n="tag.constitution">What reality ratified</span>
+        <h3 data-i18n="room.constitution">The Constitution</h3>
+        <p data-i18n="room.constitution.p">Objects own responsibilities; furniture stays unintelligent; preservation is
         not optional. Some questions are deliberately left open.</p>
       </a>
       <a class="room" href="rfcs/">
-        <span class="tag">Under challenge</span>
-        <h3>The RFCs</h3>
-        <p>The Instrument · Inquiry · The Navigation Layer. Proposals that mature by
+        <span class="tag" data-i18n="tag.rfcs">Under challenge</span>
+        <h3 data-i18n="room.rfcs">The RFCs</h3>
+        <p data-i18n="room.rfcs.p">The Instrument · Inquiry · The Navigation Layer. Proposals that mature by
         challenge and revision — and keep their rejections.</p>
       </a>
+      <a class="room" href="cabinet/">
+        <span class="tag" data-i18n="tag.cabinet">Archive</span>
+        <h3 data-i18n="room.cabinet">The Cabinet <small>הארון</small></h3>
+        <p data-i18n="room.cabinet.p">Research artifacts, kept as they were — reviews, readings, debates.
+        Deposited by their authors; interpreted by no one.</p>
+      </a>
       <a class="room" href="laboratory/releases/RealityGame-0.0.1.zip" download>
-        <span class="tag">Sovereign release</span>
-        <h3>Take the Place home</h3>
-        <p>RealityGame 0.0.1 — download, unzip, double-click. The whole laboratory in one
+        <span class="tag" data-i18n="tag.release">Sovereign release</span>
+        <h3 data-i18n="room.release">Take the Place home</h3>
+        <p data-i18n="room.release.p">RealityGame 0.0.1 — download, unzip, double-click. The whole laboratory in one
         folder: no server, no cloud, no account.</p>
       </a>
       <a class="room" href="https://github.com/brill-foundation/organodynamics">
-        <span class="tag">Append-only</span>
-        <h3>The Record</h3>
-        <p>Every commit, every revision, every preserved learning. The Record is
+        <span class="tag" data-i18n="tag.record">Append-only</span>
+        <h3 data-i18n="room.record">The Record</h3>
+        <p data-i18n="room.record.p">Every commit, every revision, every preserved learning. The Record is
         infallible only about itself — and it forgets nothing.</p>
       </a>
     </section>
 
     <aside class="signals" aria-label="Signs of life">
-      <h2>Signs of life</h2>
-      <div class="sig" id="sig-preserve"><h3>Latest preservations</h3><ul><li class="quiet">listening…</li></ul></div>
-      <div class="sig" id="sig-open"><h3>Open constitutional questions</h3><ul><li class="quiet">listening…</li></ul></div>
-      <div class="sig" id="sig-rfc"><h3>RFCs</h3><ul><li class="quiet">listening…</li></ul></div>
-      <p class="sidenote">Signals are shown side by side, never combined — disagreement is information.</p>
+      <h2 data-i18n="signals.h2">Signs of life</h2>
+      <div class="sig" id="sig-preserve"><h3 data-i18n="signals.preserve">Latest preservations</h3><ul><li class="quiet">listening…</li></ul></div>
+      <div class="sig" id="sig-open"><h3 data-i18n="signals.open">Open constitutional questions</h3><ul><li class="quiet">listening…</li></ul></div>
+      <div class="sig" id="sig-rfc"><h3 data-i18n="signals.rfc">RFCs</h3><ul><li class="quiet">listening…</li></ul></div>
+      <p class="sidenote" data-i18n="signals.note">Signals are shown side by side, never combined — disagreement is information.</p>
       <noscript><p class="sidenote">Signals need JavaScript; the rooms do not.</p></noscript>
     </aside>
   </div>
 </main>
 
 <footer>
-  <span>Organodynamics · Brill Foundation</span>
-  <span>The entrance is a camera; the Place travels in a folder.</span>
-  <span>Reality has the final vote.</span>
+  <span data-i18n="footer.a">Organodynamics · Brill Foundation</span>
+  <span data-i18n="footer.b">The entrance is a camera; the Place travels in a folder.</span>
+  <span data-i18n="footer.c">Reality has the final vote.</span>
 </footer>
+<script src="assets/lang.js"></script>
 <script src="assets/door.js"></script>
 </body>
 </html>

@@ -1,0 +1,77 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>The Cabinet — Organodynamics</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🔭</text></svg>">
+<link rel="stylesheet" href="../assets/door.css">
+</head>
+<body>
+<!-- The Cabinet, Record-level implementation: archival furniture for research
+     artifacts. One responsibility (the Cabinet owns memory), two
+     implementations — the in-Place cabinet holds raw material; this room holds
+     authored artifacts. Depositing is an authored act; all metadata is
+     author-declared frontmatter. The furniture interprets nothing. -->
+<header class="top">
+  <div class="wordmark"><a href="../" data-i18n="reader.back">← THE DOOR</a></div>
+  <nav>
+    <a href="../constitution/" data-i18n="nav.constitution">Constitution</a>
+    <a href="../rfcs/" data-i18n="nav.rfcs">RFCs</a>
+    <a href="https://github.com/brill-foundation/organodynamics" data-i18n="nav.record">The Record</a>
+  </nav>
+  <button class="hbtn" id="langToggle">עברית</button>
+</header>
+<div class="pagewrap">
+  <div class="arrival" style="padding:44px 0 8px">
+    <p class="kicker" data-i18n="cabinet.kicker">Archival furniture</p>
+    <h1 class="door" style="font-size:32px"><span data-i18n="cabinet.title">The Cabinet</span></h1>
+    <p class="lede" style="font-size:15px" data-i18n="cabinet.lede">What entered is kept, as it was.
+    Research artifacts — reviews, readings, debates — deposited by their authors with declared
+    metadata. Nothing here is interpreted, summarized, or ranked. Artifacts, not transcripts.</p>
+  </div>
+  <div id="docs"><p class="quiet">Fetching the artifacts from the Record…</p></div>
+  <p class="sidenote" style="margin-top:22px" data-i18n="cabinet.deposit">Depositing is an authored
+  act: add a markdown file with frontmatter beside these and list it in <code>catalog.json</code>.
+  The Cabinet holds; authors declare; no one interprets.</p>
+</div>
+<footer>
+  <span data-i18n="cabinet.footer">This room renders <code>cabinet/*.md</code> verbatim — the Record is the source of truth.</span>
+</footer>
+<script src="../assets/md.js"></script>
+<script src="../assets/lang.js"></script>
+<script>
+(async()=>{
+  const host=document.getElementById("docs");
+  const FIELDS=[["kind","Kind"],["date","Date"],["participants","Participants"],
+    ["discoveries","Discoveries"],["constitutional-questions","Constitutional questions"],
+    ["related","Related"],["provenance","Provenance"],["status","Status"]];
+  try{
+    const files=await (await fetch("catalog.json",{cache:"no-store"})).json();
+    let any=false;
+    for(const f of files){
+      try{
+        const r=await fetch(f,{cache:"no-store"});
+        if(!r.ok)continue;
+        const {front,html}=mdParse(await r.text());
+        if(!any){host.innerHTML="";any=true;}
+        const d=document.createElement("details");
+        d.className="rfc";
+        const title=(front&&front.title)||f;
+        const chips=front?[front.kind?'<span class="badge">'+front.kind+"</span>":"",
+                           front.date?'<span class="badge" style="color:var(--muted)">'+front.date+"</span>":""].join(" "):"";
+        const meta=front?'<div class="front">'+FIELDS.filter(([k])=>front[k])
+          .map(([k,l])=>"<span><b>"+l+"</b> "+front[k].replace(/&/g,"&amp;").replace(/</g,"&lt;")+"</span>").join("")+"</div>":"";
+        d.innerHTML="<summary>"+title+" "+chips+"</summary><div class='doc-inner prose'>"+meta+html+"</div>";
+        host.appendChild(d);
+      }catch(e){}
+    }
+    if(!any)throw 0;
+  }catch(e){
+    host.innerHTML='<p class="quiet">The artifacts live in <code>cabinet/</code> in the Record. '+
+      'Reading them here needs the deployed door or a local server — or open the files directly in the repository.</p>';
+  }
+})();
+</script>
+</body>
+</html>

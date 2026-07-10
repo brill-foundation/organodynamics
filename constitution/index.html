@@ -10,11 +10,12 @@
 <body>
 <!-- Reading room. Renders laboratory/CONSTITUTION.md from the Record, verbatim. -->
 <header class="top">
-  <div class="wordmark"><a href="../">← THE DOOR</a></div>
+  <div class="wordmark"><a href="../" data-i18n="reader.back">← THE DOOR</a></div>
   <nav>
-    <a href="../rfcs/">RFCs</a>
-    <a href="https://github.com/brill-foundation/organodynamics">The Record</a>
+    <a href="../rfcs/" data-i18n="nav.rfcs">RFCs</a>
+    <a href="https://github.com/brill-foundation/organodynamics" data-i18n="nav.record">The Record</a>
   </nav>
+  <button class="hbtn" id="langToggle">עברית</button>
 </header>
 <div class="pagewrap">
   <article class="doc prose" id="doc"><p class="quiet">Fetching the Constitution from the Record…</p></article>
@@ -23,6 +24,7 @@
   <span>This page renders <code>laboratory/CONSTITUTION.md</code> verbatim — the Record is the source of truth.</span>
 </footer>
 <script src="../assets/md.js"></script>
+<script src="../assets/lang.js"></script>
 <script>
 (async()=>{
   const el=document.getElementById("doc");
