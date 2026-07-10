@@ -36,41 +36,54 @@
     AI craftspeople. Ideas mature from pencil to ink to print; what happened is never
     renegotiated. This is not software to operate — it is a place to inhabit.</p>
     <p class="vote" data-i18n="door.vote">Reality has the final vote.</p>
+    <details class="guide">
+      <summary data-i18n="guide.door.s">✎ A local note — how to enter</summary>
+      <p class="gbody" data-i18n="guide.door.b">This is a door, not a control panel. Enter the Laboratory to
+      work at the table; the Constitution shows what reality ratified and what stays open; the binders hold
+      the arguments; the Cabinet remembers them. Take the Place home if you want it with no server at all.
+      Nothing here is operated — it is inhabited.</p>
+    </details>
   </section>
 
   <div class="hall">
     <section class="rooms" aria-label="Rooms">
-      <a class="room" href="laboratory/table/">
+      <a class="room" data-obj="table" href="laboratory/table/">
+        <span class="fig fig-table" aria-hidden="true"><i class="top"></i><i class="idea"></i><i class="seat s1"></i><i class="seat s2"></i><i class="seat s3"></i><i class="seat s4"></i></span>
         <span class="tag" data-i18n="tag.inhabit">Inhabit</span>
         <h3 data-i18n="room.lab">The Laboratory <small>השולחן</small></h3>
         <p data-i18n="room.lab.p">The Place itself — the Table, the Journal, the Cabinet, the Shelf, the Press.
         Works offline; the AI seats are invited guests, never infrastructure.</p>
       </a>
-      <a class="room" href="constitution/">
+      <a class="room" data-obj="charter" href="constitution/">
+        <span class="fig fig-charter" aria-hidden="true"><i class="page"></i><i class="seal"></i><i class="ribbon"></i></span>
         <span class="tag" data-i18n="tag.constitution">What reality ratified</span>
         <h3 data-i18n="room.constitution">The Constitution</h3>
         <p data-i18n="room.constitution.p">Objects own responsibilities; furniture stays unintelligent; preservation is
         not optional. Some questions are deliberately left open.</p>
       </a>
-      <a class="room" href="rfcs/">
+      <a class="room" data-obj="binder" href="rfcs/">
+        <span class="fig fig-binder" aria-hidden="true"><i class="cover"></i><i class="label"></i><i class="tab"></i></span>
         <span class="tag" data-i18n="tag.rfcs">Under challenge</span>
         <h3 data-i18n="room.rfcs">The RFCs</h3>
         <p data-i18n="room.rfcs.p">The Instrument · Inquiry · The Navigation Layer. Proposals that mature by
         challenge and revision — and keep their rejections.</p>
       </a>
-      <a class="room" href="cabinet/">
+      <a class="room" data-obj="drawers" href="cabinet/">
+        <span class="fig fig-drawers" aria-hidden="true"><i class="d d1"></i><i class="d d2"></i><i class="d d3"></i></span>
         <span class="tag" data-i18n="tag.cabinet">Archive</span>
         <h3 data-i18n="room.cabinet">The Cabinet <small>הארון</small></h3>
         <p data-i18n="room.cabinet.p">Research artifacts, kept as they were — reviews, readings, debates.
         Deposited by their authors; interpreted by no one.</p>
       </a>
-      <a class="room" href="laboratory/releases/RealityGame-0.0.1.zip" download>
+      <a class="room" data-obj="box" href="laboratory/releases/RealityGame-0.0.1.zip" download>
+        <span class="fig fig-box" aria-hidden="true"><i class="b"></i><i class="tape"></i><i class="tape2"></i></span>
         <span class="tag" data-i18n="tag.release">Sovereign release</span>
         <h3 data-i18n="room.release">Take the Place home</h3>
         <p data-i18n="room.release.p">RealityGame 0.0.1 — download, unzip, double-click. The whole laboratory in one
         folder: no server, no cloud, no account.</p>
       </a>
-      <a class="room" href="https://github.com/brill-foundation/organodynamics">
+      <a class="room" data-obj="ledger" href="https://github.com/brill-foundation/organodynamics">
+        <span class="fig fig-ledger" aria-hidden="true"><i class="v v1"></i><i class="v v2"></i><i class="v v3"></i></span>
         <span class="tag" data-i18n="tag.record">Append-only</span>
         <h3 data-i18n="room.record">The Record</h3>
         <p data-i18n="room.record.p">Every commit, every revision, every preserved learning. The Record is
@@ -80,10 +93,12 @@
 
     <aside class="signals" aria-label="Signs of life">
       <h2 data-i18n="signals.h2">Signs of life</h2>
+      <div class="winframe">
       <div class="sig" id="sig-preserve"><h3 data-i18n="signals.preserve">Latest preservations</h3><ul><li class="quiet">listening…</li></ul></div>
       <div class="sig" id="sig-open"><h3 data-i18n="signals.open">Open constitutional questions</h3><ul><li class="quiet">listening…</li></ul></div>
       <div class="sig" id="sig-rfc"><h3 data-i18n="signals.rfc">RFCs</h3><ul><li class="quiet">listening…</li></ul></div>
       <p class="sidenote" data-i18n="signals.note">Signals are shown side by side, never combined — disagreement is information.</p>
+      </div>
       <noscript><p class="sidenote">Signals need JavaScript; the rooms do not.</p></noscript>
     </aside>
   </div>

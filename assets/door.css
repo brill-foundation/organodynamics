@@ -5,6 +5,7 @@
   --card:#fffdf8;--accent:#a6642f;--accent-soft:#e7d3bf;--good:#3f6b52;
   --serif:"Iowan Old Style",Georgia,"Times New Roman",serif;
   --sans:-apple-system,BlinkMacSystemFont,"Segoe UI","Assistant",system-ui,sans-serif;
+  --hand:"Bradley Hand","Segoe Print","Snell Roundhand","Comic Sans MS",cursive;
   --shadow:0 1px 2px rgba(60,45,25,.06),0 8px 30px rgba(60,45,25,.08);
 }
 @media (prefers-color-scheme:dark){:root{
@@ -95,3 +96,94 @@ details.rfc>summary::before{content:"›";color:var(--muted);transition:transfor
 details.rfc[open]>summary::before{transform:rotate(90deg)}
 details.rfc[open]>summary{border-bottom:1px solid var(--line)}
 details.rfc .doc-inner{padding:8px 28px 26px}
+
+/* ==== furniture — each object recognizable before its title ====
+   Materiality rule (constitutional): every trace must trace something real —
+   drawer patina comes from artifact dates, binder stamps from frontmatter,
+   guides are authored notes. No decoration. */
+
+/* vignettes: small CSS-drawn objects at the top of each room */
+.fig{display:block;height:74px;margin:0 0 8px;position:relative;pointer-events:none}
+.fig i,.fig i::before,.fig i::after{position:absolute;display:block;content:""}
+/* the table, seen from above — four seats in the lab's seat colors */
+.fig-table i.top{inset-inline:20%;inset-block:16px 14px;background:linear-gradient(160deg,#c89a63,#a9713d);border-radius:14px;box-shadow:inset 0 0 0 2px rgba(0,0,0,.08)}
+.fig-table i.idea{width:13px;height:13px;border-radius:50%;background:var(--card);border:2px solid var(--accent);inset-inline-start:calc(50% - 8px);inset-block-start:calc(50% - 7px)}
+.fig-table i.seat{width:10px;height:10px;border-radius:50%}
+.fig-table i.s1{background:#3f6b52;inset-inline-start:calc(50% - 5px);inset-block-start:2px}
+.fig-table i.s2{background:#a6642f;inset-inline-start:calc(50% - 5px);inset-block-end:0}
+.fig-table i.s3{background:#3f5f8a;inset-inline-start:12%;inset-block-start:calc(50% - 5px)}
+.fig-table i.s4{background:#8a4f6b;inset-inline-end:12%;inset-block-start:calc(50% - 5px)}
+/* the charter — ruled parchment, red seal and ribbon */
+.fig-charter i.page{inset-inline:30%;inset-block:4px 6px;background:color-mix(in srgb,#efe0b8 70%,var(--card));border:1px solid #d0bd8e;border-radius:3px}
+.fig-charter i.page::after{inset:12px 8px 22px;background:repeating-linear-gradient(180deg,transparent 0 7px,rgba(120,95,50,.35) 7px 8px)}
+.fig-charter i.seal{width:17px;height:17px;border-radius:50%;background:radial-gradient(circle at 35% 30%,#c85a41,#8f3a2a);inset-inline-end:33%;inset-block-end:8px;box-shadow:0 1px 2px rgba(0,0,0,.3)}
+.fig-charter i.ribbon{width:6px;height:15px;background:#8f3a2a;inset-inline-end:calc(33% + 5px);inset-block-end:-3px;transform:rotate(16deg)}
+/* the binder — ring spine, label, status tab */
+.fig-binder i.cover{inset-inline:27%;inset-block:8px 8px;background:linear-gradient(160deg,#b79a72,#9d7f56);border-radius:5px 8px 8px 5px;box-shadow:inset 0 0 0 1px rgba(0,0,0,.08)}
+.fig-binder i.cover::before{inset-block:6px 6px;inset-inline-start:5px;width:8px;
+  background:radial-gradient(circle at 50% 6px,#efe6cf 2.5px,rgba(0,0,0,.25) 3px,transparent 4px) 0 0/8px 15px repeat-y}
+.fig-binder i.label{inset-inline-start:44%;inset-inline-end:33%;height:15px;inset-block-start:26px;background:var(--card);border:1px solid var(--line);border-radius:2px}
+.fig-binder i.tab{width:22px;height:9px;background:#3f6b52;inset-block-start:1px;inset-inline-start:45%;border-radius:3px 3px 0 0;opacity:.85}
+/* the cabinet — three drawer fronts, handles and label plates */
+.fig-drawers i.d{inset-inline:24%;height:17px;background:linear-gradient(160deg,#9a7a52,#7d6040);border:1px solid rgba(0,0,0,.18);border-radius:3px}
+.fig-drawers i.d::before{width:15px;height:5px;border-radius:3px;background:#d9c9a8;inset-inline-start:calc(50% - 7px);inset-block-start:6px;box-shadow:0 1px 1px rgba(0,0,0,.25)}
+.fig-drawers i.d::after{width:20px;height:9px;background:color-mix(in srgb,#efe6cf 85%,var(--card));border:1px solid rgba(0,0,0,.12);inset-inline-end:7px;inset-block-start:3px;border-radius:1px}
+.fig-drawers i.d1{inset-block-start:5px}.fig-drawers i.d2{inset-block-start:27px}.fig-drawers i.d3{inset-block-start:49px}
+/* the parcel — kraft box, taped, ready to travel */
+.fig-box i.b{inset-inline:30%;inset-block:12px 8px;background:linear-gradient(160deg,#cfa670,#b38650);border-radius:5px;box-shadow:inset 0 0 0 2px rgba(0,0,0,.06)}
+.fig-box i.tape{inset-inline:30%;height:11px;inset-block-start:calc(50% - 3px);background:rgba(255,248,225,.5)}
+.fig-box i.tape2{width:11px;inset-block:12px 8px;inset-inline-start:calc(50% - 5.5px);background:rgba(255,248,225,.5)}
+/* the ledgers — a stack of bound volumes, append-only */
+.fig-ledger i.v{border-radius:2px;height:13px}
+.fig-ledger i.v::after{inset-block:3px 3px;inset-inline-start:12%;width:26%;background:rgba(245,238,220,.85);border-radius:1px}
+.fig-ledger i.v1{inset-inline:30% 26%;inset-block-start:12px;background:#7a5a3a}
+.fig-ledger i.v2{inset-inline:26% 30%;inset-block-start:29px;background:#8a6a45}
+.fig-ledger i.v3{inset-inline:28% 28%;inset-block-start:46px;background:#63492f}
+/* material tint per room, subtle */
+.room[data-obj=table]{background:color-mix(in srgb,#c89a63 7%,var(--card))}
+.room[data-obj=charter]{background:color-mix(in srgb,#e8d9a8 12%,var(--card))}
+.room[data-obj=binder]{background:color-mix(in srgb,#b79a72 9%,var(--card))}
+.room[data-obj=drawers]{background:color-mix(in srgb,#9a7a52 9%,var(--card))}
+.room[data-obj=box]{background:color-mix(in srgb,#cfa670 8%,var(--card))}
+.room[data-obj=ledger]{background:color-mix(in srgb,#7a5a3a 7%,var(--card))}
+
+/* local guides — a taped, handwritten note beside the thing it explains */
+details.guide{background:color-mix(in srgb,#f5ecc9 55%,var(--card));border:1px solid color-mix(in srgb,#d8c69a 70%,var(--line));
+  border-radius:2px;box-shadow:var(--shadow);transform:rotate(-.7deg);margin:18px 0 6px;max-width:540px;position:relative}
+details.guide::before{content:"";position:absolute;inset-inline-start:calc(50% - 26px);inset-block-start:-8px;width:54px;height:14px;
+  background:color-mix(in srgb,#e8dcb4 60%,transparent);border:1px solid rgba(0,0,0,.05);transform:rotate(1.6deg)}
+details.guide summary{cursor:pointer;list-style:none;padding:10px 16px;font-family:var(--hand);color:#38506f;font-size:14.5px}
+details.guide summary::-webkit-details-marker{display:none}
+details.guide[open] summary{border-bottom:1px dashed color-mix(in srgb,#d8c69a 70%,var(--line))}
+details.guide .gbody{margin:0;padding:6px 16px 13px;font-family:var(--hand);color:#38506f;font-size:14px;line-height:1.65}
+@media (prefers-color-scheme:dark){
+  details.guide summary,details.guide .gbody{color:#8fb0d8}
+}
+
+/* the observatory window — the lab looking out at reality */
+.winframe{border:5px solid color-mix(in srgb,#7a5a3a 65%,var(--line));border-radius:60px 60px 12px 12px;
+  padding:24px 12px 12px;background:linear-gradient(180deg,color-mix(in srgb,#5a6b8a 14%,var(--bg2)),var(--bg2) 46%);
+  box-shadow:inset 0 8px 18px rgba(60,45,25,.16)}
+.winframe .sidenote{margin-top:6px}
+
+/* the charter room — parchment and a standing stamp */
+.room-constitution .doc{background:color-mix(in srgb,#e8d9a8 22%,var(--card));border-color:color-mix(in srgb,#d8c69a 70%,var(--line));position:relative;overflow:hidden}
+.room-constitution .doc::after{content:"";pointer-events:none;position:absolute;inset:0;box-shadow:inset 0 0 70px rgba(120,90,40,.12)}
+.stamp{display:inline-block;transform:rotate(-6deg);border:2.5px solid #b4472d;color:#b4472d;border-radius:8px;
+  padding:4px 14px;font-weight:700;letter-spacing:.08em;font-size:12px;opacity:.8;text-transform:uppercase;margin:26px 0 -8px}
+
+/* the binder room — RFCs as working binders; pages sit inside */
+.room-rfcs details.rfc{background:color-mix(in srgb,#b79a72 22%,var(--card));border-color:color-mix(in srgb,#9d7f56 60%,var(--line));
+  position:relative;padding-inline-start:24px;border-radius:6px 14px 14px 6px}
+.room-rfcs details.rfc::after{content:"";position:absolute;inset-block:12px;inset-inline-start:7px;width:9px;
+  background:radial-gradient(circle at 50% 7px,color-mix(in srgb,#efe6cf 85%,var(--card)) 2.5px,rgba(0,0,0,.28) 3px,transparent 4.2px) 0 0/9px 22px repeat-y}
+.room-rfcs details.rfc .doc-inner{background:var(--card);margin:10px 14px 14px;border:1px solid var(--line);border-radius:6px;padding:12px 24px 20px}
+/* the drawer room — artifacts as drawer fronts; the file lies inside.
+   Patina is real: --age is set from the artifact's declared date. */
+.room-cabinet details.rfc{background:linear-gradient(160deg,color-mix(in srgb,#9a7a52 34%,var(--card)),color-mix(in srgb,#7d6040 34%,var(--card)));
+  border-color:color-mix(in srgb,#7d6040 60%,var(--line));border-radius:5px;
+  box-shadow:var(--shadow),inset 0 0 46px rgba(90,60,20,calc(var(--age,0)*.4))}
+.room-cabinet details.rfc>summary{position:relative;padding-block-end:22px}
+.room-cabinet details.rfc>summary::after{content:"";position:absolute;inset-inline-start:calc(50% - 23px);inset-block-end:7px;width:46px;height:7px;
+  border-radius:4px;background:color-mix(in srgb,#d9c9a8 80%,var(--card));box-shadow:inset 0 -1px 2px rgba(0,0,0,.35)}
+.room-cabinet details.rfc .doc-inner{background:var(--card);margin:10px 14px 16px;border:1px solid var(--line);border-radius:6px;padding:12px 24px 20px}

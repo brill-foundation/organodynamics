@@ -7,7 +7,7 @@
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🔭</text></svg>">
 <link rel="stylesheet" href="../assets/door.css">
 </head>
-<body>
+<body class="room-cabinet">
 <!-- The Cabinet, Record-level implementation: archival furniture for research
      artifacts. One responsibility (the Cabinet owns memory), two
      implementations — the in-Place cabinet holds raw material; this room holds
@@ -30,6 +30,12 @@
     Research artifacts — reviews, readings, debates — deposited by their authors with declared
     metadata. Nothing here is interpreted, summarized, or ranked. Artifacts, not transcripts.</p>
   </div>
+  <details class="guide">
+    <summary data-i18n="guide.cabinet.s">✎ A local note — what an artifact is</summary>
+    <p class="gbody" data-i18n="guide.cabinet.b">An artifact is a research conversation preserved as it was,
+    with metadata its author declared. The drawers darken with the true age of what they hold. The Cabinet
+    remembers; it never interprets, summarizes, or ranks.</p>
+  </details>
   <div id="docs"><p class="quiet">Fetching the artifacts from the Record…</p></div>
   <p class="sidenote" style="margin-top:22px" data-i18n="cabinet.deposit">Depositing is an authored
   act: add a markdown file with frontmatter beside these and list it in <code>catalog.json</code>.
@@ -63,6 +69,7 @@
         const meta=front?'<div class="front">'+FIELDS.filter(([k])=>front[k])
           .map(([k,l])=>"<span><b>"+l+"</b> "+front[k].replace(/&/g,"&amp;").replace(/</g,"&lt;")+"</span>").join("")+"</div>":"";
         d.innerHTML="<summary>"+title+" "+chips+"</summary><div class='doc-inner prose'>"+meta+html+"</div>";
+        if(front&&front.date){const age=Math.min(1,(Date.now()-new Date(front.date))/(31536e6));d.style.setProperty("--age",age.toFixed(2));}
         host.appendChild(d);
       }catch(e){}
     }

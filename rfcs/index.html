@@ -7,7 +7,7 @@
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🔭</text></svg>">
 <link rel="stylesheet" href="../assets/door.css">
 </head>
-<body>
+<body class="room-rfcs">
 <!-- Reading room. Renders the RFC markdown files living in this same folder, verbatim. -->
 <header class="top">
   <div class="wordmark"><a href="../" data-i18n="reader.back">← THE DOOR</a></div>
@@ -18,6 +18,12 @@
   <button class="hbtn" id="langToggle">עברית</button>
 </header>
 <div class="pagewrap">
+  <details class="guide" style="margin-top:26px">
+    <summary data-i18n="guide.rfcs.s">✎ A local note — how a principles document matures</summary>
+    <p class="gbody" data-i18n="guide.rfcs.b">Each binder matures by challenge and revision — and keeps its
+    rejections. "open" means the challenge is still running. Nothing is deleted: a superseded position stays
+    in the lineage. The stamps on the spine are real — they come from the document itself.</p>
+  </details>
   <div id="docs"><p class="quiet" style="margin-top:34px">Fetching the RFCs from the Record…</p></div>
 </div>
 <footer>
@@ -45,6 +51,7 @@
       d.className="rfc";if(open)d.open=true;
       const label=front&&front.id?front.id+" — "+(front.title||""):"The Rotating Table — interaction model";
       const chips=front?[front.status?'<span class="badge">'+front.status+'</span>':"",
+                         front.revision?'<span class="badge" style="color:var(--muted)">rev '+front.revision+'</span>':"",
                          front.confidence?'<span class="badge" style="color:var(--muted)">'+front.confidence+'</span>':""].join(" "):"";
       d.innerHTML="<summary>"+label+" "+chips+"</summary><div class='doc-inner prose'>"+html+"</div>";
       host.appendChild(d);
