@@ -10,6 +10,7 @@
 //   node tools/lab.js history                      every event, oldest first
 //   node tools/lab.js explain <id>                 every event touching an object
 //   node tools/lab.js verify                       mechanical integrity (exit 0/1)
+//   node tools/lab.js sources                      source groundings, checked now
 //
 // Writing (every command needs --because "<intention>"; all but arrive need
 // --as <participant name or id>):
@@ -142,6 +143,17 @@ switch (cmd) {
     const ok = lab.verify();
     console.log(ok ? "chain and seals verify" : "VERIFICATION FAILED");
     process.exit(ok ? 0 : 1);
+  }
+  case "sources": {
+    const report = lab.sources();
+    if (opt.json) { out(report); break; }
+    if (!report.length) { console.log("no source-grounded assertions in the record"); break; }
+    for (const r of report) {
+      const mark = r.ok === true ? "✓" : r.ok === false ? "✗" : "·";
+      console.log(`${mark}  [${r.scheme}]  ${r.ref}`);
+      console.log(`     ${r.detail}  (${r.assertion}, predicate: ${r.predicate})`);
+    }
+    break;
   }
   case "arrive": {
     const id = lab.registerParticipant({

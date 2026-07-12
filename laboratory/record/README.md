@@ -17,6 +17,7 @@ node tools/lab.js sessions   # the log, partitioned by seals
 node tools/lab.js history    # every event, oldest first
 node tools/lab.js explain <id>  # every event touching one object
 node tools/lab.js verify     # mechanical integrity check
+node tools/lab.js sources    # source groundings, re-checked against reality now
 ```
 
 Or read `log.jsonl` directly — one JSON event per line. Or open this directory
@@ -40,6 +41,9 @@ node tools/lab.js arrive --name "Ada" --kind human --because "continue the open 
 node tools/lab.js observe "what I saw" --as Ada --because "ground the next assertion"
 node tools/lab.js assert --about <entity> --predicate p --value v \
      --grounded-in observation:<id> --as Ada --because "..."
+# source grounding: "source:cabinet:CAB-007" and "source:file:<path>" are
+# checked against reality at write time; anything else is a free citation,
+# legal but reported as unchecked
 node tools/lab.js judge --conclusion "..." --reasoning "..." --basis <id> --as Ada --because "..."
 node tools/lab.js unknown "what I could not settle" --as Ada --because "keep it visible"
 node tools/lab.js seal "what I did and what remains" --as Ada --because "depart"

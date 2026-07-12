@@ -18,13 +18,14 @@
 import { readFileSync, appendFileSync, existsSync, mkdirSync, statSync } from "node:fs";
 import { join } from "node:path";
 import { createKernel } from "../kernel/kernel.js";
+import { checkSource, sourceReport } from "./sources.js";
 
 const MUTATIONS = [
   "registerParticipant", "createEntity", "observe", "assert", "supersedeAssertion",
   "relate", "judge", "recordUnknown", "resolveUnknown", "attachEvidence", "seal",
 ];
 
-export function openLaboratory(dir) {
+export function openLaboratory(dir, { root = process.cwd() } = {}) {
   mkdirSync(dir, { recursive: true });
   const file = join(dir, "log.jsonl");
   const history = existsSync(file)
@@ -70,6 +71,21 @@ export function openLaboratory(dir) {
       return result;
     };
   }
+
+  // Obligation 2 at the boundary: checkable source schemes (cabinet:, file:)
+  // must resolve against local reality at write time; free citations pass
+  // through and are reported honestly as unchecked (see ./sources.js).
+  const assertThrough = lab.assert;
+  lab.assert = (args) => {
+    if (args?.grounding?.kind === "source") {
+      const check = checkSource(args.grounding.ref, root);
+      if (check.ok === false) {
+        throw new Error(`source grounding does not resolve — obligation 2: ${check.detail}`);
+      }
+    }
+    return assertThrough(args);
+  };
+  lab.sources = () => sourceReport(lab, root);
 
   lab.state = () => kernel.state();
   lab.events = () => kernel.log.events();
