@@ -13,13 +13,20 @@ only superseded; every event carries actor and intention.
 no UI, no AI providers. The Kernel must survive the replacement of everything
 around it (Axiom 10).
 
-**Public interface** — `createKernel()` →
-`createEntity · assert · supersedeAssertion · relate · recordUnknown ·
-resolveUnknown · attachEvidence · state · explain · log`, plus the pure
-`derive(events)` for independent replay. See `tests/kernel/kernel.test.js`,
-where each test names the axiom it validates.
+**Protocol conformance** (since 2026-07-12) — the Kernel enforces the five
+obligations of the frozen Laboratory Protocol (`laboratory/PROTOCOL.md`):
+participants register before contributing; assertions declare grounding;
+provenance is mandatory; judgments carry reasoning; seals bind the chain.
+Audit: `docs/audit-kernel-vs-protocol.md`.
 
-**Known limitations** (Phase 2 continues, see `blueprint/ENGINEERING_PLAN.md`)
-— References and Context are not yet first-class; the OCS-000 canonical
-compositions (Place, Participant, Experiment…) are not yet modeled above the
-primitives; persistence arrives in Phase 3 as "store the log."
+**Public interface** — `createKernel({history?})` →
+`registerParticipant · createEntity · observe · assert · supersedeAssertion ·
+relate · judge · recordUnknown · resolveUnknown · attachEvidence · seal ·
+state · explain · verify · log`, plus the pure `derive(events)` for
+independent replay. See `tests/kernel/`, where each test names the axiom or
+obligation it validates. Persistence is a shell around the Kernel
+(`src/laboratory/laboratory.js`), never inside it.
+
+**Known limitations** — References and Context are not yet first-class; the
+OCS-000 canonical compositions (Place, Participant-as-composition,
+Experiment…) are not yet modeled above the primitives.

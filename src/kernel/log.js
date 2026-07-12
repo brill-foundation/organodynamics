@@ -31,9 +31,12 @@ function canonical(value) {
   return JSON.stringify(value);
 }
 
-export function createLog() {
+// `history` restores previously preserved events verbatim (frozen as-is);
+// the chain is verified on load so a corrupted history cannot be adopted.
+export function createLog(history = []) {
   const events = [];
-  return {
+  for (const e of history) events.push(deepFreeze(e));
+  const log = {
     append({ type, subject, payload = {}, provenance }) {
       if (!type) throw new Error("event requires a type");
       if (!provenance || !provenance.actor) {
@@ -71,4 +74,8 @@ export function createLog() {
       return true;
     },
   };
+  if (!log.verifyChain()) {
+    throw new Error("history fails chain verification: the preserved record has been altered or truncated mid-chain");
+  }
+  return log;
 }

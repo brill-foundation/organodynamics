@@ -9,7 +9,10 @@
 
 import { randomUUID } from "node:crypto";
 
-const KINDS = new Set(["entity", "assertion", "relation", "unknown", "evidence", "participant"]);
+const KINDS = new Set([
+  "entity", "assertion", "relation", "unknown", "evidence",
+  "participant", "observation", "judgment", "seal",
+]);
 
 export function mintIdentity(kind) {
   if (!KINDS.has(kind)) {
