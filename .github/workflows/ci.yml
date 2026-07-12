@@ -14,3 +14,5 @@ jobs:
           node-version: "22"
       - name: Run constitutional tests
         run: node --test 'tests/**/*.test.js'
+      - name: Check the living record's constitutional conformance
+        run: node tools/conformance.js laboratory/record
