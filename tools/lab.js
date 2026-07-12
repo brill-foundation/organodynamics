@@ -27,10 +27,15 @@
 //        --source "..." --as Ada --because "..."
 //   node tools/lab.js seal "<summary>" --as Ada --because "..."
 //
+// Traveling (laboratory charter §3 — the Place travels as one artifact):
+//   node tools/lab.js preserve [--out file] --as Ada --because "..."
+//   node tools/lab.js restore <preservation.json> --dir <empty place>
+//
 // --dir <path> selects a record (default laboratory/record).
 
 import { parseArgs } from "node:util";
 import { openLaboratory } from "../src/laboratory/laboratory.js";
+import { preserve as preserveRecord, restore as restoreRecord } from "../src/laboratory/preserve.js";
 
 const { values: opt, positionals } = parseArgs({
   allowPositionals: true,
@@ -51,6 +56,7 @@ const { values: opt, positionals } = parseArgs({
     assertion: { type: "string" },
     bearing: { type: "string" },
     source: { type: "string" },
+    out: { type: "string" },
     json: { type: "boolean", default: false },
   },
 });
@@ -187,6 +193,24 @@ switch (cmd) {
   case "seal":
     out(lab.seal({ summary: need(rest[0], "a summary"), provenance: provenance() }));
     break;
+  case "preserve": {
+    // the preservation event enters the record first, so the artifact carries
+    // its own provenance (charter §3: Preserve is an event, not a copy)
+    const target = opt.out ?? `laboratory/preservations/preservation-${new Date().toISOString().slice(0, 10)}-${lab.events().at(-1).hash.slice(0, 8)}.json`;
+    lab.observe({
+      statement: `Preservation created at ${target} — the Place packaged as one portable artifact.`,
+      provenance: provenance(),
+    });
+    const result = preserveRecord(opt.dir, target);
+    out(`preserved ${result.events} events (tip #${result.tip.seq} ${result.tip.hash.slice(0, 12)}…) → ${result.file}`);
+    break;
+  }
+  case "restore": {
+    const restored = restoreRecord(need(rest[0], "a preservation file"), need(opt.dir !== "laboratory/record" ? opt.dir : undefined, "--dir <empty place> (refusing to restore into the default record)"));
+    const s = restored.status();
+    out(`restored ${s.events} events into ${restored.dir} — chain ${s.chainValid ? "verifies" : "FAILS"}`);
+    break;
+  }
   default:
     fail(`unknown command: ${cmd}`);
 }

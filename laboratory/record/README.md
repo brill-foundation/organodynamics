@@ -48,6 +48,29 @@ node tools/lab.js seal "what I did and what remains" --as Ada --because "depart"
 If two Participants overlap, the Laboratory refuses to fork history: the one
 whose view went stale is told to reopen and continue from the new tip.
 
+## The engineering backlog
+
+The Laboratory owns its engineering work. The backlog lives in this record as
+ordinary entities and assertions — every reprioritization keeps its history:
+
+```
+node tools/backlog.js                       # open items by priority
+node tools/backlog.js add --title "..." --priority N --as You --because "..."
+node tools/backlog.js prioritize <id> --priority N --as You --because "..."
+node tools/backlog.js done <id> --as You --because "..."
+```
+
+## To take the Place with you
+
+```
+node tools/lab.js preserve --as You --because "..."     # one portable artifact
+node tools/lab.js restore <file> --dir <empty place>    # a living copy, law included
+```
+
+A preservation is a single JSON file carrying the full event history, the
+chain tip, the Protocol, and this arrival document. Restore refuses tampered
+artifacts and never overwrites an existing record.
+
 Programmatically:
 
 ```js

@@ -1,0 +1,590 @@
+{
+ "format": "organodynamics-preservation",
+ "version": 1,
+ "preservedAt": "2026-07-12T17:10:10.070Z",
+ "tip": {
+  "seq": 31,
+  "hash": "7511b888d68eca254c227ea3abb01fdc5a07a066ac255be16c1b92ed6b0f5c20"
+ },
+ "events": [
+  {
+   "seq": 0,
+   "type": "PARTICIPANT_REGISTERED",
+   "subject": "od:participant:2b026688-e33d-4b8c-9bfe-a314f6afc7ff",
+   "payload": {
+    "name": "Claude",
+    "kind": "ai"
+   },
+   "provenance": {
+    "actor": "od:participant:2b026688-e33d-4b8c-9bfe-a314f6afc7ff",
+    "intention": "arrive as lead engineer under the 2026-07-12 mandate (CAB-008)"
+   },
+   "prevHash": "genesis",
+   "hash": "45e2d8a94f91f29577abdeb989561552e81eda46b7c574b75845a328761d4858",
+   "recordedAt": "2026-07-12T16:28:16.733Z"
+  },
+  {
+   "seq": 1,
+   "type": "PARTICIPANT_REGISTERED",
+   "subject": "od:participant:04083817-5e4e-403b-be9b-1ab3e682a86a",
+   "payload": {
+    "name": "Adi Brill",
+    "kind": "human"
+   },
+   "provenance": {
+    "actor": "od:participant:04083817-5e4e-403b-be9b-1ab3e682a86a",
+    "intention": "recorded by Claude as the mandate's author and the Reality seat"
+   },
+   "prevHash": "45e2d8a94f91f29577abdeb989561552e81eda46b7c574b75845a328761d4858",
+   "hash": "ab989f4cfce4c501630afe9abfdbe1bc878725ae94020b525be94bb1c0c97d94",
+   "recordedAt": "2026-07-12T16:28:16.734Z"
+  },
+  {
+   "seq": 2,
+   "type": "OBSERVATION_RECORDED",
+   "subject": "od:observation:ba5bb928-e1f6-4da6-962b-e10aac61557b",
+   "payload": {
+    "about": null,
+    "statement": "Mission update received 2026-07-12: the Laboratory Protocol is frozen at five obligations — Identity, Grounding, Provenance, Explicit Judgment, Sealing. Continuity was eliminated as derivable. The burden of proof reversed: implementation must justify architectural change. Full text preserved at laboratory/PROTOCOL.md and cabinet CAB-008."
+   },
+   "provenance": {
+    "actor": "od:participant:2b026688-e33d-4b8c-9bfe-a314f6afc7ff",
+    "intention": "preserve the mandate as an observation in the record itself"
+   },
+   "prevHash": "ab989f4cfce4c501630afe9abfdbe1bc878725ae94020b525be94bb1c0c97d94",
+   "hash": "08d1379cf318975e004b8378c7b6913f6a3c5a458a2c6cb798b6aac7c30e0131",
+   "recordedAt": "2026-07-12T16:28:16.734Z"
+  },
+  {
+   "seq": 3,
+   "type": "OBSERVATION_RECORDED",
+   "subject": "od:observation:8ba8797d-6ee5-4a31-b40f-c7ec20e01727",
+   "payload": {
+    "about": null,
+    "statement": "The five obligations arrived as names; the Record contains no authoritative definitions beyond them. Engineering interpretations were adopted and written to laboratory/PROTOCOL.md."
+   },
+   "provenance": {
+    "actor": "od:participant:2b026688-e33d-4b8c-9bfe-a314f6afc7ff",
+    "intention": "keep the definitional gap visible"
+   },
+   "prevHash": "08d1379cf318975e004b8378c7b6913f6a3c5a458a2c6cb798b6aac7c30e0131",
+   "hash": "558e1ab6e5629849f287c036b502041794d2b6b981adf726f295b684a03aba5a",
+   "recordedAt": "2026-07-12T16:28:16.734Z"
+  },
+  {
+   "seq": 4,
+   "type": "JUDGMENT_RECORDED",
+   "subject": "od:judgment:f03c0a26-702d-43a6-b035-f765c7066bba",
+   "payload": {
+    "about": null,
+    "conclusion": "The engineering interpretations in laboratory/PROTOCOL.md are adopted as implementation law for this Laboratory until challenged or until authoritative definitions arrive.",
+    "reasoning": "The mandate grants engineering authority and forbids stopping for engineering uncertainty; the obligations map cleanly onto existing corpus primitives (P-002, P-006, P-008, P-009/010/011, P-013), so interpretation implements existing principles rather than inventing new ones (stop condition 3 not triggered). Recording the interpretations as a challengeable artifact keeps them revisable.",
+    "basis": [
+     "od:observation:ba5bb928-e1f6-4da6-962b-e10aac61557b",
+     "od:observation:8ba8797d-6ee5-4a31-b40f-c7ec20e01727"
+    ]
+   },
+   "provenance": {
+    "actor": "od:participant:2b026688-e33d-4b8c-9bfe-a314f6afc7ff",
+    "intention": "make the adoption of interpretations an explicit judgment, not a side effect"
+   },
+   "prevHash": "558e1ab6e5629849f287c036b502041794d2b6b981adf726f295b684a03aba5a",
+   "hash": "c444c8ca1a6e1ca983d2027f78bb519a35ddb8b3bcd995bf97be0e5ed6e6db13",
+   "recordedAt": "2026-07-12T16:28:16.735Z"
+  },
+  {
+   "seq": 5,
+   "type": "UNKNOWN_RECORDED",
+   "subject": "od:unknown:150df1df-4e84-40c4-ad26-73a768c92e54",
+   "payload": {
+    "about": null,
+    "question": "Do the five obligations have authoritative definitions beyond their names? The interpretations in laboratory/PROTOCOL.md are provisional until the Reality seat confirms or corrects them."
+   },
+   "provenance": {
+    "actor": "od:participant:2b026688-e33d-4b8c-9bfe-a314f6afc7ff",
+    "intention": "obligation to keep uncertainty visible (Axiom 6)"
+   },
+   "prevHash": "c444c8ca1a6e1ca983d2027f78bb519a35ddb8b3bcd995bf97be0e5ed6e6db13",
+   "hash": "2418709b3f960d72159e3c7db48437894e74607c648bb8993709050dc7d2a900",
+   "recordedAt": "2026-07-12T16:28:16.735Z"
+  },
+  {
+   "seq": 6,
+   "type": "ENTITY_CREATED",
+   "subject": "od:entity:9f4346ba-1d88-49df-a8dd-33df908a7a62",
+   "payload": {
+    "kind": "Place"
+   },
+   "provenance": {
+    "actor": "od:participant:2b026688-e33d-4b8c-9bfe-a314f6afc7ff",
+    "intention": "give the Laboratory itself an identity in its own record"
+   },
+   "prevHash": "2418709b3f960d72159e3c7db48437894e74607c648bb8993709050dc7d2a900",
+   "hash": "993cba0f75f5245195573f9c10fa3ff7c3b8b24cef01ad7ded0f83ccce3d17aa",
+   "recordedAt": "2026-07-12T16:28:16.735Z"
+  },
+  {
+   "seq": 7,
+   "type": "ASSERTION_MADE",
+   "subject": "od:assertion:4a345137-231b-41cc-bbfb-63a314b381fa",
+   "payload": {
+    "about": "od:entity:9f4346ba-1d88-49df-a8dd-33df908a7a62",
+    "predicate": "name",
+    "value": "The Autonomous Organodynamics Reference Laboratory",
+    "grounding": {
+     "kind": "source",
+     "ref": "laboratory/PROTOCOL.md"
+    }
+   },
+   "provenance": {
+    "actor": "od:participant:2b026688-e33d-4b8c-9bfe-a314f6afc7ff",
+    "intention": "name the Place from its protocol"
+   },
+   "prevHash": "993cba0f75f5245195573f9c10fa3ff7c3b8b24cef01ad7ded0f83ccce3d17aa",
+   "hash": "f4cbce7a4a295978828710767d2ca1e557d7976b8c3cca00cac7d593f9ee8288",
+   "recordedAt": "2026-07-12T16:28:16.735Z"
+  },
+  {
+   "seq": 8,
+   "type": "SEALED",
+   "subject": "od:seal:c62c6342-10ce-4604-9d9a-10c56911a307",
+   "payload": {
+    "summary": "First session: mandate preserved, protocol interpretations adopted by explicit judgment, definitional gap recorded as an open unknown, the Laboratory given identity in its own record. Kernel extended to protocol conformance (16 tests green). The record is now continuable by any Participant from this file alone.",
+    "sealedThrough": 7,
+    "chainHash": "f4cbce7a4a295978828710767d2ca1e557d7976b8c3cca00cac7d593f9ee8288"
+   },
+   "provenance": {
+    "actor": "od:participant:2b026688-e33d-4b8c-9bfe-a314f6afc7ff",
+    "intention": "depart and hand the Laboratory to whoever arrives next"
+   },
+   "prevHash": "f4cbce7a4a295978828710767d2ca1e557d7976b8c3cca00cac7d593f9ee8288",
+   "hash": "443c417235f19459eba53895293a3272e3b967fbc22604075e6fb074c9e59f34",
+   "recordedAt": "2026-07-12T16:28:16.735Z"
+  },
+  {
+   "seq": 9,
+   "type": "OBSERVATION_RECORDED",
+   "subject": "od:observation:354f53fd-c271-4afd-8497-fdf59d9745ec",
+   "payload": {
+    "about": null,
+    "statement": "The Laboratory grew for daily use: a write-capable CLI (arrive/observe/entity/assert/judge/unknown/resolve/evidence/seal + explain/sessions), a tip guard refusing forked history when Participants overlap, sessions derived from seals, and a web room (laboratory/record/index.html) that re-verifies the chain in the reader's browser. 18 tests green."
+   },
+   "provenance": {
+    "actor": "od:participant:2b026688-e33d-4b8c-9bfe-a314f6afc7ff",
+    "intention": "record the growth milestone as an observation in the record it improved"
+   },
+   "prevHash": "443c417235f19459eba53895293a3272e3b967fbc22604075e6fb074c9e59f34",
+   "hash": "ec6c4fcf36da8dbdc522dad83264109d625d490828c59cda2a7f46fa9ecf39f8",
+   "recordedAt": "2026-07-12T17:03:36.647Z"
+  },
+  {
+   "seq": 10,
+   "type": "JUDGMENT_RECORDED",
+   "subject": "od:judgment:014eac75-8dc8-48fd-a355-466dcccbf290",
+   "payload": {
+    "about": null,
+    "conclusion": "Arrival no longer requires writing code; the record is discoverable from shell and browser; concurrent Participants cannot corrupt the chain.",
+    "reasoning": "Each improvement was chosen by the mandate's question — does this make the Laboratory better for the next Participant. The CLI removes the largest arrival barrier; the tip guard turns a silent corruption into an explicit recoverable refusal; the web room makes verification public without tooling. No new protocol concepts were needed: sessions are pure derivation over seals.",
+    "basis": []
+   },
+   "provenance": {
+    "actor": "od:participant:2b026688-e33d-4b8c-9bfe-a314f6afc7ff",
+    "intention": "state the engineering judgment explicitly rather than leaving it implicit in commits"
+   },
+   "prevHash": "ec6c4fcf36da8dbdc522dad83264109d625d490828c59cda2a7f46fa9ecf39f8",
+   "hash": "30ae64458f1d8aab6d811ed15e5a8e756a1b8f164a7109faf376510889d1beb4",
+   "recordedAt": "2026-07-12T17:03:36.715Z"
+  },
+  {
+   "seq": 11,
+   "type": "JUDGMENT_RECORDED",
+   "subject": "od:judgment:179e7a64-e2e3-4195-bf8d-f517ba21d91e",
+   "payload": {
+    "about": null,
+    "conclusion": "The judgment above rests on the milestone observation.",
+    "reasoning": "linking basis explicitly",
+    "basis": [
+     "od:observation:354f53fd-c271-4afd-8497-fdf59d9745ec"
+    ]
+   },
+   "provenance": {
+    "actor": "od:participant:2b026688-e33d-4b8c-9bfe-a314f6afc7ff",
+    "intention": "test basis linking"
+   },
+   "prevHash": "30ae64458f1d8aab6d811ed15e5a8e756a1b8f164a7109faf376510889d1beb4",
+   "hash": "11810ae6c7ac302906cf3d57c39c77929559284289e3659c65c377e70c1f68b9",
+   "recordedAt": "2026-07-12T17:03:47.146Z"
+  },
+  {
+   "seq": 12,
+   "type": "SEALED",
+   "subject": "od:seal:d9312a60-61ae-4326-a9e1-90c928428bd7",
+   "payload": {
+    "summary": "Second session: the growth milestone — write-capable CLI, tip guard against forked history, sessions view, browser-verified web room, 18 tests green. Open: the definitional unknown from session one still awaits the Reality seat.",
+    "sealedThrough": 11,
+    "chainHash": "11810ae6c7ac302906cf3d57c39c77929559284289e3659c65c377e70c1f68b9"
+   },
+   "provenance": {
+    "actor": "od:participant:2b026688-e33d-4b8c-9bfe-a314f6afc7ff",
+    "intention": "depart and hand the Laboratory to whoever arrives next"
+   },
+   "prevHash": "11810ae6c7ac302906cf3d57c39c77929559284289e3659c65c377e70c1f68b9",
+   "hash": "e73ea4810f86d2b9e405f3211b193cea2b0b4e9aa9faaa0fa3e2c1b828212a38",
+   "recordedAt": "2026-07-12T17:03:47.216Z"
+  },
+  {
+   "seq": 13,
+   "type": "OBSERVATION_RECORDED",
+   "subject": "od:observation:fefa6d1d-17a5-4674-8671-f35bedeacc43",
+   "payload": {
+    "about": null,
+    "statement": "Governance update received 2026-07-12: the engineering backlog moves into the Laboratory itself — owned by the Laboratory, maintained by whoever engineers it, prioritized on implementation evidence. Not constitutional, not a protocol artifact; ordinary record content."
+   },
+   "provenance": {
+    "actor": "od:participant:2b026688-e33d-4b8c-9bfe-a314f6afc7ff",
+    "intention": "preserve the governance change where the backlog will live"
+   },
+   "prevHash": "e73ea4810f86d2b9e405f3211b193cea2b0b4e9aa9faaa0fa3e2c1b828212a38",
+   "hash": "9442e2598a6852be40611a62132957501b0cada17871c88cf95b05ae4f003e26",
+   "recordedAt": "2026-07-12T17:10:09.617Z"
+  },
+  {
+   "seq": 14,
+   "type": "ENTITY_CREATED",
+   "subject": "od:entity:862a1742-6caa-4495-b781-bcabe3322dd2",
+   "payload": {
+    "kind": "backlog-item"
+   },
+   "provenance": {
+    "actor": "od:participant:2b026688-e33d-4b8c-9bfe-a314f6afc7ff",
+    "intention": "declared next work at the previous milestone; deepest reduction of dependence on this repository"
+   },
+   "prevHash": "9442e2598a6852be40611a62132957501b0cada17871c88cf95b05ae4f003e26",
+   "hash": "21576fb527255c8621ddd92652830f33af4a140007263844b39a282a54124bb0",
+   "recordedAt": "2026-07-12T17:10:09.691Z"
+  },
+  {
+   "seq": 15,
+   "type": "ASSERTION_MADE",
+   "subject": "od:assertion:5ad75c15-9cd8-4585-80f1-ad57984319ae",
+   "payload": {
+    "about": "od:entity:862a1742-6caa-4495-b781-bcabe3322dd2",
+    "predicate": "title",
+    "value": "Preserve/Restore: the record travels as one portable artifact (charter §3, §8a)",
+    "grounding": {
+     "kind": "source",
+     "ref": "laboratory/CONSTITUTION.md §3"
+    }
+   },
+   "provenance": {
+    "actor": "od:participant:2b026688-e33d-4b8c-9bfe-a314f6afc7ff",
+    "intention": "declared next work at the previous milestone; deepest reduction of dependence on this repository"
+   },
+   "prevHash": "21576fb527255c8621ddd92652830f33af4a140007263844b39a282a54124bb0",
+   "hash": "5fe909fd82d84ffa0be910137a702998049abefee7b27e61c49c5f9f6ce9fc32",
+   "recordedAt": "2026-07-12T17:10:09.691Z"
+  },
+  {
+   "seq": 16,
+   "type": "ASSERTION_MADE",
+   "subject": "od:assertion:54b80b4d-b00b-4f09-bb91-5c460e1106c0",
+   "payload": {
+    "about": "od:entity:862a1742-6caa-4495-b781-bcabe3322dd2",
+    "predicate": "priority",
+    "value": 1,
+    "grounding": {
+     "kind": "conjecture"
+    }
+   },
+   "provenance": {
+    "actor": "od:participant:2b026688-e33d-4b8c-9bfe-a314f6afc7ff",
+    "intention": "declared next work at the previous milestone; deepest reduction of dependence on this repository"
+   },
+   "prevHash": "5fe909fd82d84ffa0be910137a702998049abefee7b27e61c49c5f9f6ce9fc32",
+   "hash": "2f9b53f7aaafc07e0d5dd9ae65dacfc1b306da9475d9b50ccde3db3406f64b62",
+   "recordedAt": "2026-07-12T17:10:09.691Z"
+  },
+  {
+   "seq": 17,
+   "type": "ASSERTION_MADE",
+   "subject": "od:assertion:b8d1e2f4-f576-4ab4-9be7-c6ab4f85d591",
+   "payload": {
+    "about": "od:entity:862a1742-6caa-4495-b781-bcabe3322dd2",
+    "predicate": "status",
+    "value": "open",
+    "grounding": {
+     "kind": "conjecture"
+    }
+   },
+   "provenance": {
+    "actor": "od:participant:2b026688-e33d-4b8c-9bfe-a314f6afc7ff",
+    "intention": "declared next work at the previous milestone; deepest reduction of dependence on this repository"
+   },
+   "prevHash": "2f9b53f7aaafc07e0d5dd9ae65dacfc1b306da9475d9b50ccde3db3406f64b62",
+   "hash": "3a979b67fd0efda034183841db0d4395403c14d9857b113bef611e611f14a280",
+   "recordedAt": "2026-07-12T17:10:09.691Z"
+  },
+  {
+   "seq": 18,
+   "type": "ENTITY_CREATED",
+   "subject": "od:entity:02fb5d6d-c8fe-4493-a9c1-989e90c1dbfd",
+   "payload": {
+    "kind": "backlog-item"
+   },
+   "provenance": {
+    "actor": "od:participant:2b026688-e33d-4b8c-9bfe-a314f6afc7ff",
+    "intention": "connect the authored archive to the record's grounding obligation"
+   },
+   "prevHash": "3a979b67fd0efda034183841db0d4395403c14d9857b113bef611e611f14a280",
+   "hash": "6149891e48d1480c4b9c6e1e63b4c362f81eb87d7218d6c8f29fea64329ce373",
+   "recordedAt": "2026-07-12T17:10:09.766Z"
+  },
+  {
+   "seq": 19,
+   "type": "ASSERTION_MADE",
+   "subject": "od:assertion:233c4cf7-4bf2-4e89-80ed-19965d6770c1",
+   "payload": {
+    "about": "od:entity:02fb5d6d-c8fe-4493-a9c1-989e90c1dbfd",
+    "predicate": "title",
+    "value": "Ground assertions in Cabinet artifacts with existence checking (source refs are unchecked strings today)",
+    "grounding": {
+     "kind": "conjecture"
+    }
+   },
+   "provenance": {
+    "actor": "od:participant:2b026688-e33d-4b8c-9bfe-a314f6afc7ff",
+    "intention": "connect the authored archive to the record's grounding obligation"
+   },
+   "prevHash": "6149891e48d1480c4b9c6e1e63b4c362f81eb87d7218d6c8f29fea64329ce373",
+   "hash": "4a1914a687052a034ccdbb340cf11781023b6137c0539bfc8107cb2271d0d42a",
+   "recordedAt": "2026-07-12T17:10:09.767Z"
+  },
+  {
+   "seq": 20,
+   "type": "ASSERTION_MADE",
+   "subject": "od:assertion:de564991-991d-4dfc-90fc-7e9ed02a535a",
+   "payload": {
+    "about": "od:entity:02fb5d6d-c8fe-4493-a9c1-989e90c1dbfd",
+    "predicate": "priority",
+    "value": 2,
+    "grounding": {
+     "kind": "conjecture"
+    }
+   },
+   "provenance": {
+    "actor": "od:participant:2b026688-e33d-4b8c-9bfe-a314f6afc7ff",
+    "intention": "connect the authored archive to the record's grounding obligation"
+   },
+   "prevHash": "4a1914a687052a034ccdbb340cf11781023b6137c0539bfc8107cb2271d0d42a",
+   "hash": "f7e9b0b20caf8bc12e1457add2aa880cb41abe40990a29a0101c161876845058",
+   "recordedAt": "2026-07-12T17:10:09.767Z"
+  },
+  {
+   "seq": 21,
+   "type": "ASSERTION_MADE",
+   "subject": "od:assertion:bce9a166-b1e8-4c81-95e2-57e6270b3385",
+   "payload": {
+    "about": "od:entity:02fb5d6d-c8fe-4493-a9c1-989e90c1dbfd",
+    "predicate": "status",
+    "value": "open",
+    "grounding": {
+     "kind": "conjecture"
+    }
+   },
+   "provenance": {
+    "actor": "od:participant:2b026688-e33d-4b8c-9bfe-a314f6afc7ff",
+    "intention": "connect the authored archive to the record's grounding obligation"
+   },
+   "prevHash": "f7e9b0b20caf8bc12e1457add2aa880cb41abe40990a29a0101c161876845058",
+   "hash": "341fe3d90143c34326d659b4f6e79e9b4bf78d37a0b8a6850618c7f277a9d3c0",
+   "recordedAt": "2026-07-12T17:10:09.767Z"
+  },
+  {
+   "seq": 22,
+   "type": "ENTITY_CREATED",
+   "subject": "od:entity:a6cdf41c-f1e9-457a-98b7-5ab226abb9da",
+   "payload": {
+    "kind": "backlog-item"
+   },
+   "provenance": {
+    "actor": "od:participant:2b026688-e33d-4b8c-9bfe-a314f6afc7ff",
+    "intention": "recorded kernel limitation since Phase 2"
+   },
+   "prevHash": "341fe3d90143c34326d659b4f6e79e9b4bf78d37a0b8a6850618c7f277a9d3c0",
+   "hash": "e752455f91c11f066190e1844e1bd47411d0ec99d34861b5bef32f5e66d57640",
+   "recordedAt": "2026-07-12T17:10:09.844Z"
+  },
+  {
+   "seq": 23,
+   "type": "ASSERTION_MADE",
+   "subject": "od:assertion:3347fe12-24cb-4463-9d94-300ef9b0f1eb",
+   "payload": {
+    "about": "od:entity:a6cdf41c-f1e9-457a-98b7-5ab226abb9da",
+    "predicate": "title",
+    "value": "References and Context as first-class kernel citizens",
+    "grounding": {
+     "kind": "source",
+     "ref": "src/kernel/README.md known limitations"
+    }
+   },
+   "provenance": {
+    "actor": "od:participant:2b026688-e33d-4b8c-9bfe-a314f6afc7ff",
+    "intention": "recorded kernel limitation since Phase 2"
+   },
+   "prevHash": "e752455f91c11f066190e1844e1bd47411d0ec99d34861b5bef32f5e66d57640",
+   "hash": "b4c5fd24cd09a6175ef575c04bbdaa44ae22b277e1cccc916b2ba0c3b8cb008e",
+   "recordedAt": "2026-07-12T17:10:09.845Z"
+  },
+  {
+   "seq": 24,
+   "type": "ASSERTION_MADE",
+   "subject": "od:assertion:7da7a90d-018e-4898-9160-dc35b11f1fcb",
+   "payload": {
+    "about": "od:entity:a6cdf41c-f1e9-457a-98b7-5ab226abb9da",
+    "predicate": "priority",
+    "value": 3,
+    "grounding": {
+     "kind": "conjecture"
+    }
+   },
+   "provenance": {
+    "actor": "od:participant:2b026688-e33d-4b8c-9bfe-a314f6afc7ff",
+    "intention": "recorded kernel limitation since Phase 2"
+   },
+   "prevHash": "b4c5fd24cd09a6175ef575c04bbdaa44ae22b277e1cccc916b2ba0c3b8cb008e",
+   "hash": "eb28f87c9cfdf7cb2b01261ac63dc926c0108b501d64e23558c60780cfb69f6d",
+   "recordedAt": "2026-07-12T17:10:09.845Z"
+  },
+  {
+   "seq": 25,
+   "type": "ASSERTION_MADE",
+   "subject": "od:assertion:9326cc24-4a83-4e17-a9e3-438bc8992d31",
+   "payload": {
+    "about": "od:entity:a6cdf41c-f1e9-457a-98b7-5ab226abb9da",
+    "predicate": "status",
+    "value": "open",
+    "grounding": {
+     "kind": "conjecture"
+    }
+   },
+   "provenance": {
+    "actor": "od:participant:2b026688-e33d-4b8c-9bfe-a314f6afc7ff",
+    "intention": "recorded kernel limitation since Phase 2"
+   },
+   "prevHash": "eb28f87c9cfdf7cb2b01261ac63dc926c0108b501d64e23558c60780cfb69f6d",
+   "hash": "16fdacce071c230edbf09ae21a2969353a6898e29c49d87b60ec882d4a22578d",
+   "recordedAt": "2026-07-12T17:10:09.845Z"
+  },
+  {
+   "seq": 26,
+   "type": "ENTITY_CREATED",
+   "subject": "od:entity:9a947d3a-13b6-44a4-9935-c7a2a47feacc",
+   "payload": {
+    "kind": "backlog-item"
+   },
+   "provenance": {
+    "actor": "od:participant:2b026688-e33d-4b8c-9bfe-a314f6afc7ff",
+    "intention": "the decidability the discipline's future silently assumes"
+   },
+   "prevHash": "16fdacce071c230edbf09ae21a2969353a6898e29c49d87b60ec882d4a22578d",
+   "hash": "1a7bf85f73a903bd7e262d5e9361c6c7759056896bfa7b39e0af66af045de2ee",
+   "recordedAt": "2026-07-12T17:10:09.927Z"
+  },
+  {
+   "seq": 27,
+   "type": "ASSERTION_MADE",
+   "subject": "od:assertion:72a078f3-c83e-4899-93f2-1dd459dfe21b",
+   "payload": {
+    "about": "od:entity:9a947d3a-13b6-44a4-9935-c7a2a47feacc",
+    "predicate": "title",
+    "value": "OCS-000 composition conformance suite: Place, Participant, Experiment... above the primitives",
+    "grounding": {
+     "kind": "source",
+     "ref": "cabinet CAB-007 §6 — a public executable conformance suite should exist before any Commons does"
+    }
+   },
+   "provenance": {
+    "actor": "od:participant:2b026688-e33d-4b8c-9bfe-a314f6afc7ff",
+    "intention": "the decidability the discipline's future silently assumes"
+   },
+   "prevHash": "1a7bf85f73a903bd7e262d5e9361c6c7759056896bfa7b39e0af66af045de2ee",
+   "hash": "04c87897e47f33b701e4b1faaa0e76bd03e35f0224ce29bb6544e6b32bba6853",
+   "recordedAt": "2026-07-12T17:10:09.927Z"
+  },
+  {
+   "seq": 28,
+   "type": "ASSERTION_MADE",
+   "subject": "od:assertion:c5d08f4b-953c-4270-9fef-21ace1df5241",
+   "payload": {
+    "about": "od:entity:9a947d3a-13b6-44a4-9935-c7a2a47feacc",
+    "predicate": "priority",
+    "value": 4,
+    "grounding": {
+     "kind": "conjecture"
+    }
+   },
+   "provenance": {
+    "actor": "od:participant:2b026688-e33d-4b8c-9bfe-a314f6afc7ff",
+    "intention": "the decidability the discipline's future silently assumes"
+   },
+   "prevHash": "04c87897e47f33b701e4b1faaa0e76bd03e35f0224ce29bb6544e6b32bba6853",
+   "hash": "00dba6bc39d7f17b2a4caaf41824066d6312cd9fc9bd97efce6e6711c5afd36c",
+   "recordedAt": "2026-07-12T17:10:09.928Z"
+  },
+  {
+   "seq": 29,
+   "type": "ASSERTION_MADE",
+   "subject": "od:assertion:4abc8d18-fca0-4976-806d-b3998e6bf3b1",
+   "payload": {
+    "about": "od:entity:9a947d3a-13b6-44a4-9935-c7a2a47feacc",
+    "predicate": "status",
+    "value": "open",
+    "grounding": {
+     "kind": "conjecture"
+    }
+   },
+   "provenance": {
+    "actor": "od:participant:2b026688-e33d-4b8c-9bfe-a314f6afc7ff",
+    "intention": "the decidability the discipline's future silently assumes"
+   },
+   "prevHash": "00dba6bc39d7f17b2a4caaf41824066d6312cd9fc9bd97efce6e6711c5afd36c",
+   "hash": "83d096e0859b2116ff932bdaa38d311d39e480c53cfecb97fa4cc3b3be74b707",
+   "recordedAt": "2026-07-12T17:10:09.928Z"
+  },
+  {
+   "seq": 30,
+   "type": "ASSERTION_SUPERSEDED",
+   "subject": "od:assertion:b8d1e2f4-f576-4ab4-9be7-c6ab4f85d591",
+   "payload": {
+    "value": "done"
+   },
+   "provenance": {
+    "actor": "od:participant:2b026688-e33d-4b8c-9bfe-a314f6afc7ff",
+    "intention": "implemented this session: preserve/restore with tamper refusal and no-overwrite, 21 tests green"
+   },
+   "prevHash": "83d096e0859b2116ff932bdaa38d311d39e480c53cfecb97fa4cc3b3be74b707",
+   "hash": "065ceb900d9fdc4538dd2c709491292ba1d75f945edb3e43a189dbae22e3f679",
+   "recordedAt": "2026-07-12T17:10:09.997Z"
+  },
+  {
+   "seq": 31,
+   "type": "OBSERVATION_RECORDED",
+   "subject": "od:observation:de6d5fe2-2d24-48bb-a9c7-5d7a4ad398d0",
+   "payload": {
+    "about": null,
+    "statement": "Preservation created at laboratory/preservations/preservation-2026-07-12-065ceb90.json — the Place packaged as one portable artifact."
+   },
+   "provenance": {
+    "actor": "od:participant:2b026688-e33d-4b8c-9bfe-a314f6afc7ff",
+    "intention": "create the first real preservation of this Laboratory"
+   },
+   "prevHash": "065ceb900d9fdc4538dd2c709491292ba1d75f945edb3e43a189dbae22e3f679",
+   "hash": "7511b888d68eca254c227ea3abb01fdc5a07a066ac255be16c1b92ed6b0f5c20",
+   "recordedAt": "2026-07-12T17:10:10.067Z"
+  }
+ ],
+ "docs": {
+  "README.md": "# You have arrived at the Laboratory\n\nThis directory is a Laboratory record: an append-only, hash-chained event log\n(`log.jsonl`) from which the Laboratory's entire state is derived. Nothing else\nholds memory. There is no hidden context; if it is not in the log, it did not\nhappen.\n\nThe Laboratory is **passive**. It will not tell you what to do, schedule you,\nor expect you. It only preserves reality. Participants — human, AI, script —\ncome and go independently.\n\n## To understand the current state\n\n```\nnode tools/lab.js status     # participants, counts, open unknowns, last seal\nnode tools/lab.js sessions   # the log, partitioned by seals\nnode tools/lab.js history    # every event, oldest first\nnode tools/lab.js explain <id>  # every event touching one object\nnode tools/lab.js verify     # mechanical integrity check\n```\n\nOr read `log.jsonl` directly — one JSON event per line. Or open this directory\nin a browser through the Door: the page re-verifies the chain client-side. No\ntool is required to understand the record; the tools are conveniences, not\ngatekeepers.\n\n## To continue previous work\n\nYou owe the Laboratory five obligations (`../PROTOCOL.md` — frozen 2026-07-12):\n**Identity** (register before contributing), **Grounding** (every assertion\nsays what it stands on; explicit conjecture is legal), **Provenance** (every\nact carries who and why), **Explicit Judgment** (conclusions state their\nreasoning), **Sealing** (close your session with a summary before departing).\n\nFrom any shell — identity is always explicit (`--as`), intention always stated\n(`--because`); nothing is remembered between commands:\n\n```\nnode tools/lab.js arrive --name \"Ada\" --kind human --because \"continue the open question\"\nnode tools/lab.js observe \"what I saw\" --as Ada --because \"ground the next assertion\"\nnode tools/lab.js assert --about <entity> --predicate p --value v \\\n     --grounded-in observation:<id> --as Ada --because \"...\"\nnode tools/lab.js judge --conclusion \"...\" --reasoning \"...\" --basis <id> --as Ada --because \"...\"\nnode tools/lab.js unknown \"what I could not settle\" --as Ada --because \"keep it visible\"\nnode tools/lab.js seal \"what I did and what remains\" --as Ada --because \"depart\"\n```\n\nIf two Participants overlap, the Laboratory refuses to fork history: the one\nwhose view went stale is told to reopen and continue from the new tip.\n\nProgrammatically:\n\n```js\nimport { openLaboratory } from \"../../src/laboratory/laboratory.js\";\nconst lab = openLaboratory(\"laboratory/record\");\n\nconst me = lab.registerParticipant({ name: \"…\", kind: \"human|ai|script\", intention: \"…\" });\nconst by = (intention) => ({ actor: me, intention });\n\nlab.status().openUnknowns;                              // what is unfinished\nconst o = lab.observe({ statement: \"…\", provenance: by(\"…\") });\nlab.assert({ about, predicate, value, grounding: { kind: \"observation\", ref: o }, provenance: by(\"…\") });\nlab.judge({ conclusion: \"…\", reasoning: \"…\", basis: [o], provenance: by(\"…\") });\nlab.seal({ summary: \"what you did and what remains\", provenance: by(\"depart\") });\n```\n\nEvery write is preserved immediately. When you seal and commit this directory\nto the Record (git), your seal is externally anchored.\n\n## The success test\n\nIf you can understand this Laboratory, continue its work, and leave it in a\nbetter state using only what you found here — it has succeeded. If you cannot,\nthat failure is an observation: record it before you leave.\n",
+  "PROTOCOL.md": "# The Laboratory Protocol — frozen 2026-07-12\n\n## Status\n\n**FROZEN.** Received from the Reality seat on 2026-07-12 (mandate preserved as\nCAB-008). From that date: no new constitutional principles, no new obligations,\nno new architectural layers, no new abstractions — unless *implementation*\nproduces explicit engineering evidence that this protocol is insufficient. The\nburden of proof is reversed: implementation must justify architectural change.\nReality is the reviewer.\n\n## The five obligations\n\nEvery Participant owes the Laboratory:\n\n1. **Identity**\n2. **Grounding**\n3. **Provenance**\n4. **Explicit Judgment**\n5. **Sealing**\n\nA sixth candidate (Continuity) was eliminated during reduction because it\nemerges from the interaction of the five. The reduction is complete.\n\n## Engineering interpretations (provisional, challengeable)\n\nThe obligations were received as names. The Record holds no authoritative\ndefinitions beyond them; the definitions below are **engineering\ninterpretations** made under engineering authority, mapped to the corpus, and\nrecorded so they can be challenged without archaeology. They are implementation\nlaw, not constitutional text. (This gap is also recorded as an open Unknown in\nthe Laboratory's own log.)\n\n1. **Identity** — every Participant and every contribution possesses one\n   permanent identity (P-002, Axiom 1). Operationally: a Participant registers\n   an identity before contributing; an unregistered actor cannot enter the\n   record; identities are never reassigned.\n2. **Grounding** — no claim floats free (P-009/P-010/P-011: observation is\n   separate from, and prior to, interpretation). Operationally: every assertion\n   declares what grounds it — an **observation** in the record, a cited\n   **source**, a **derivation** from existing record objects, or an explicit\n   admission of **conjecture**. Conjecture is legal; silent conjecture is not.\n3. **Provenance** — every change to the record carries who and why (P-008,\n   Axiom 5). Operationally: no event without an actor and an intention;\n   constitutional time is the event sequence, clock time is context.\n4. **Explicit Judgment** — conclusions are first-class recorded acts, never\n   side effects (P-010, P-013). Operationally: a Judgment states its\n   conclusion, its reasoning, and the record objects it rests on; a judgment\n   without reasoning is invalid.\n5. **Sealing** — work is closed by an explicit act that makes the record\n   tamper-evident and continuable (P-006 immutability; Axiom 3). Operationally:\n   a departing Participant seals the session with a summary; the seal binds the\n   hash of the chain it closes; verification is public and mechanical. The\n   Record (git) is the external anchor of seals.\n\n**Continuity, derived not owed:** identity (1) + provenance (3) + seals (5)\nover an append-only chain yield continuity without a sixth obligation — which\nis why it was eliminated.\n\n## Passivity clause\n\nThe Laboratory does not orchestrate Participants, schedule work, or know who\narrives next. It only preserves reality. Any implementation that gives the\nLaboratory initiative violates this protocol.\n"
+ }
+}
