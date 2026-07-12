@@ -1,0 +1,126 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>The Sessions — Organodynamics</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🔭</text></svg>">
+<link rel="stylesheet" href="../../assets/door.css">
+</head>
+<body class="room-sessions">
+<!-- Reading room for the living record. Renders log.jsonl verbatim, grouped
+     by seals into sessions, and re-verifies the hash chain in the reader's
+     own browser — verification is public and mechanical, owed to no one. -->
+<header class="top">
+  <div class="wordmark"><a href="../../" data-i18n="reader.back">← THE DOOR</a></div>
+  <nav>
+    <a href="../../constitution/" data-i18n="nav.constitution">Constitution</a>
+    <a href="../../rfcs/" data-i18n="nav.rfcs">RFCs</a>
+    <a href="../../cabinet/" data-i18n="nav.cabinet">Cabinet</a>
+    <a href="https://github.com/brill-foundation/organodynamics" data-i18n="nav.record">The Record</a>
+  </nav>
+  <button class="hbtn" id="langToggle">עברית</button>
+</header>
+<div class="pagewrap">
+  <div class="arrival" style="padding:44px 0 8px">
+    <p class="kicker" data-i18n="sessions.kicker">The living record</p>
+    <h1 class="door" style="font-size:32px"><span data-i18n="sessions.title">The Sessions</span></h1>
+    <p class="lede" style="font-size:15px" data-i18n="sessions.lede">Participants arrive, work under the five
+    obligations, seal, and depart. Everything below is derived from one append-only file — and your browser
+    re-verifies its hash chain right now, trusting no one.</p>
+  </div>
+  <details class="guide">
+    <summary data-i18n="guide.sessions.s">✎ A local note — how to continue this work</summary>
+    <p class="gbody" data-i18n="guide.sessions.b">This room is read-only, but the Laboratory is not. Clone the
+    Record, run <code>node tools/lab.js status</code>, arrive, and continue from the open unknowns. The five
+    obligations you take on are in <code>laboratory/PROTOCOL.md</code>: Identity, Grounding, Provenance,
+    Explicit Judgment, Sealing.</p>
+  </details>
+  <p class="quiet" id="verifyline" style="margin-top:18px">verifying the chain in your browser…</p>
+  <div id="docs"><p class="quiet">Fetching the record…</p></div>
+</div>
+<footer>
+  <span data-i18n="sessions.footer">This room renders <code>laboratory/record/log.jsonl</code> verbatim — the Record is the source of truth.</span>
+</footer>
+<script src="../../assets/lang.js"></script>
+<script>
+(async()=>{
+  const host=document.getElementById("docs");
+  const vline=document.getElementById("verifyline");
+  const esc=(s)=>String(s).replace(/[&<>"]/g,(c)=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+
+  // Deterministic serialization — must match src/kernel/log.js canonical().
+  const canonical=(v)=>{
+    if(Array.isArray(v))return`[${v.map(canonical).join(",")}]`;
+    if(v&&typeof v==="object")return`{${Object.keys(v).sort().map((k)=>`${JSON.stringify(k)}:${canonical(v[k])}`).join(",")}}`;
+    return JSON.stringify(v);
+  };
+  const sha256=async(text)=>{
+    const buf=await crypto.subtle.digest("SHA-256",new TextEncoder().encode(text));
+    return[...new Uint8Array(buf)].map((b)=>b.toString(16).padStart(2,"0")).join("");
+  };
+
+  let events;
+  try{
+    const r=await fetch("log.jsonl",{cache:"no-store"});
+    if(!r.ok)throw 0;
+    events=(await r.text()).split("\n").filter(Boolean).map((l)=>JSON.parse(l));
+  }catch(e){
+    vline.textContent="";
+    host.innerHTML='<p class="quiet">The record lives at <code>laboratory/record/log.jsonl</code>. '+
+      'Reading it here needs the deployed door or a local server — or open the file directly in the repository.</p>';
+    return;
+  }
+
+  // Re-verify the chain and every seal, independently, in this browser.
+  let prev="genesis",chainOk=true;
+  for(const e of events){
+    const{hash,recordedAt,...rest}=e;
+    if(e.prevHash!==prev||hash!==await sha256(canonical({...rest,prevHash:prev}))){chainOk=false;break;}
+    prev=hash;
+  }
+  const sealsOk=events.filter((e)=>e.type==="SEALED")
+    .every((s)=>events[s.payload.sealedThrough]&&events[s.payload.sealedThrough].hash===s.payload.chainHash);
+  vline.textContent=chainOk&&sealsOk
+    ?`✓ ${events.length} events — hash chain and seals re-verified in your browser`
+    :"✗ VERIFICATION FAILED — this record does not match its own chain";
+
+  // Group by seals into sessions (pure derivation, same rule as the shell).
+  const names=new Map(events.filter((e)=>e.type==="PARTICIPANT_REGISTERED").map((e)=>[e.subject,e.payload.name]));
+  const nm=(id)=>names.get(id)??id;
+  const gist=(p)=>p.summary??p.statement??p.conclusion??p.question??p.name??p.predicate??p.kind??"";
+  const sessions=[];let from=0;
+  for(const e of events){
+    if(e.type!=="SEALED")continue;
+    sessions.push({from,to:e.seq,seal:e});from=e.seq+1;
+  }
+  if(from<events.length)sessions.push({from,to:events.length-1,seal:null});
+
+  host.innerHTML="";
+  sessions.forEach((s,i)=>{
+    const span=events.slice(s.from,s.to+1);
+    const who=[...new Set(span.map((e)=>nm(e.provenance.actor)))].join(", ");
+    const d=document.createElement("details");
+    if(!s.seal)d.open=true;
+    d.className="guide";
+    d.innerHTML=
+      `<summary>${s.seal?"⏺":"○"} Session ${i+1} — events #${s.from}–#${s.to} — ${esc(who)}${s.seal?"":" — OPEN"}</summary>`+
+      (s.seal?`<p class="gbody" style="font-style:italic">“${esc(s.seal.payload.summary)}” — sealed by ${esc(nm(s.seal.provenance.actor))}</p>`:"")+
+      `<div class="gbody">`+span.map((e)=>
+        `<p style="margin:6px 0"><code>#${e.seq} ${esc(e.type)}</code> ${esc(gist(e.payload))}<br>`+
+        `<span class="quiet" style="font-size:12px">${esc(nm(e.provenance.actor))} — ${esc(e.provenance.intention)}</span></p>`
+      ).join("")+`</div>`;
+    host.appendChild(d);
+  });
+  const open=events.filter((e)=>e.type==="UNKNOWN_RECORDED").map((e)=>e.subject)
+    .filter((id)=>!events.some((e)=>e.type==="UNKNOWN_RESOLVED"&&e.subject===id));
+  if(open.length){
+    const p=document.createElement("p");
+    p.className="sidenote";p.style.marginTop="22px";
+    p.textContent=`${open.length} open unknown${open.length>1?"s":""} — the Laboratory is waiting for someone to continue.`;
+    host.appendChild(p);
+  }
+})();
+</script>
+</body>
+</html>
