@@ -3,9 +3,10 @@ id: RFC-004
 title: Two Constitutions
 status: open
 opened: 2026-07-12
+revised: 2026-07-12 (rev 2)
 concerns: how the received canonical corpus and the laboratory's grown charter coexist in one Record
 confidence: proposal
-exposed-by: arrival of the Canonical Engineering Package (CAB-006)
+exposed-by: arrival of the Canonical Engineering Package (CAB-006); rev 2 by a question from the Reality seat
 ---
 
 # RFC-004 — Two Constitutions
@@ -13,82 +14,115 @@ exposed-by: arrival of the Canonical Engineering Package (CAB-006)
 **Epistemic status:** forced by an event, not invented. On 2026-07-12 the
 Canonical Engineering Package arrived (CAB-006) carrying a mature constitutional
 corpus — OCS, OAS, OIS, OGD, ODM — and a mandate to build its first Reference
-Implementation. This Record already had a constitution: `laboratory/CONSTITUTION.md`,
-grown clause by clause from what reality did to the architecture. Two
-constitutions now live in one Record. Pretending otherwise would be the exact
-silent resolution both of them forbid.
+Implementation. This Record already had `laboratory/CONSTITUTION.md`, grown
+clause by clause from what reality did to the architecture. Rev 1 proposed
+coexistence. Rev 2 proposes something sharper, and keeps rev 1 in the lineage.
 
-## 1. The two documents are different kinds of law
+## 1. Rev 1 position — two tracks, one Record (superseded as leading proposal)
 
-- **The corpus is received law.** Written top-down, complete before
-  implementation, arriving with the instruction *"assume the Constitution is
-  correct; assume implementation is incomplete; never reverse these
-  assumptions."*
-- **The charter is grown law.** Written bottom-up, after the fact, with OPEN
-  clauses where "reality has not voted," and a method note that is its whole
-  point: *when reality refuses an architecture, we change the architecture.*
+Rev 1 read the two documents as two *kinds of law* — received and grown — and
+proposed parallel governance: the corpus rules the reference-implementation
+track (`constitution/`, `blueprint/`, `src/`, `tests/`); the grown charter
+rules the laboratory track; contact only through RFCs. It treated "does the
+charter derive from the corpus, or remain a sibling law?" as its first open
+question, unowned. Kept here because a superseded position stays in the
+lineage; superseded because the question found an owner.
 
-These epistemics look opposed. The corpus itself narrows the gap more than
-first reading suggests: OCS-000 makes Interpretation challengeable and
-Understanding provisional; OIS-CORE Axiom 8 says understanding is never
-absolute; ODM exists precisely to let discovered reality re-enter the
-constitution through governed process. The corpus is received, but it receives
-challenges. The charter is grown, but it grows by recorded principle. They
-disagree mainly about *where the burden of proof sits during implementation*.
+## 2. Rev 2 proposal — one Constitution, many implementations
 
-## 2. Proposal — two tracks, one Record
+The Reality seat asked: *what if there is only one Constitution, and the
+Laboratory is merely one Reference Implementation of it?*
 
-Adopt the reading that keeps both laws whole:
+Read that way, nothing in the Record is a rival law:
 
-- **The reference-implementation track** (`constitution/`, `blueprint/`, `src/`,
-  `tests/`) is governed by the corpus. Within this track the corpus is
-  authoritative; ambiguity becomes an RFC, never code (Blueprint Part I §9).
-- **The laboratory track** (`laboratory/`, the Door, the Cabinet, the earlier
-  RFCs) remains governed by the grown charter. Reality keeps its final vote
-  there; OPEN clauses stay open.
-- **The Record holds both.** Neither track edits the other's law. Where the
-  tracks touch — and they will, because the laboratory's Place/Journal/Cabinet
-  are recognizably the corpus's Place/Memory/Contribution spoken in furniture —
-  the contact is made *through this RFC and its successors*, not through quiet
-  refactoring.
+- **The corpus is the Constitution.** The only one. "Canonical" belongs to it
+  alone — which also dissolves rev 1's naming tension (CAB-006 F-1) more
+  cleanly than the lineage reading did.
+- **The Laboratory is a Reference Implementation** — legal under OIS-015 §7,
+  which invites multiple reference implementations specializing differently.
+  The Laboratory specializes in *habitation and discovery*: a lived
+  implementation. The Kernel (`src/kernel/`) specializes in *verification and
+  education*: an executable one. OIS-015 §10 then gives the two of them a
+  standing obligation to each other: constitutional equivalence must be
+  demonstrable between them. That is a falsifiable research program, not a
+  metaphor.
+- **The grown charter is not a constitution.** It is the Laboratory's
+  *implementation charter* — local law plus discovery record. Under OIS-015 §8
+  (an implementation continuously verifies itself against the specifications),
+  its history of refusals — `localStorage` failing the sovereignty test, the
+  Save/Preserve split — becomes verification evidence, which is a promotion,
+  not a demotion.
 
-This is the same shape as CAB-005's ruling on stewardship: authority stays
-where it was; the new role (here: the new law) enters as a bounded seat, not as
-a governing host over everything that existed before it.
+## 3. The derivation, first pass
 
-## 3. What supports the proposal
+Rev 1 said "nobody has done the derivation." A first pass, clause by clause:
 
-The corpus's own OIS-015: a Reference Implementation "demonstrates possibility,
-not authority" and SHALL NOT become normative. If the *implementation* of the
-corpus must not rule other implementations, the *arrival* of the corpus should
-not rule the laboratory that predates it. And symmetrically: OIS-CORE Axiom 9
-(knowledge belongs to Places; implementations only host them) is the
-laboratory's sovereignty clause (§3, §8a) said in received language. The two
-laws already believe things about each other.
+| Laboratory charter | Corpus concept |
+|---|---|
+| §1 world → Place → objects | Place composition (OCS-000); Federation of Places (OAS-009) |
+| §2 objects own responsibilities; implementations never enter the world's language | Axiom 10 replaceability; Axiom 2 meaning independent of representation |
+| §3 Save / Preserve; Git optional, preservation not | P-007 Memory ≠ storage — near-verbatim in both, written independently; P-006 Event |
+| §4 maturation derived from state, never decoration | state as pure replay of history; Axiom 4 |
+| §5 unintelligent furniture | P-009/P-010 observation separate from interpretation; implementation never interprets silently |
+| §6 emergency preservation | recovery behavior (OIS-015 §2); OAS-027 Resilience |
+| §7–§8 OPEN clauses | Axiom 6 — unknowns are constitutional objects, kept visible |
+| §8a ecosystem of sovereign Places exchanging Preservations | Axiom 9 sovereignty; Federation (OAS-009, OIS-010) |
+| method note: reality refuses → architecture changes | ODM discovery lifecycle, operating at implementation level |
 
-## 4. Adaptations of Blueprint Part IV, recorded not hidden
+The table is evidence in both directions: the Laboratory converged on the
+corpus's invariants *without having read them*. Independent convergence is the
+strongest support the corpus has yet received — and the Laboratory's provenance
+must say **converged with**, never **derived from** (Axiom 3: the history of
+how a law came to be is also history).
 
-- `rfc/` is prescribed; **`rfcs/` is kept** — it predates the package and the
-  Record's continuity outranks a directory name (Axiom 3: nothing constitutional
-  ever disappears, including naming history).
-- The `constitution/` directory now holds the received corpus (OCS/OAS/OIS/OGD/ODM,
-  read-only per Part IV §30) *while the Door's constitution room continues to
-  render the grown charter*. Both facts are true and both are visible; whether
-  the room should show both laws is a Door question, deliberately not decided in
-  this RFC.
-- Branch strategy (Part IV §39: main/develop/feature/*) is deferred until more
-  than one line of engineering exists; recorded so the deferral is a decision,
-  not a drift.
+## 4. What the reading costs, stated before ratification
 
-## 5. Open questions
+1. **Reality's vote gets routed.** The charter's stamp says *reality has the
+   final vote*. Under one Constitution, reality's refusals change
+   *implementations* directly, but reach the *Constitution* only through ODM's
+   lifecycle (observation → discovery → review → integration). The corpus does
+   not deny the vote; it makes it governed. If reality one day refuses a
+   constitutional invariant rather than an architecture, ODM is the only legal
+   path. This residue is the real difference between the two documents and
+   should be accepted knowingly or not at all.
+2. **A renaming.** `laboratory/CONSTITUTION.md` cannot keep that name if this
+   is ratified — it becomes the Laboratory's charter. The Door's constitution
+   room currently renders it under the stamp of a constitution; the room would
+   need to tell the new truth. Door questions stay Door questions; flagged, not
+   decided here.
+3. **"First" needs care.** The package mandates the *first* Canonical Reference
+   Implementation. If the Laboratory is a reference implementation, it came
+   first — unwittingly. Honest framing: the Laboratory is the first *convergent*
+   implementation, discovered retroactively; the Kernel is the first
+   implementation *derived from* the corpus deliberately.
 
-1. Does the grown charter eventually *derive from* the corpus (a Place's local
-   law under the constitutional alphabet), or does it remain a sibling law?
-   OCS-000's composition rules suggest derivation is possible; nobody has done
-   the derivation. Unowned until someone claims it.
+## 5. What would ratify rev 2
+
+1. Completing the derivation: any charter clause that cannot be expressed in
+   the constitutional alphabet is either an implementation choice (fine) or a
+   genuine counterexample (a discovery — escalate, don't hide).
+2. A conformance reading of the Laboratory against OIS-CORE, the way
+   `tests/kernel/` reads the Kernel: does the Journal preserve history? does
+   Preserve behave as an Event? does anything delete? Failures are findings,
+   not embarrassments.
+3. A ruling from the Reality seat, with §4's costs in view.
+
+## 6. Adaptations of Blueprint Part IV, recorded not hidden (unchanged from rev 1)
+
+- `rfc/` is prescribed; **`rfcs/` is kept** — the Record's continuity outranks
+  a directory name.
+- `constitution/` holds the received corpus, read-only per Part IV §30.
+- Branch strategy (Part IV §39) deferred until more than one line of
+  engineering exists; a decision, not a drift.
+
+## 7. Open questions
+
+1. ~~Does the grown charter derive from the corpus or remain a sibling law?~~
+   Owned by rev 2: it is the local charter of one Reference Implementation,
+   pending §5 ratification.
 2. Which rendition of the duplicate OIS files is authoritative (CAB-006 F-4)?
-   Needs a ruling from the Reality seat.
-3. The package calls the implementation *Canonical* while OIS-015 forbids it
-   normativity (CAB-006 F-1). Proposed resolution: "canonical" names the
-   *lineage* (first, reference, historically primary), never the *authority*.
-   Awaiting challenge.
+   Still needs a ruling.
+3. Where does the *Reality Game* — the world above the Laboratory in the
+   charter's §1 hierarchy — live under one Constitution? A Place containing
+   Places is expressible in the alphabet (Federation), but nobody has written
+   it down. New, opened by rev 2.
