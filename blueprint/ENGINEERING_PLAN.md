@@ -82,3 +82,14 @@ plan when its predecessor's acceptance criteria hold.
    represents Uncertainty explicitly (P-012).
 5. This plan is engineering guidance (Blueprint layer); when it conflicts with
    the corpus, the corpus prevails.
+
+## Addendum — 2026-07-12, Protocol Freeze
+
+The Laboratory Protocol was frozen at five obligations (mandate: CAB-008;
+protocol: `laboratory/PROTOCOL.md`). The burden of proof reversed: architecture
+no longer justifies implementation — implementation must justify architectural
+change. Consequences for this plan: Phase 2 (Kernel) reached protocol
+conformance and Phase 3 (persistence) was realized as the passive shell
+`src/laboratory/` with the living record at `laboratory/record/`; the phased
+elaboration beyond that proceeds only on engineering evidence, not on
+architectural anticipation. Audit trail: `docs/audit-kernel-vs-protocol.md`.
