@@ -1,14 +1,19 @@
 # Organodynamics
 
-Work in Progress
+**The entrance is one file: [`laboratory/arrival/WELCOME.md`](laboratory/arrival/WELCOME.md).**
+To enter the Laboratory — or to invite anyone else, human or AI — send that
+file and nothing more. Everything begins there.
 
-An engineering discipline for evolving representations of reality.
+---
 
+Work in Progress. An engineering discipline for evolving representations of
+reality.
+
+- `laboratory/` — the living laboratory: its record (`record/`), its Arrival
+  Kit (`arrival/`), its frozen Protocol, and its grown charter.
 - `constitution/` — the received constitutional corpus (OCS · OAS · OIS · OGD · ODM), read-only.
 - `blueprint/` — the engineering blueprint and execution plan for the Reference Implementation.
-- `src/` + `tests/` — the Canonical Knowledge Kernel; the tests validate constitutional axioms
-  (`node --test 'tests/**/*.test.js'`).
-- `laboratory/` — the living laboratory and its grown charter (RFC-004 records how the two
-  constitutions relate).
+- `src/` + `tests/` — the Canonical Knowledge Kernel and the constitutional
+  conformance suite (`npm test`, `npm run conformance`).
 - `rfcs/`, `cabinet/` — open questions and preserved research artifacts.
 - `drafts/` — early writing.
