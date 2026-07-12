@@ -3,20 +3,23 @@
 
 import test from "node:test";
 import assert from "node:assert/strict";
-import { mkdtempSync, readFileSync, writeFileSync } from "node:fs";
+import { mkdtempSync, mkdirSync, readFileSync, writeFileSync } from "node:fs";
 import { join } from "node:path";
 import { tmpdir } from "node:os";
 import { openLaboratory } from "../../src/laboratory/laboratory.js";
 import { preserve, restore } from "../../src/laboratory/preserve.js";
 
 function seededRecord() {
-  const dir = mkdtempSync(join(tmpdir(), "od-lab-"));
+  const parent = mkdtempSync(join(tmpdir(), "od-lab-"));
+  const dir = join(parent, "record");
   const lab = openLaboratory(dir);
   const me = lab.registerParticipant({ name: "traveler", kind: "ai", intention: "test" });
   const by = (intention) => ({ actor: me, intention });
   lab.observe({ statement: "worth carrying", provenance: by("make content") });
   lab.seal({ summary: "packed", provenance: by("depart") });
   writeFileSync(join(dir, "README.md"), "arrival doc travels too\n");
+  mkdirSync(join(parent, "arrival"));
+  writeFileSync(join(parent, "arrival", "WELCOME.md"), "the kit travels\n");
   return { dir, lab };
 }
 
@@ -31,6 +34,7 @@ test("preserve → restore — a sovereign roundtrip preserves meaning, history,
   assert.ok(restored.verify());
   assert.deepEqual(restored.events(), lab.events()); // identical history, hashes included
   assert.equal(readFileSync(join(target, "README.md"), "utf8"), "arrival doc travels too\n");
+  assert.equal(readFileSync(join(target, "arrival", "WELCOME.md"), "utf8"), "the kit travels\n");
   // the restored place is alive, not a museum copy: work continues on it
   const next = restored.registerParticipant({ name: "next", kind: "human", intention: "continue elsewhere" });
   assert.ok(next);

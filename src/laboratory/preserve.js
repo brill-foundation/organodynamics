@@ -11,12 +11,13 @@
 //
 // Dependencies: node:fs, node:path, ./laboratory.js.
 
-import { readFileSync, writeFileSync, existsSync, mkdirSync } from "node:fs";
+import { readFileSync, writeFileSync, existsSync, mkdirSync, readdirSync } from "node:fs";
 import { join, dirname } from "node:path";
 import { openLaboratory } from "./laboratory.js";
 
 const FORMAT = "organodynamics-preservation";
 const SIDECARS = ["README.md", "PROTOCOL.md"];
+const KIT_DIR = "arrival"; // the Arrival Kit travels with the place
 
 export function preserve(dir, outFile) {
   const lab = openLaboratory(dir);
@@ -29,6 +30,13 @@ export function preserve(dir, outFile) {
     for (const candidate of [join(dir, name), join(dir, "..", name)]) {
       if (existsSync(candidate)) { docs[name] = readFileSync(candidate, "utf8"); break; }
     }
+  }
+  for (const kitDir of [join(dir, KIT_DIR), join(dir, "..", KIT_DIR)]) {
+    if (!existsSync(kitDir)) continue;
+    for (const name of readdirSync(kitDir).filter((n) => n.endsWith(".md"))) {
+      docs[`${KIT_DIR}/${name}`] = readFileSync(join(kitDir, name), "utf8");
+    }
+    break;
   }
 
   const tip = events.at(-1);
@@ -63,7 +71,9 @@ export function restore(file, dir) {
   mkdirSync(dir, { recursive: true });
   writeFileSync(logFile, artifact.events.map((e) => JSON.stringify(e) + "\n").join(""));
   for (const [name, text] of Object.entries(artifact.docs ?? {})) {
-    writeFileSync(join(dir, name), text); // the law travels with the place
+    const path = join(dir, name); // the law and the Arrival Kit travel with the place
+    mkdirSync(dirname(path), { recursive: true });
+    writeFileSync(path, text);
   }
 
   const lab = openLaboratory(dir); // throws if the restored chain fails verification
