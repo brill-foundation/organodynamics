@@ -73,6 +73,9 @@ footer{border-top:1px solid var(--line);color:var(--muted);font-size:12.5px;
 .prose h2{font-size:21px}
 .prose h3{font-size:17px}
 .prose p{margin:.7em 0}
+/* cap the reading measure — long-form prose only, not headings/diagrams/tables.
+   ~70 characters per line keeps a museum-panel comfort at close inspection. */
+.prose p,.prose li,.prose blockquote{max-width:70ch}
 .prose pre{background:var(--bg2);border:1px solid var(--line);border-radius:10px;
   padding:12px 14px;overflow-x:auto;font-size:12.5px;line-height:1.45}
 .prose code{background:var(--bg2);border-radius:4px;padding:0 4px;font-size:.92em}
