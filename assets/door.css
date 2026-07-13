@@ -148,17 +148,17 @@ details.rfc .doc-inner{padding:8px 28px 26px}
 .room[data-obj=ledger]{background:color-mix(in srgb,#7a5a3a 7%,var(--card))}
 
 /* local guides — a taped, handwritten note beside the thing it explains */
-details.guide{background:color-mix(in srgb,#f5ecc9 55%,var(--card));border:1px solid color-mix(in srgb,#d8c69a 70%,var(--line));
+details.guide{background:#ecdfbc;border:1px solid #cdba8c;
   border-radius:2px;box-shadow:var(--shadow);transform:rotate(-.7deg);margin:18px 0 6px;max-width:540px;position:relative}
 details.guide::before{content:"";position:absolute;inset-inline-start:calc(50% - 26px);inset-block-start:-8px;width:54px;height:14px;
   background:color-mix(in srgb,#e8dcb4 60%,transparent);border:1px solid rgba(0,0,0,.05);transform:rotate(1.6deg)}
-details.guide summary{cursor:pointer;list-style:none;padding:10px 16px;font-family:var(--hand);color:#38506f;font-size:14.5px}
+details.guide summary{cursor:pointer;list-style:none;padding:10px 16px;font-family:var(--hand);color:#1c2a45;font-size:14.5px}
 details.guide summary::-webkit-details-marker{display:none}
 details.guide[open] summary{border-bottom:1px dashed color-mix(in srgb,#d8c69a 70%,var(--line))}
-details.guide .gbody{margin:0;padding:6px 16px 13px;font-family:var(--hand);color:#38506f;font-size:14px;line-height:1.65}
-@media (prefers-color-scheme:dark){
-  details.guide summary,details.guide .gbody{color:#8fb0d8}
-}
+details.guide .gbody{margin:0;padding:6px 16px 13px;font-family:var(--hand);color:#1c2a45;font-size:14px;line-height:1.65}
+/* sticky notes keep pale paper + dark ink in BOTH themes — a physical note is
+   pale paper with dark ink whether the room is light or dark. Readability over
+   theme-matching (BUG-003, entrance legibility). */
 
 /* the observatory window — the lab looking out at reality */
 .winframe{border:5px solid color-mix(in srgb,#7a5a3a 65%,var(--line));border-radius:60px 60px 12px 12px;
