@@ -1,0 +1,13 @@
+{
+  "name": "organodynamics",
+  "private": true,
+  "type": "module",
+  "description": "Reference implementation of the Organodynamics constitutional corpus — zero runtime dependencies by constitutional posture (Axiom 10).",
+  "scripts": {
+    "test": "node --test 'tests/**/*.test.js'",
+    "lab": "node tools/lab.js",
+    "backlog": "node tools/backlog.js",
+    "conformance": "node tools/conformance.js",
+    "publish-check": "node tools/publish-check.js"
+  }
+}
