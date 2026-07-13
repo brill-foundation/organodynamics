@@ -46,19 +46,30 @@ gate("living Record conforms", () => {
   return "C1–C8 pass";
 });
 
-// 4. Publishing is a fast-forward over main — no divergence, no conflicts, and
-//    main becomes exactly the reviewed commit. (Best-effort: needs origin/main.)
-gate("publication is a clean fast-forward over main", () => {
+// 4. Publishing brings this branch's work cleanly onto main. This must hold for
+//    BOTH publication styles the project uses: a fast-forward, and a GitHub
+//    merge-commit PR (which leaves a merge bubble on main that the branch never
+//    contains). So the readiness condition is not "main is a strict ancestor"
+//    but "main carries no content the branch lacks, and the branch is ahead."
+//    (Best-effort: needs origin/main fetched.)
+gate("publication brings this branch cleanly onto main", () => {
   let base;
   try {
     base = git("merge-base", "HEAD", "origin/main");
   } catch {
     return "origin/main not fetched — run `git fetch origin main` to check (not a failure here)";
   }
-  const mainTip = git("rev-parse", "origin/main");
-  if (base !== mainTip) throw new Error("main has diverged from this branch — rebase before publishing");
   const ahead = git("rev-list", "--count", "origin/main..HEAD");
-  return `fast-forward, ${ahead} commits ahead of main`;
+  if (ahead === "0") throw new Error("no new commits to publish over main");
+  // main must introduce no tree content, since the fork point, that HEAD lacks.
+  // A merge-commit publish leaves main's tree equal to the fork point, so this
+  // passes; a real unmerged change on main fails it (reconcile before publishing).
+  try {
+    execFileSync("git", ["diff", "--quiet", base, "origin/main"], { stdio: "pipe" });
+  } catch {
+    throw new Error("main has content this branch does not — reconcile (merge origin/main) before publishing");
+  }
+  return `${ahead} commits ahead; main carries no unmerged content since the fork`;
 });
 
 // The publication identity: which Laboratory this is, answerable mechanically.

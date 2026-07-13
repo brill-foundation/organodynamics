@@ -35,10 +35,11 @@ node tools/publish-check.js
 ```
 
 It must print **READY TO PUBLISH**. It verifies: clean working tree, tests
-pass, the Record conforms (C1–C8), and publication is a clean fast-forward
-over `main` (no divergence, no conflicts). It also prints the **publication
-identity** — commit, event count, Record tip hash — which you will confirm
-after the merge.
+pass, the Record conforms (C1–C8), and that the branch brings its work cleanly
+onto `main` (the branch is ahead and `main` carries no content the branch
+lacks — true whether the last publish was a fast-forward or a merge-commit PR).
+It also prints the **publication identity** — commit, event count, Record tip
+hash — which you will confirm after the merge.
 
 If any check is ✗, fix it and re-run. Do not publish past a ✗.
 
@@ -57,12 +58,13 @@ programmatically; otherwise open it from the branch page on GitHub
 
 ### 3. Human review, then merge
 
-The steward performs the final review. Because `publish-check` proved a clean
-fast-forward, prefer a **fast-forward / rebase merge**: `main` then becomes
-*exactly* the reviewed commit, with no synthetic merge commit and no
-history renegotiation (consistent with the Record's own append-only ethic).
-A standard merge commit is acceptable if the platform requires it; the
-invariant is only that `main`'s tree equals the reviewed tree.
+The steward performs the final review, then merges the PR. Either merge style
+is fine — a fast-forward/rebase merge, or GitHub's standard "Merge pull
+request" (a merge commit). The Record's append-only ethic is preserved on the
+engineering branch regardless; the only invariant that matters here is that
+**`main`'s tree ends up equal to the reviewed tree.** In practice the project
+uses GitHub merge-commit PRs, which leave a merge bubble on `main` that the
+branch does not carry — this is expected and `publish-check` accounts for it.
 
 ### 4. Verify the published Door
 
