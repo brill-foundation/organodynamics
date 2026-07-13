@@ -16,4 +16,7 @@ reality.
 - `src/` + `tests/` — the Canonical Knowledge Kernel and the constitutional
   conformance suite (`npm test`, `npm run conformance`).
 - `rfcs/`, `cabinet/` — open questions and preserved research artifacts.
+- `docs/` — engineering runbooks: [`STEWARDSHIP.md`](docs/STEWARDSHIP.md) (how
+  to take engineering responsibility for the Laboratory), `PUBLISHING.md`,
+  `VALIDATION_PLAN.md`.
 - `drafts/` — early writing.
