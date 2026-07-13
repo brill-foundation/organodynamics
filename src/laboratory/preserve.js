@@ -54,7 +54,19 @@ export function preserve(dir, outFile) {
 }
 
 export function restore(file, dir) {
-  const artifact = JSON.parse(readFileSync(file, "utf8"));
+  // Fail clearly on a corrupt preservation, the same standard the primary log
+  // load holds (parseRecordFile): a raw JSON.parse error would strand whoever
+  // is trying to recover, which is the worst moment to be cryptic.
+  let artifact;
+  try {
+    artifact = JSON.parse(readFileSync(file, "utf8"));
+  } catch {
+    throw new Error(
+      `the preservation ${file} is not valid JSON — it may be truncated or corrupt. ` +
+      `Obtain an intact preservation, or recover the record from git; ` +
+      `see laboratory/arrival/TROUBLESHOOTING.md.`
+    );
+  }
   if (artifact.format !== FORMAT) throw new Error(`not a preservation: ${file}`);
   if (!Array.isArray(artifact.events) || !artifact.events.length) {
     throw new Error("preservation carries no events");

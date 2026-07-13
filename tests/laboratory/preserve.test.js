@@ -57,3 +57,20 @@ test("restore refuses a tampered preservation and never overwrites a record", ()
     /chain verification/
   );
 });
+
+test("restore fails clearly on a corrupt preservation, not with a raw SyntaxError", () => {
+  const { dir } = seededRecord();
+  const artifactFile = join(mkdtempSync(join(tmpdir(), "od-out-")), "p.json");
+  preserve(dir, artifactFile);
+  // truncate the artifact mid-file (a corrupt/partial download or write)
+  const whole = readFileSync(artifactFile, "utf8");
+  writeFileSync(artifactFile, whole.slice(0, Math.floor(whole.length / 2)));
+
+  let err;
+  try { restore(artifactFile, join(mkdtempSync(join(tmpdir(), "od-new-")), "place")); }
+  catch (e) { err = e; }
+  assert.ok(err, "restoring a corrupt preservation must throw");
+  assert.match(err.message, /not valid JSON/);
+  assert.match(err.message, /TROUBLESHOOTING/);
+  assert.doesNotMatch(err.message, /Unexpected|SyntaxError/);
+});
