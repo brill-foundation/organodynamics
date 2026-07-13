@@ -37,6 +37,7 @@
 import { parseArgs } from "node:util";
 import { openLaboratory } from "../src/laboratory/laboratory.js";
 import { preserve as preserveRecord, restore as restoreRecord } from "../src/laboratory/preserve.js";
+import { inspectHabitat } from "../src/laboratory/habitat.js";
 
 const { values: opt, positionals } = parseArgs({
   allowPositionals: true,
@@ -95,6 +96,51 @@ function parseGrounding(spec) {
 }
 
 const out = (v) => console.log(typeof v === "string" ? v : JSON.stringify(v, null, 2));
+
+// The tip guard, one scope wider (src/laboratory/habitat.js). Before any
+// write, compare this record against every sibling copy git can reach; if a
+// verified sibling strictly extends it, this habitat is stale and writing
+// would fork history — the same refusal guardTip makes within a session,
+// made before the first event instead of after it. Reading is never gated:
+// a stale habitat is harmless to read and an Observer may read anything.
+const WRITE_COMMANDS = new Set([
+  "arrive", "observe", "entity", "assert", "judge", "unknown",
+  "resolve", "evidence", "seal", "preserve",
+]);
+if (WRITE_COMMANDS.has(cmd)) {
+  const h = inspectHabitat(opt.dir);
+  if (h.habitat === "git") {
+    if (h.fetched === false) {
+      console.error("lab: warning — could not refresh remote refs; freshness checked against last-known refs only");
+    }
+    for (const d of h.damaged) {
+      console.error(`lab: warning — ${d.ref} carries a longer record that fails verification; not adopted as a tip`);
+    }
+    if (h.extenders.length) {
+      console.error(`lab: REFUSING TO WRITE — this habitat is stale\n`);
+      console.error(`  this working tree  ${h.localEvents} events`);
+      for (const x of h.extenders) {
+        console.error(`  ${x.ref}\n                     ${x.events} events — same Record, extends this one by ${x.events - h.localEvents}`);
+      }
+      console.error(`\n  The Record continued beyond what this habitat holds. Writing here`);
+      console.error(`  would fork history. Continue from the true tip instead:`);
+      console.error(`\n    git checkout ${h.extenders[0].ref.replace(/^refs\/(heads|remotes)\//, "")}   # or pull/merge it into this branch\n`);
+      process.exit(2);
+    }
+    if (h.divergent.length) {
+      console.error(`lab: REFUSING TO WRITE — this habitat has forked from a sibling record\n`);
+      console.error(`  this working tree  ${h.localEvents} events`);
+      for (const d of h.divergent) {
+        console.error(`  ${d.ref}\n                     ${d.events} events — shares events #0–#${d.agree - 1}, diverges at #${d.agree}`);
+      }
+      console.error(`\n  Neither line contains the other; writing here would deepen the fork.`);
+      console.error(`  Nothing is void — both lines are preserved history — but they must be`);
+      console.error(`  reconciled (preservation-exchange, lineage) before this habitat takes`);
+      console.error(`  new events.\n`);
+      process.exit(2);
+    }
+  }
+}
 
 switch (cmd) {
   case "status": {
