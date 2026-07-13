@@ -44,6 +44,17 @@ corrupted. The Laboratory refuses to adopt it, which is correct.
 4. When you next seal, record an observation stating that the damaged file
    existed and how you recovered — the incident is part of history too.
 
+## "the record's line N is not valid JSON"
+
+The record file has a broken line — most often a **partial final line** left
+by a crash or an interrupted write, or a hand-edit that damaged a line. The
+Laboratory refuses to open it rather than guess, and names the line so you can
+see it. Recover exactly as for verification failure above: do not hand-fix the
+file; recover the last good record from git (`git checkout -- "<the path it
+named>"`) or restore from a preservation; then, when you next seal, note the
+incident. If only the final line is a partial fragment, an earlier git commit
+holds the record as it was just before the interrupted write.
+
 ## "source grounding does not resolve"
 
 You grounded an assertion in `cabinet:CAB-xxx` or `file:path` that does not

@@ -25,12 +25,35 @@ const MUTATIONS = [
   "relate", "judge", "recordUnknown", "resolveUnknown", "attachEvidence", "seal",
 ];
 
+// Parse a JSONL record file into events, failing CLEARLY on a malformed line.
+// The most likely real-world corruption is a crash during append, which leaves
+// a partial final line; a raw JSON.parse error would strand a Participant with
+// no idea what happened or how to recover. A clear, actionable message removes
+// the need for anyone to explain it — the same standard the chain-tamper error
+// already sets. See laboratory/arrival/TROUBLESHOOTING.md.
+export function parseRecordFile(file) {
+  const events = [];
+  const lines = readFileSync(file, "utf8").split("\n");
+  for (let i = 0; i < lines.length; i++) {
+    if (!lines[i]) continue; // skip blank lines, including the trailing newline
+    try {
+      events.push(JSON.parse(lines[i]));
+    } catch {
+      throw new Error(
+        `the record's line ${i + 1} is not valid JSON — the file may have been truncated ` +
+        `or partially written (for example, a crash mid-write). Recover the last good record ` +
+        `from git (git checkout -- "${file}") or restore from a preservation; see ` +
+        `laboratory/arrival/TROUBLESHOOTING.md.`
+      );
+    }
+  }
+  return events;
+}
+
 export function openLaboratory(dir, { root = process.cwd() } = {}) {
   mkdirSync(dir, { recursive: true });
   const file = join(dir, "log.jsonl");
-  const history = existsSync(file)
-    ? readFileSync(file, "utf8").split("\n").filter(Boolean).map((line) => JSON.parse(line))
-    : [];
+  const history = existsSync(file) ? parseRecordFile(file) : [];
   const kernel = createKernel({ history }); // throws if the preserved chain fails verification
 
   let written = history.length;

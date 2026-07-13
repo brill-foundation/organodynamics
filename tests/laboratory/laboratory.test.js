@@ -3,7 +3,7 @@
 
 import test from "node:test";
 import assert from "node:assert/strict";
-import { mkdtempSync } from "node:fs";
+import { mkdtempSync, appendFileSync, readFileSync } from "node:fs";
 import { join } from "node:path";
 import { tmpdir } from "node:os";
 import { openLaboratory } from "../../src/laboratory/laboratory.js";
@@ -52,4 +52,28 @@ test("tip guard — a Participant cannot write over another's unseen work", () =
   assert.ok(c);
   assert.ok(lab3.verify());
   assert.equal(lab3.events().length, 3);
+});
+
+test("a malformed final line fails clearly and actionably, not with a raw SyntaxError", () => {
+  const dir = mkdtempSync(join(tmpdir(), "od-lab-"));
+  const lab = openLaboratory(dir);
+  const a = arrive(lab, "writer");
+  lab.observe({ statement: "good work, preserved", provenance: by(a) });
+
+  // simulate a crash mid-append: a partial, unterminated final line
+  appendFileSync(lab.file, '{"seq":2,"type":"OBSERVATION_RECOR');
+
+  let err;
+  try { openLaboratory(dir); } catch (e) { err = e; }
+  assert.ok(err, "opening a record with a malformed line must throw");
+  assert.match(err.message, /not valid JSON/);
+  assert.match(err.message, /TROUBLESHOOTING/); // points to recovery
+  assert.doesNotMatch(err.message, /Unexpected|SyntaxError/); // not the raw parser error
+
+  // a clean record with a trailing newline still loads normally
+  const dir2 = mkdtempSync(join(tmpdir(), "od-lab-"));
+  const lab2 = openLaboratory(dir2);
+  arrive(lab2, "writer");
+  assert.equal(readFileSync(lab2.file, "utf8").endsWith("\n"), true);
+  assert.equal(openLaboratory(dir2).events().length, 1); // trailing blank line skipped, not an error
 });
