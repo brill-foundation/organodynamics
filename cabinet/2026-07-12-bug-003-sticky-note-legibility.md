@@ -40,6 +40,26 @@ issue and asked for a readability correction, explicitly not a redesign.
 Because the notes share one CSS style (`details.guide`) loaded by the Door and
 every room, the single rule corrects every note in the Laboratory at once.
 
+## 2b. Typographic pass (same publication)
+
+At the steward's request, the notes were then reviewed as printed paper, not
+only for contrast:
+
+- **Handwriting stack** dropped `Snell Roundhand` — a formal connected script,
+  poor as a paragraph and wrong in character for a casual note — leaving the
+  legible casual hands `Bradley Hand, Segoe Print, Comic Sans MS, cursive`.
+- **Body** raised 14px → 15.5px, line-height 1.65 → 1.7 (a handwriting face
+  needs more size and leading than a sans to read as comfortably).
+- **Summary** raised 14.5px → 16px with a set line-height; padding opened
+  slightly to breathe.
+- **Weight** left normal on purpose: handwriting faces are single-weight, and
+  forcing bold synthesizes an ugly faux-bold; the darkened ink carries the
+  perceived weight.
+- **Measure** unchanged at a 540px note — ~60–70 characters per line at the new
+  size, within the ideal range.
+
+Verified in the browser on the Door and in an expanded note.
+
 ## 3. Discipline
 
 A readability correction, not a redesign; scoped to the shared note style; no
