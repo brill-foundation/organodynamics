@@ -91,7 +91,38 @@ tells no story). Kept when a moment matters; the intention says why.
    path already carries the artifact; the unknown-arrival test passes without
    new vocabulary.
 
-## 5. Open question, held not resolved
+## 5. Since Previous Snapshot — the delta (added on review)
+
+A report may report what changed since the previous **kept** snapshot. It
+fits, under a boundary that dissolves its own dangers:
+
+- **The baseline is identified from the Record, never the filesystem.** The
+  "previous snapshot" is the last `keepReport` observation in the replayed
+  Record — a provenanced anchor; the file is only its payload. Consequence:
+  the baseline is always an ancestor on this lineage, so a fabricated
+  "removed" is *structurally impossible* and cross-lineage comparison never
+  arises. Anchoring in the Record is what makes the delta safe.
+- **Record-delta is replayed; condition-delta needs the body** — the same
+  session-28 seam as the whole capability. The Record-delta is the events
+  after the baseline's position; its categories are exactly the kernel's
+  event vocabulary — *added* (any event), *superseded* (`ASSERTION_SUPERSEDED`),
+  *resolved* (`UNKNOWN_RESOLVED`) — and nothing more. There is no *removed*,
+  because the append-only Record emits no removal event to witness one.
+- **An empty or absent delta is a verified state, not a gap.** With no prior
+  snapshot the report says so (`NO_PRIOR_SNAPSHOT`); if the prior file was
+  deleted (legal — reports are deletable, P3) the condition-delta is stated
+  unavailable and the Record-delta still stands. Absence gets a status
+  (charter P4), never a silence or an inference.
+- **No direction, no aggregation.** Deltas are listed by kind; never netted,
+  scored, or narrated as progress or regression (P4). The baseline is
+  "since a Participant last chose to keep one" — provenanced and uneven, not
+  "recently."
+
+Added kept rejection: a **"removed" delta category** — rejected. It has no
+backing event; it can only be produced by comparing across lineages, where it
+is false.
+
+## 6. Open question, held not resolved
 
 Is a machine-detected *condition* already an interpretation? Naming
 `HABITAT_FORKED` selects and labels, which brushes against judgment. Held
@@ -101,11 +132,11 @@ proposed condition needs a threshold, a ranking, or a "probably", it is
 judgment and belongs to Participants. Reality may refuse this line; the
 refusal would be recorded here.
 
-## 6. Status
+## 7. Status
 
 Implemented at `tools/report.js` + `src/laboratory/report.js`, tested in
 `tests/laboratory/report.test.js`. This RFC stays **open**: the capability is
-new, the two-occurrence rule applies to every extension of it, and the §5
+new, the two-occurrence rule applies to every extension of it, and the §6
 line awaits reality's vote. The Record-side deposit of the mandate (CAB-013)
 awaits habitat reconciliation — recorded honestly here rather than silently
 deferred.

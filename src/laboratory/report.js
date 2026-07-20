@@ -32,6 +32,60 @@ import { checkRecord } from "../conformance/check.js";
 
 const git = (args, cwd) => execFileSync("git", args, { cwd, encoding: "utf8", timeout: 8000, stdio: ["ignore", "pipe", "pipe"] }).trim();
 
+// The signature keepReport leaves in the Record. The baseline for a delta is
+// found HERE — in the replayed Record — never by scanning the reports folder,
+// so it is always an ancestor on this lineage (a fabricated "removed" is thus
+// structurally impossible) and always provenanced.
+const KEEP_SIGNATURE = /^Status report kept at (laboratory\/reports\/\S+\.json)/;
+
+// Since the previous KEPT snapshot (RFC-005 §5). Record-delta is replayed from
+// the baseline's position — append-only, so it only ever grew; its categories
+// are exactly the kernel's event types, never a "removed" the Record cannot
+// witness. Condition-delta needs the baseline's body and may be legitimately
+// absent (reports are deletable, P3): absence is a stated state, not a fault.
+function computeDelta(events, current, cwd) {
+  let base = null;
+  for (let i = events.length - 1; i >= 0; i--) {
+    if (events[i].type !== "OBSERVATION_RECORDED") continue;
+    const m = KEEP_SIGNATURE.exec(events[i].payload.statement || "");
+    if (m) { base = { index: i, seq: events[i].seq, file: m[1] }; break; }
+  }
+  if (!base) return { class: "DERIVED", baseline: "NO_PRIOR_SNAPSHOT" };
+
+  const appended = events.slice(base.index + 1);
+  const byType = {};
+  for (const e of appended) byType[e.type] = (byType[e.type] || 0) + 1;
+  const recordDelta = {
+    appended: appended.length,
+    byType,
+    resolved: byType.UNKNOWN_RESOLVED || 0,     // grounded in the event, never in absence
+    superseded: byType.ASSERTION_SUPERSEDED || 0, // the only in-place change the Record has
+    // no "removed" — the append-only Record emits no removal event to witness one
+  };
+
+  let conditionDelta;
+  const path = join(cwd, base.file);
+  if (!existsSync(path)) {
+    conditionDelta = { available: false, reason: "prior snapshot file not present (reports are deletable)" };
+  } else {
+    let prior = null;
+    try { prior = JSON.parse(readFileSync(path, "utf8")); } catch { /* unreadable */ }
+    if (!prior || prior.identity?.genesisHash !== current.identity.genesisHash) {
+      conditionDelta = { available: false, reason: "prior snapshot unreadable or of a different Record" };
+    } else {
+      const now = new Set(current.conditions.map((x) => x.condition));
+      const was = new Set((prior.conditions || []).map((x) => x.condition));
+      conditionDelta = {
+        available: true,
+        keptAt: prior.meta?.generatedAt ?? null,
+        appeared: [...now].filter((x) => !was.has(x)),
+        cleared: [...was].filter((x) => !now.has(x)),
+      };
+    }
+  }
+  return { class: "DERIVED", baseline: { seq: base.seq, file: base.file }, recordDelta, conditionDelta };
+}
+
 // Gather the full snapshot. Never throws on a damaged Laboratory — a report
 // that dies exactly when the place is broken would be useless proprioception;
 // instead the damage becomes the report's first fact.
@@ -106,6 +160,9 @@ export function gatherReport(dir = "laboratory/record", { cwd = process.cwd() } 
   if (report.repository.dirtyPaths > 0) c.push({ condition: "WORKING_TREE_DIRTY", from: "git status" });
   report.conditions = c;
 
+  // --- delta: since the previous kept snapshot (needs conditions computed) --
+  report.delta = computeDelta(rawLines.map((l) => JSON.parse(l)), report, cwd);
+
   return report;
 }
 
@@ -146,6 +203,20 @@ export function renderReport(r) {
   L.push(``);
   L.push(`CONDITIONS — mechanical findings, in an order of kind, not of severity`);
   L.push(r.conditions.length ? r.conditions.map((c) => `  ! ${c.condition}  (${c.from})`).join("\n") : `  none — every check that can pass, passes`);
+  L.push(``);
+  L.push(`SINCE PREVIOUS SNAPSHOT ${tag("DERIVED")} — since a Participant last chose to keep one`);
+  if (r.delta.baseline === "NO_PRIOR_SNAPSHOT") {
+    L.push(`  no snapshot kept yet — first report, or every prior snapshot was deleted (both are fine)`);
+  } else {
+    const rd = r.delta.recordDelta;
+    const types = Object.entries(rd.byType).map(([t, n]) => `${t}×${n}`).join(", ") || "nothing";
+    L.push(`  baseline #${r.delta.baseline.seq}`);
+    L.push(`  record     +${rd.appended} appended (${types}); resolved:${rd.resolved} superseded:${rd.superseded}`);
+    L.push(`             (no "removed" — the Record is append-only and emits no removal event)`);
+    const cd = r.delta.conditionDelta;
+    if (!cd.available) L.push(`  condition  unavailable — ${cd.reason}`);
+    else L.push(`  condition  appeared [${cd.appeared.join(", ") || "none"}]; cleared [${cd.cleared.join(", ") || "none"}]`);
+  }
   L.push(``);
   L.push(`This report states facts and detects conditions. What they mean, and what`);
   L.push(`to do about them, is a Participant's judgment — recorded, with reasoning.`);
