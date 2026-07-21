@@ -49,6 +49,12 @@ h1.door{font-family:var(--serif);font-size:40px;line-height:1.15;margin:0 0 16px
 .room h3 small{font-family:var(--sans);color:var(--muted);font-weight:400;font-size:12.5px;margin-inline-start:6px}
 .room p{margin:0;color:var(--muted);font-size:13.5px}
 
+.subtitle{font-family:var(--serif);font-style:italic;font-size:17px;color:var(--muted);margin:-6px 0 16px}
+.places-head{margin:0 0 14px}
+.places-head h2{font-family:var(--serif);font-size:19px;font-weight:600;margin:0 0 4px}
+.orient h2{font-family:var(--serif);font-size:17px;margin:2px 0 6px}
+.orient-here{font-size:13px;line-height:1.55;color:var(--muted);margin:0 2px 12px;
+  border-inline-start:2px solid var(--accent-soft);padding-inline-start:12px}
 .signals h2{font-family:var(--serif);font-size:17px;margin:2px 0 12px}
 .sig{background:var(--bg2);border:1px solid var(--line);border-radius:12px;padding:12px 14px;margin-bottom:12px}
 .sig h3{margin:0 0 6px;font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
