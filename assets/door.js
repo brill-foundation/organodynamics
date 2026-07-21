@@ -27,6 +27,7 @@
       });
       if((Date.now()-new Date(cs[0].commit.author.date))/864e5<45){
         const p=$("#alive");if(p)p.classList.add("alive");
+        const pd=$(".plan-you .dot");if(pd)pd.classList.add("alive");
       }
     }catch(e){
       box.innerHTML='<li class="quiet">The Record keeps them — live signals need the network.</li>';
@@ -50,7 +51,9 @@
   /* RFCs — id, title, status from frontmatter */
   (async()=>{
     const box=$("#sig-rfc ul");if(!box)return;
-    const files=["RFC-001-the-instrument.md","RFC-002-inquiry.md","RFC-003-the-navigation-layer.md"];
+    const files=["RFC-001-the-instrument.md","RFC-002-inquiry.md","RFC-003-the-navigation-layer.md",
+      "RFC-004-two-constitutions.md","RFC-005-proprioception.md","RFC-006-the-chronicle.md",
+      "RFC-007-reconciliation.md","RFC-008-interface-independence.md"];
     try{
       const rows=[];
       for(const f of files){

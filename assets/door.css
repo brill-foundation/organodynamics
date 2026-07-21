@@ -49,6 +49,22 @@ h1.door{font-family:var(--serif);font-size:40px;line-height:1.15;margin:0 0 16px
 .room h3 small{font-family:var(--sans);color:var(--muted);font-weight:400;font-size:12.5px;margin-inline-start:6px}
 .room p{margin:0;color:var(--muted);font-size:13.5px}
 
+/* the plan of the Space — a wayfinding rail: you-are-here, then the places */
+.plan{display:flex;flex-wrap:wrap;align-items:center;gap:2px 2px;margin:6px 0 30px;
+  padding:11px 16px;background:var(--bg2);border:1px solid var(--line);border-radius:12px}
+.plan-you{display:inline-flex;align-items:center;gap:8px;font-size:12.5px;font-weight:600;
+  color:var(--ink);margin-inline-end:4px}
+.plan-you .dot{width:11px;height:11px;border-radius:50%;background:var(--accent);
+  box-shadow:0 0 0 4px var(--accent-soft)}
+.plan-you .dot.alive{animation:breathe 3.4s ease-in-out infinite}
+.plan-stop{display:inline-flex;align-items:center;gap:7px;font-size:12.5px;color:var(--muted);
+  padding:4px 9px;border-radius:20px;white-space:nowrap;transition:color .15s,background .15s}
+.plan-stop::before{content:"";width:18px;height:2px;background:var(--line);border-radius:2px;flex:none}
+.plan-stop .node{width:9px;height:9px;border-radius:50%;background:var(--card);
+  border:2px solid var(--muted);flex:none;transition:border-color .15s}
+.plan-stop:hover{color:var(--accent);background:var(--card);text-decoration:none}
+.plan-stop:hover .node{border-color:var(--accent)}
+@media (prefers-reduced-motion:reduce){.plan-you .dot.alive{animation:none}}
 .subtitle{font-family:var(--serif);font-style:italic;font-size:17px;color:var(--muted);margin:-6px 0 16px}
 .places-head{margin:0 0 14px}
 .places-head h2{font-family:var(--serif);font-size:19px;font-weight:600;margin:0 0 4px}
