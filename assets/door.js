@@ -63,10 +63,9 @@
         if(!firstVisit && d>lastSeen){el.classList.add("fresh");fresh++;}
         box.appendChild(el);
       });
-      if((Date.now()-new Date(cs[0].commit.author.date))/864e5<45){
-        const p=$("#alive");if(p)p.classList.add("alive");
-        const pd=$(".plan-stop.here .dot");if(pd)pd.classList.add("alive");
-      }
+      /* the pulse is no longer lit from git recency — the Environmental Engine
+         lights it from the Record's own rest, so nothing looks alive unless the
+         corpus justifies it. This panel only lists what changed. */
       arrival=firstVisit?{mode:"welcome"}:(fresh?{mode:"some",n:fresh}:{mode:"none"});
       renderArrival();
       try{localStorage.setItem(LASTKEY,String(Date.now()));}catch(e){}

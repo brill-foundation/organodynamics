@@ -135,7 +135,15 @@
       if(tip.recordedAt){
         var days = Math.max(0, Math.round((Date.now() - new Date(tip.recordedAt)) / 864e5));
         var rest = (Date.now() - new Date(tip.recordedAt)) / 864e5;
-        project("rest", rest <= 3 ? "stirring" : rest > 45 ? "still" : "settled", { days: days, seq: tip.seq });
+        var restValue = rest <= 3 ? "stirring" : rest > 45 ? "still" : "settled";
+        project("rest", restValue, { days: days, seq: tip.seq });
+        /* the pulse ("signs of life") echoes the Space's rest — alive while the
+           Record has recently stirred, dormant when it has long been still. The
+           same evidence as the breath; no separate claim. */
+        if(restValue !== "still"){
+          var pulse = document.getElementById("alive"); if(pulse) pulse.classList.add("alive");
+          var dot = document.querySelector(".plan-stop.here .dot"); if(dot) dot.classList.add("alive");
+        }
       }
       /* repose → stillness */
       project("repose", unsealed <= 0 ? "sealed" : "working", { seq: tip.seq, k: unsealed });
