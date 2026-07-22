@@ -13,24 +13,25 @@
   --card:#26231e;--accent:#d68a4e;--accent-soft:#3a2f24;--good:#7fb08f;
   --shadow:0 1px 2px rgba(0,0,0,.3),0 8px 30px rgba(0,0,0,.35);
 }}
-/* ---- the light of the Space follows the hour (assets/atmosphere.js sets
-   data-phase on <html>). Dawn is rosier, dusk warmer, night cooler and lower —
-   the same room under a moving sun. Shifts are deliberately faint. ---- */
-:root[data-phase=dawn]{--bg:#f5eee8;--bg2:#f2e6dc}
-:root[data-phase=dusk]{--bg:#f5edde;--bg2:#f0e5cf}
-:root[data-phase=night]{--bg:#efe9e0;--bg2:#e8e2d6}
+/* ---- the light of the Space is a projection of its integrity, not the hour.
+   The Environmental Engine (assets/environment.js) re-verifies the hash chain
+   in this browser and sets data-integrity on <html>. A verified chain gives
+   clear light (the default); a chain that fails its own verification desaturates
+   and cools — a troubled light. Nothing here is aesthetic: the light means the
+   Record, and its provenance is answerable ("why does the Space feel like
+   this?"). ---- */
+:root[data-integrity=troubled]{--bg:#ecebe6;--bg2:#e6e4dd;--accent:#8a7f72;--good:#71847a;--muted:#8a8377}
 @media (prefers-color-scheme:dark){
-  :root[data-phase=dawn]{--bg:#1e1a19;--bg2:#241e1c}
-  :root[data-phase=dusk]{--bg:#1e1a15;--bg2:#242018}
-  :root[data-phase=night]{--bg:#191815;--bg2:#1e1c18}
+  :root[data-integrity=troubled]{--bg:#191816;--bg2:#1d1b18;--accent:#968b7d;--good:#7f8f85}
 }
 *{box-sizing:border-box}
 body{margin:0;background:radial-gradient(120% 90% at 50% -10%,var(--bg2),var(--bg));
   color:var(--ink);font:15px/1.6 var(--sans);-webkit-font-smoothing:antialiased;min-height:100vh}
 /* the room breathes — a slow ambient swell, far below attention. A rhythm, not
-   a signal. Its tempo answers to the Space's own recent life (data-rest, set
-   from the Record by atmosphere.js): recently stirred breathes a touch quicker
-   and fuller; long at rest breathes slow and faint. Stilled — not frozen
+   a signal. Its tempo is projected from the Record by the Environmental Engine
+   (assets/environment.js sets data-rest): recently stirred breathes a touch
+   quicker and fuller; long at rest breathes slow and faint. The breath means
+   the Space's recent life; its provenance is answerable. Stilled — not frozen
    mid-breath — for reduced motion. */
 body::before{content:"";position:fixed;inset:0;pointer-events:none;z-index:-1;
   background:radial-gradient(85% 60% at 50% 0%,color-mix(in srgb,var(--accent) 5%,transparent),transparent 70%);
@@ -101,8 +102,20 @@ a.plan-stop:hover .node{border-color:var(--accent)}
   border-inline-start:2px solid var(--accent-soft);padding-inline-start:12px}
 .orient-since{font-size:12.5px;line-height:1.55;color:var(--ink);margin:0 2px 8px;
   border-inline-start:2px solid var(--accent);padding-inline-start:12px}
-.orient-observing{font-size:12px;line-height:1.5;color:var(--muted);margin:0 2px 12px;
+.orient-observing{font-size:12px;line-height:1.5;color:var(--muted);margin:0 2px 10px;
   border-inline-start:2px solid var(--line);padding-inline-start:12px}
+/* the environment's provenance — "why does the Space feel like this?" Every
+   environmental variable, traced to its evidence in the Record. */
+details.why{margin:2px 0 4px;font-size:12px}
+details.why>summary{cursor:pointer;list-style:none;color:var(--muted);font-family:var(--serif);
+  font-style:italic;padding:2px 0}
+details.why>summary::-webkit-details-marker{display:none}
+details.why>summary::before{content:"›";margin-inline-end:6px;color:var(--muted);
+  display:inline-block;transition:transform .15s}
+details.why[open]>summary::before{transform:rotate(90deg)}
+.why-body{padding:6px 0 2px}
+.why-line{margin:0 0 6px;padding-inline-start:12px;line-height:1.5;color:var(--ink);
+  border-inline-start:2px solid var(--accent-soft)}
 .sig li.fresh::before{content:"";display:inline-block;width:6px;height:6px;border-radius:50%;
   background:var(--accent);margin-inline-end:7px;vertical-align:middle}
 .signals h2{font-family:var(--serif);font-size:17px;margin:2px 0 12px}
