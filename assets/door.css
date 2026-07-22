@@ -116,6 +116,7 @@ details.why[open]>summary::before{transform:rotate(90deg)}
 .why-body{padding:6px 0 2px}
 .why-line{margin:0 0 6px;padding-inline-start:12px;line-height:1.5;color:var(--ink);
   border-inline-start:2px solid var(--accent-soft)}
+footer details.why{flex-basis:100%;margin-top:2px}
 .sig li.fresh::before{content:"";display:inline-block;width:6px;height:6px;border-radius:50%;
   background:var(--accent);margin-inline-end:7px;vertical-align:middle}
 .signals h2{font-family:var(--serif);font-size:17px;margin:2px 0 12px}
