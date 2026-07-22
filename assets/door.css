@@ -27,12 +27,17 @@
 *{box-sizing:border-box}
 body{margin:0;background:radial-gradient(120% 90% at 50% -10%,var(--bg2),var(--bg));
   color:var(--ink);font:15px/1.6 var(--sans);-webkit-font-smoothing:antialiased;min-height:100vh}
-/* the room breathes — a 90-second ambient swell, far below attention.
-   A rhythm, not a signal; stilled (not frozen mid-breath) for reduced motion. */
+/* the room breathes — a slow ambient swell, far below attention. A rhythm, not
+   a signal. Its tempo answers to the Space's own recent life (data-rest, set
+   from the Record by atmosphere.js): recently stirred breathes a touch quicker
+   and fuller; long at rest breathes slow and faint. Stilled — not frozen
+   mid-breath — for reduced motion. */
 body::before{content:"";position:fixed;inset:0;pointer-events:none;z-index:-1;
   background:radial-gradient(85% 60% at 50% 0%,color-mix(in srgb,var(--accent) 5%,transparent),transparent 70%);
-  opacity:0;animation:ambient 90s ease-in-out infinite alternate}
-@keyframes ambient{to{opacity:1}}
+  opacity:0;animation:ambient var(--breath,92s) ease-in-out infinite alternate}
+@keyframes ambient{to{opacity:var(--breath-peak,.85)}}
+:root[data-rest=stirring]{--breath:76s;--breath-peak:1}
+:root[data-rest=still]{--breath:124s;--breath-peak:.5}
 @media (prefers-reduced-motion:reduce){body::before{animation:none;opacity:.5}}
 a{color:var(--accent);text-decoration:none}
 a:hover{text-decoration:underline}

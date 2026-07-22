@@ -20,11 +20,10 @@
   if(!/^(dawn|day|dusk|night)$/.test(phase)) phase = "day";
   document.documentElement.dataset.phase = phase;
 
-  /* --- the Space's age, and which state of the Record you are observing.
-     Both derived from one read of the Record; both quiet; neither stored. --- */
+  /* --- one read of the Record gives every Place its rest (the breath answers
+     to it) and the Door its age + observing lines. Quiet; nothing stored. --- */
   var ageEl = document.getElementById("space-age");
   var obsEl = document.getElementById("observing");
-  if(!ageEl && !obsEl) return;
   var ROOT = (document.body && document.body.dataset.root) || "";
   var T = {
     en: {
@@ -69,6 +68,13 @@
       var days = Math.max(1, Math.round((Date.now() - new Date(first.recordedAt)) / 864e5));
       data = { days: days, seals: seals, tip: tip.seq, unsealed: lines.length - 1 - lastSealAt };
       render();
+      /* the Space's rest, from how recently the Record last stirred — the light
+         breathes to it. A reading, never a verdict. */
+      if(tip.recordedAt){
+        var sinceStir = (Date.now() - new Date(tip.recordedAt)) / 864e5;
+        document.documentElement.dataset.rest =
+          sinceStir <= 3 ? "stirring" : sinceStir > 45 ? "still" : "settled";
+      }
     })
     .catch(function(){ /* the inscription waits for the Record — quietly */ });
   var lt = document.getElementById("langToggle");
