@@ -5,7 +5,7 @@
 read what it points at, then run the tools. It is **transient** — supersede it
 freely; the Record and the commits are the truth.*
 
-Branch: `claude/organodynamics-stewardship-onboard-ei4jwx` — HEAD `91263c4`.
+Branch: `claude/organodynamics-stewardship-onboard-ei4jwx` — HEAD `23e6541`.
 Rewritten: 2026-07-22. Supersedes the 2026-07-20 (session-12) handoff, which is
 now **stale**: since it was written, the fork was reconciled (judged and
 salvaged) and an entire Space-construction phase happened. Do not act on the
@@ -80,7 +80,11 @@ order:
 - **The plan rail** — one shared wayfinding component (`assets/space-nav.js`),
   "you are here" in every reading Place; move Place-to-Place.
 - **The arrival experience** — the threshold shows what changed while you were
-  away (client-side last-visit marker, like the language pref).
+  away (client-side last-seen marker, like the language pref). The "Recently,
+  in the Space" bearing and this return-diff now read the **Record's own sealed
+  sessions** (`log.jsonl`), not the GitHub API — so they survive offline and in
+  the sovereign folder, and carry provenance; the git→Record move §4 already
+  made for the pulse, finished (`23e6541`).
 - **Four kinds of orientation** now recoverable everywhere: spatial (rail),
   temporal (arrival), constitutional ("observing the Record through event #N —
   sealed to the tip"), epistemic (each Place names its medium: print/ink/sealed
