@@ -7,7 +7,7 @@
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🔭</text></svg>">
 <link rel="stylesheet" href="../../assets/door.css">
 </head>
-<body class="room-sessions">
+<body class="room-sessions" data-place="sessions" data-root="../../">
 <!-- Reading room for the living record. Renders log.jsonl verbatim, grouped
      by seals into sessions, and re-verifies the hash chain in the reader's
      own browser — verification is public and mechanical, owed to no one. -->
@@ -22,6 +22,7 @@
   <button class="hbtn" id="langToggle">עברית</button>
 </header>
 <div class="pagewrap">
+  <nav class="plan" data-space-nav></nav>
   <div class="arrival" style="padding:44px 0 8px">
     <p class="kicker" data-i18n="sessions.kicker">The living record</p>
     <h1 class="door" style="font-size:32px"><span data-i18n="sessions.title">The Sessions</span></h1>
@@ -42,6 +43,7 @@
 <footer>
   <span data-i18n="sessions.footer">This room renders <code>laboratory/record/log.jsonl</code> verbatim — the Record is the source of truth.</span>
 </footer>
+<script src="../../assets/space-nav.js"></script>
 <script src="../../assets/lang.js"></script>
 <script>
 (async()=>{

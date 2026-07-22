@@ -49,6 +49,8 @@ window.LAB_LANGS = {
       "places.h2": "המקומות",
       "places.note": "כל מקום מחזיק אחריות אחת ולא אחרת. אתם נעים ביניהם; דבר כאן אינו מסך שמפעילים.",
       "plan.here": "אתם כאן — הסף",
+      "plan.door": "הדלת",
+      "plan.heretag": " · אתם כאן",
       "plan.lab": "המעבדה",
       "plan.constitution": "החוקה",
       "plan.rfcs": "מסמכי העקרונות",

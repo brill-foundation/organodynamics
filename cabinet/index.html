@@ -7,7 +7,7 @@
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🔭</text></svg>">
 <link rel="stylesheet" href="../assets/door.css">
 </head>
-<body class="room-cabinet">
+<body class="room-cabinet" data-place="cabinet" data-root="../">
 <!-- The Cabinet, Record-level implementation: archival furniture for research
      artifacts. One responsibility (the Cabinet owns memory), two
      implementations — the in-Place cabinet holds raw material; this room holds
@@ -23,6 +23,7 @@
   <button class="hbtn" id="langToggle">עברית</button>
 </header>
 <div class="pagewrap">
+  <nav class="plan" data-space-nav></nav>
   <div class="arrival" style="padding:44px 0 8px">
     <p class="kicker" data-i18n="cabinet.kicker">Archival furniture</p>
     <h1 class="door" style="font-size:32px"><span data-i18n="cabinet.title">The Cabinet</span></h1>
@@ -45,6 +46,7 @@
   <span data-i18n="cabinet.footer">This room renders <code>cabinet/*.md</code> verbatim — the Record is the source of truth.</span>
 </footer>
 <script src="../assets/md.js"></script>
+<script src="../assets/space-nav.js"></script>
 <script src="../assets/lang.js"></script>
 <script>
 (async()=>{

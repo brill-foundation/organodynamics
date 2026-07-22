@@ -27,7 +27,7 @@
       });
       if((Date.now()-new Date(cs[0].commit.author.date))/864e5<45){
         const p=$("#alive");if(p)p.classList.add("alive");
-        const pd=$(".plan-you .dot");if(pd)pd.classList.add("alive");
+        const pd=$(".plan-stop.here .dot");if(pd)pd.classList.add("alive");
       }
     }catch(e){
       box.innerHTML='<li class="quiet">The Record keeps them — live signals need the network.</li>';

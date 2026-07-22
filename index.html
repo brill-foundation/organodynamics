@@ -8,7 +8,7 @@
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🔭</text></svg>">
 <link rel="stylesheet" href="assets/door.css">
 </head>
-<body>
+<body data-place="threshold" data-root="">
 <!--
   The Door — the canonical entrance to the laboratory.
   It is a Camera, not the Place: build-less, read-only, storing nothing,
@@ -50,14 +50,7 @@
     </details>
   </section>
 
-  <nav class="plan" aria-label="Plan of the Space">
-    <span class="plan-you"><span class="dot"></span><span data-i18n="plan.here">You are here — the threshold</span></span>
-    <a class="plan-stop" href="laboratory/table/"><span class="node"></span><span data-i18n="plan.lab">Laboratory</span></a>
-    <a class="plan-stop" href="constitution/"><span class="node"></span><span data-i18n="plan.constitution">Constitution</span></a>
-    <a class="plan-stop" href="rfcs/"><span class="node"></span><span data-i18n="plan.rfcs">RFCs</span></a>
-    <a class="plan-stop" href="cabinet/"><span class="node"></span><span data-i18n="plan.cabinet">Cabinet</span></a>
-    <a class="plan-stop" href="laboratory/record/"><span class="node"></span><span data-i18n="plan.sessions">Sessions</span></a>
-  </nav>
+  <nav class="plan" data-space-nav></nav>
 
   <div class="hall">
     <section class="places-col">
@@ -137,6 +130,7 @@
   <span data-i18n="footer.b">The entrance is a camera; the Place travels in a folder.</span>
   <span data-i18n="footer.c">Reality has the final vote.</span>
 </footer>
+<script src="assets/space-nav.js"></script>
 <script src="assets/lang.js"></script>
 <script src="assets/door.js"></script>
 </body>
