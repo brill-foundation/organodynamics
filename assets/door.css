@@ -74,8 +74,12 @@ a.plan-stop:hover .node{border-color:var(--accent)}
 .places-head{margin:0 0 14px}
 .places-head h2{font-family:var(--serif);font-size:19px;font-weight:600;margin:0 0 4px}
 .orient h2{font-family:var(--serif);font-size:17px;margin:2px 0 6px}
-.orient-here{font-size:13px;line-height:1.55;color:var(--muted);margin:0 2px 12px;
+.orient-here{font-size:13px;line-height:1.55;color:var(--muted);margin:0 2px 8px;
   border-inline-start:2px solid var(--accent-soft);padding-inline-start:12px}
+.orient-since{font-size:12.5px;line-height:1.55;color:var(--ink);margin:0 2px 12px;
+  border-inline-start:2px solid var(--accent);padding-inline-start:12px}
+.sig li.fresh::before{content:"";display:inline-block;width:6px;height:6px;border-radius:50%;
+  background:var(--accent);margin-inline-end:7px;vertical-align:middle}
 .signals h2{font-family:var(--serif);font-size:17px;margin:2px 0 12px}
 .sig{background:var(--bg2);border:1px solid var(--line);border-radius:12px;padding:12px 14px;margin-bottom:12px}
 .sig h3{margin:0 0 6px;font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}

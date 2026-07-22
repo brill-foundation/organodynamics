@@ -12,27 +12,66 @@
   const li=h=>{const el=document.createElement("li");el.innerHTML=h;return el;};
   const when=d=>new Date(d).toLocaleDateString(undefined,{day:"numeric",month:"short",year:"numeric"});
 
-  /* Latest preservations — the Record's most recent commits */
+  /* Latest activity + the return experience (the `arrival` concept): what
+     changed while you were away. Client-side only — a last-visit marker in
+     localStorage, like the language preference; the Record is never written. */
+  const LASTKEY="lab-last-visit";
+  const lastSeen=+(localStorage.getItem(LASTKEY)||0);
+  const firstVisit=!lastSeen;
+  const ARR={
+    en:{
+      welcome:"Welcome — you are new to the Space. Everything here is yours to read; nothing here is operated.",
+      some:n=>(n===1?"One thing has":n+" things have")+" changed in the Space since your last visit — marked below.",
+      none:"Nothing has changed since you were last here. The Space rests.",
+      offline:"Your bearings return when the network does — the places need nothing."
+    },
+    he:{
+      welcome:"ברוכים הבאים — אתם חדשים במרחב. כל מה שכאן פתוח לקריאתכם; דבר כאן אינו מופעל.",
+      some:n=>(n===1?"דבר אחד השתנה":n+" דברים השתנו")+" במרחב מאז ביקורכם האחרון — מסומנים למטה.",
+      none:"דבר לא השתנה מאז שהייתם כאן. המרחב נח.",
+      offline:"נקודות ההתמצאות ישובו עם הרשת — המקומות אינם זקוקים לדבר."
+    }
+  };
+  let arrival={mode:"offline",n:0};
+  const renderArrival=()=>{
+    const el=$("#orient-since");if(!el)return;
+    const L=ARR[(window.LAB_LANG&&window.LAB_LANG.current)||"en"]||ARR.en;
+    el.textContent=arrival.mode==="welcome"?L.welcome
+      :arrival.mode==="some"?L.some(arrival.n)
+      :arrival.mode==="none"?L.none:L.offline;
+    el.hidden=false;
+  };
   (async()=>{
     const box=$("#sig-preserve ul");if(!box)return;
     try{
-      const r=await fetch("https://api.github.com/repos/"+REPO+"/commits?per_page=4");
+      const r=await fetch("https://api.github.com/repos/"+REPO+"/commits?per_page=6");
       if(!r.ok)throw 0;
       const cs=await r.json();
       if(!Array.isArray(cs)||!cs.length)throw 0;
       box.innerHTML="";
-      cs.forEach(c=>{
+      let fresh=0;
+      cs.slice(0,5).forEach(c=>{
         const msg=(c.commit.message||"").split("\n")[0];
-        box.appendChild(li(escapeHtml(msg)+'<span class="when">'+when(c.commit.author.date)+"</span>"));
+        const d=new Date(c.commit.author.date);
+        const el=li(escapeHtml(msg)+'<span class="when">'+when(d)+"</span>");
+        if(!firstVisit && d>lastSeen){el.classList.add("fresh");fresh++;}
+        box.appendChild(el);
       });
       if((Date.now()-new Date(cs[0].commit.author.date))/864e5<45){
         const p=$("#alive");if(p)p.classList.add("alive");
         const pd=$(".plan-stop.here .dot");if(pd)pd.classList.add("alive");
       }
+      arrival=firstVisit?{mode:"welcome"}:(fresh?{mode:"some",n:fresh}:{mode:"none"});
+      renderArrival();
+      try{localStorage.setItem(LASTKEY,String(Date.now()));}catch(e){}
     }catch(e){
       box.innerHTML='<li class="quiet">The Record keeps them — live signals need the network.</li>';
+      arrival={mode:"offline"};renderArrival();
     }
   })();
+  /* keep the return message in the reader's language on toggle */
+  const lt=document.getElementById("langToggle");
+  if(lt)lt.addEventListener("click",()=>setTimeout(renderArrival,0));
 
   /* Open constitutional questions — headings marked OPEN */
   (async()=>{
