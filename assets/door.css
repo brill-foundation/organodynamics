@@ -13,9 +13,27 @@
   --card:#26231e;--accent:#d68a4e;--accent-soft:#3a2f24;--good:#7fb08f;
   --shadow:0 1px 2px rgba(0,0,0,.3),0 8px 30px rgba(0,0,0,.35);
 }}
+/* ---- the light of the Space follows the hour (assets/atmosphere.js sets
+   data-phase on <html>). Dawn is rosier, dusk warmer, night cooler and lower —
+   the same room under a moving sun. Shifts are deliberately faint. ---- */
+:root[data-phase=dawn]{--bg:#f5eee8;--bg2:#f2e6dc}
+:root[data-phase=dusk]{--bg:#f5edde;--bg2:#f0e5cf}
+:root[data-phase=night]{--bg:#efe9e0;--bg2:#e8e2d6}
+@media (prefers-color-scheme:dark){
+  :root[data-phase=dawn]{--bg:#1e1a19;--bg2:#241e1c}
+  :root[data-phase=dusk]{--bg:#1e1a15;--bg2:#242018}
+  :root[data-phase=night]{--bg:#191815;--bg2:#1e1c18}
+}
 *{box-sizing:border-box}
 body{margin:0;background:radial-gradient(120% 90% at 50% -10%,var(--bg2),var(--bg));
   color:var(--ink);font:15px/1.6 var(--sans);-webkit-font-smoothing:antialiased;min-height:100vh}
+/* the room breathes — a 90-second ambient swell, far below attention.
+   A rhythm, not a signal; stilled (not frozen mid-breath) for reduced motion. */
+body::before{content:"";position:fixed;inset:0;pointer-events:none;z-index:-1;
+  background:radial-gradient(85% 60% at 50% 0%,color-mix(in srgb,var(--accent) 5%,transparent),transparent 70%);
+  opacity:0;animation:ambient 90s ease-in-out infinite alternate}
+@keyframes ambient{to{opacity:1}}
+@media (prefers-reduced-motion:reduce){body::before{animation:none;opacity:.5}}
 a{color:var(--accent);text-decoration:none}
 a:hover{text-decoration:underline}
 
@@ -93,6 +111,8 @@ a.plan-stop:hover .node{border-color:var(--accent)}
 
 footer{border-top:1px solid var(--line);color:var(--muted);font-size:12.5px;
   padding:18px 24px;display:flex;gap:18px;flex-wrap:wrap}
+/* the age inscription — carved quietly into the footer, derived from the Record */
+.space-age{font-family:var(--serif);font-style:italic}
 
 /* ---- document reader (Constitution, RFCs) ---- */
 .pagewrap{max-width:860px;margin:0 auto;padding:0 24px 80px}

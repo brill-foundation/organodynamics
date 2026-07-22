@@ -23,22 +23,28 @@
       welcome:"Welcome — you are new to the Space. Everything here is yours to read; nothing here is operated.",
       some:n=>(n===1?"One thing has":n+" things have")+" changed in the Space since your last visit — marked below.",
       none:"Nothing has changed since you were last here. The Space rests.",
-      offline:"Your bearings return when the network does — the places need nothing."
+      offline:"Your bearings return when the network does — the places need nothing.",
+      ago:d=>d<1?" You were last here earlier today.":" You were last here "+(d===1?"a day":d+" days")+" ago."
     },
     he:{
       welcome:"ברוכים הבאים — אתם חדשים במרחב. כל מה שכאן פתוח לקריאתכם; דבר כאן אינו מופעל.",
       some:n=>(n===1?"דבר אחד השתנה":n+" דברים השתנו")+" במרחב מאז ביקורכם האחרון — מסומנים למטה.",
       none:"דבר לא השתנה מאז שהייתם כאן. המרחב נח.",
-      offline:"נקודות ההתמצאות ישובו עם הרשת — המקומות אינם זקוקים לדבר."
+      offline:"נקודות ההתמצאות ישובו עם הרשת — המקומות אינם זקוקים לדבר.",
+      ago:d=>d<1?" הייתם כאן מוקדם יותר היום.":" הייתם כאן לפני "+(d===1?"יום":d+" ימים")+"."
     }
   };
   let arrival={mode:"offline",n:0};
   const renderArrival=()=>{
     const el=$("#orient-since");if(!el)return;
     const L=ARR[(window.LAB_LANG&&window.LAB_LANG.current)||"en"]||ARR.en;
-    el.textContent=arrival.mode==="welcome"?L.welcome
+    let text=arrival.mode==="welcome"?L.welcome
       :arrival.mode==="some"?L.some(arrival.n)
       :arrival.mode==="none"?L.none:L.offline;
+    if(lastSeen&&(arrival.mode==="some"||arrival.mode==="none")){
+      text+=L.ago(Math.floor((Date.now()-lastSeen)/864e5));
+    }
+    el.textContent=text;
     el.hidden=false;
   };
   (async()=>{
