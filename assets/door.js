@@ -111,7 +111,7 @@
     const files=["RFC-001-the-instrument.md","RFC-002-inquiry.md","RFC-003-the-navigation-layer.md",
       "RFC-004-two-constitutions.md","RFC-005-proprioception.md","RFC-006-the-chronicle.md",
       "RFC-007-reconciliation.md","RFC-008-interface-independence.md",
-      "RFC-009-continuation.md"];
+      "RFC-009-continuation.md","RFC-010-external-correspondence.md"];
     try{
       const rows=[];
       for(const f of files){
