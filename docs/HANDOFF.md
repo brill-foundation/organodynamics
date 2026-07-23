@@ -5,7 +5,7 @@
 read what it points at, then run the tools. It is **transient** — supersede it
 freely; the Record and the commits are the truth.*
 
-Branch: `claude/organodynamics-stewardship-onboard-ei4jwx` — HEAD `b34779a`.
+Branch: `claude/organodynamics-stewardship-onboard-ei4jwx` — HEAD `0d063bf`.
 Rewritten: 2026-07-22 (HEAD refreshed 2026-07-23). Supersedes the 2026-07-20 (session-12) handoff, which is
 now **stale**: since it was written, the fork was reconciled (judged and
 salvaged) and an entire Space-construction phase happened. Do not act on the
@@ -176,9 +176,17 @@ nine invariants I1–I9 recurring independently across unrelated substrates, sev
 formally proven; the "one deeper law" unification protected not banked; OD adds no new
 law, only a novel configuration of proven ones — verdict: *a rare place where many of
 reality's proven organizational laws are instantiated together on purpose*) and its
-mandate **CAB-019**. Together CAB-017/RFC-009 (internal excavation), CAB-018/RFC-010
-(external correspondence), CAB-019/RFC-011 (organizational invariants) form a trilogy;
-all Pencil, all behind the same gate, all structurally non-authoritative.
+mandate **CAB-019**. Then the fourth, on the claimed
+"observable manifestation" layer — **RFC-012** (verdict: *mostly a gap in language,
+not the discipline* — the layer already exists as the Membrane (RFC-008) and the
+rigorous content as grounding; the perceptual axiom is vacuous-or-overreach; the
+"visual language"/prompt is habitat; the one real sliver is manifestation-as-
+provenance-bearing-Camera, an extension of RFC-008, not a new volume; the principle is
+satisfiability/expression — I6's complement, a candidate I10) and its mandate
+**CAB-020**. Together CAB-017/RFC-009 (internal excavation), CAB-018/RFC-010 (external
+correspondence), CAB-019/RFC-011 (organizational invariants), and CAB-020/RFC-012
+(manifestation) form the excavation set; all Pencil, all behind the same gate, all
+structurally non-authoritative.
 
 ## 7. The posture (how to steward)
 
