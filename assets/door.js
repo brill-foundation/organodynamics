@@ -112,7 +112,8 @@
       "RFC-004-two-constitutions.md","RFC-005-proprioception.md","RFC-006-the-chronicle.md",
       "RFC-007-reconciliation.md","RFC-008-interface-independence.md",
       "RFC-009-continuation.md","RFC-010-external-correspondence.md",
-      "RFC-011-organizational-invariants.md","RFC-012-manifestation.md"];
+      "RFC-011-organizational-invariants.md","RFC-012-manifestation.md",
+      "RFC-013-field-capture.md"];
     try{
       const rows=[];
       for(const f of files){
