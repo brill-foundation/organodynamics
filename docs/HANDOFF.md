@@ -5,8 +5,8 @@
 read what it points at, then run the tools. It is **transient** — supersede it
 freely; the Record and the commits are the truth.*
 
-Branch: `claude/organodynamics-stewardship-onboard-ei4jwx` — HEAD `23e6541`.
-Rewritten: 2026-07-22. Supersedes the 2026-07-20 (session-12) handoff, which is
+Branch: `claude/organodynamics-stewardship-onboard-ei4jwx` — HEAD `fa4d33e`.
+Rewritten: 2026-07-22 (HEAD refreshed 2026-07-23). Supersedes the 2026-07-20 (session-12) handoff, which is
 now **stale**: since it was written, the fork was reconciled (judged and
 salvaged) and an entire Space-construction phase happened. Do not act on the
 old version's instructions.
@@ -156,7 +156,13 @@ Everything below has reasoning/authorship but **no Record deposit**, because the
 Record is forked. They join the queue the moment reconciliation restores one
 live tip (§2): the §3.7 reconciliation record + seal; the Space recognition
 (CAB-016) as an observation pointing at existing law; the reconciliation
-declaration/judgment/salvage as the sealed Ink of the fork's resolution.
+declaration/judgment/salvage as the sealed Ink of the fork's resolution; and the
+**continuation excavation** — **RFC-009** (what the discipline still depends on;
+excavation-as-recognition, verdicts per concept, the species question protected,
+the final test answered *not yet*) and its mandate **CAB-017** (the Reality seat's
+2026-07-23 "make it continue without any of us" request and this response). Both
+are Pencil, structurally non-authoritative; they anchor to the Record as
+observations/reasoning once one live tip exists.
 
 ## 7. The posture (how to steward)
 
