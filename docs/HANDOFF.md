@@ -5,7 +5,7 @@
 read what it points at, then run the tools. It is **transient** — supersede it
 freely; the Record and the commits are the truth.*
 
-Branch: `claude/organodynamics-stewardship-onboard-ei4jwx` — HEAD `fa4d33e`.
+Branch: `claude/organodynamics-stewardship-onboard-ei4jwx` — HEAD `d0ac9ac`.
 Rewritten: 2026-07-22 (HEAD refreshed 2026-07-23). Supersedes the 2026-07-20 (session-12) handoff, which is
 now **stale**: since it was written, the fork was reconciled (judged and
 salvaged) and an entire Space-construction phase happened. Do not act on the
@@ -162,7 +162,15 @@ excavation-as-recognition, verdicts per concept, the species question protected,
 the final test answered *not yet*) and its mandate **CAB-017** (the Reality seat's
 2026-07-23 "make it continue without any of us" request and this response). Both
 are Pencil, structurally non-authoritative; they anchor to the Record as
-observations/reasoning once one live tip exists.
+observations/reasoning once one live tip exists. Then the **external examination** —
+**RFC-010** (does reality, seen from *outside* the corpus, support its distinctions?
+verdict: reality-faithful as a method and a lineage-architecture, reality-loose as a
+biology; the Record is a ledger not a physiology; §8's sovereignty collision *is* the
+CAP theorem; RFC-009 §4's "center-less recognition test" already has a method,
+synapomorphy) and its mandate **CAB-018**. Note for a future steward: RFC-010 §6
+**corrects RFC-009 §4** (the recognition *method* exists; only a second instance is
+missing) — propagate that correction if these become Ink. RFC-010 imports nothing;
+it reports reality as evidence, never as a framework to adopt.
 
 ## 7. The posture (how to steward)
 
