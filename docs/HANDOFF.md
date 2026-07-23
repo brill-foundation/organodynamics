@@ -5,7 +5,7 @@
 read what it points at, then run the tools. It is **transient** — supersede it
 freely; the Record and the commits are the truth.*
 
-Branch: `claude/organodynamics-stewardship-onboard-ei4jwx` — HEAD `d0ac9ac`.
+Branch: `claude/organodynamics-stewardship-onboard-ei4jwx` — HEAD `b34779a`.
 Rewritten: 2026-07-22 (HEAD refreshed 2026-07-23). Supersedes the 2026-07-20 (session-12) handoff, which is
 now **stale**: since it was written, the fork was reconciled (judged and
 salvaged) and an entire Space-construction phase happened. Do not act on the
@@ -170,7 +170,15 @@ CAP theorem; RFC-009 §4's "center-less recognition test" already has a method,
 synapomorphy) and its mandate **CAB-018**. Note for a future steward: RFC-010 §6
 **corrects RFC-009 §4** (the recognition *method* exists; only a second instance is
 missing) — propagate that correction if these become Ink. RFC-010 imports nothing;
-it reports reality as evidence, never as a framework to adopt.
+it reports reality as evidence, never as a framework to adopt. Then the third,
+principle-level examination — **RFC-011** (compare organizational *laws*, not nouns:
+nine invariants I1–I9 recurring independently across unrelated substrates, several
+formally proven; the "one deeper law" unification protected not banked; OD adds no new
+law, only a novel configuration of proven ones — verdict: *a rare place where many of
+reality's proven organizational laws are instantiated together on purpose*) and its
+mandate **CAB-019**. Together CAB-017/RFC-009 (internal excavation), CAB-018/RFC-010
+(external correspondence), CAB-019/RFC-011 (organizational invariants) form a trilogy;
+all Pencil, all behind the same gate, all structurally non-authoritative.
 
 ## 7. The posture (how to steward)
 
