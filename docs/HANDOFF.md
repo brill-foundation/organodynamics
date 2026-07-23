@@ -5,7 +5,7 @@
 read what it points at, then run the tools. It is **transient** — supersede it
 freely; the Record and the commits are the truth.*
 
-Branch: `claude/organodynamics-stewardship-onboard-ei4jwx` — HEAD `0d063bf`.
+Branch: `claude/organodynamics-stewardship-onboard-ei4jwx` — HEAD `6073d25`.
 Rewritten: 2026-07-22 (HEAD refreshed 2026-07-23). Supersedes the 2026-07-20 (session-12) handoff, which is
 now **stale**: since it was written, the fork was reconciled (judged and
 salvaged) and an entire Space-construction phase happened. Do not act on the
@@ -183,10 +183,19 @@ rigorous content as grounding; the perceptual axiom is vacuous-or-overreach; the
 "visual language"/prompt is habitat; the one real sliver is manifestation-as-
 provenance-bearing-Camera, an extension of RFC-008, not a new volume; the principle is
 satisfiability/expression — I6's complement, a candidate I10) and its mandate
-**CAB-020**. Together CAB-017/RFC-009 (internal excavation), CAB-018/RFC-010 (external
-correspondence), CAB-019/RFC-011 (organizational invariants), and CAB-020/RFC-012
-(manifestation) form the excavation set; all Pencil, all behind the same gate, all
-structurally non-authoritative.
+**CAB-020**. Then the fifth, a narrow
+falsification — **RFC-013** (is "Field Capture" a new canonical object? verdict: *no —
+it collapses* into the deposited OBSERVATION / deposit-with-observation (RFC-006 §4),
+P3's stored master + Axiom 3, the non-authoritative Camera (RFC-005/008), and
+Brill-content (RFC-006 §4); its name reduces to the corpus's chosen "deposit," the
+"ambient capture" RFC-006 #4 rejected; the frozen Protocol's reversed burden (CAB-008)
+gates any new abstraction; only an under-named *mode* of observation — primary
+perceptual artifact vs semantic proposition — survives, and that fills an existing slot,
+not a new object) and its mandate **CAB-021**. Together CAB-017/RFC-009 (internal
+excavation), CAB-018/RFC-010 (external correspondence), CAB-019/RFC-011 (organizational
+invariants), CAB-020/RFC-012 (manifestation), and CAB-021/RFC-013 (Field Capture) form
+the excavation set; all Pencil, all behind the same gate, all structurally
+non-authoritative.
 
 ## 7. The posture (how to steward)
 
