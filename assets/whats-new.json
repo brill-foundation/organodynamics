@@ -1,0 +1,38 @@
+{
+  "generatedAt": "2026-07-24T20:54:09.339Z",
+  "base": "origin/main@5b58eea",
+  "note": "Per-Place content tokens for the review-marker system. A marker means the Place changed since the token the visitor last saw (seeded to the baseline on first visit). Provenance: assets/whats-new.js, tools/whats-new.js.",
+  "areas": {
+    "threshold": {
+      "href": "organodynamics/",
+      "token": "1aab2ea5eb13",
+      "baseline": "",
+      "new": true
+    },
+    "laboratory": {
+      "href": "laboratory/table/",
+      "token": "cd2c31154ae9",
+      "baseline": "8ff37f4af0ff"
+    },
+    "constitution": {
+      "href": "constitution/",
+      "token": "e1d288f49949",
+      "baseline": "acff890769dc"
+    },
+    "rfcs": {
+      "href": "rfcs/",
+      "token": "e66dd46070ad",
+      "baseline": "20374b310fac"
+    },
+    "cabinet": {
+      "href": "cabinet/",
+      "token": "f451d21bb457",
+      "baseline": "76f2771d02dc"
+    },
+    "sessions": {
+      "href": "laboratory/record/",
+      "token": "690803f688f5",
+      "baseline": "6b1d32a2db19"
+    }
+  }
+}

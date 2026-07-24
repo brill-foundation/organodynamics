@@ -39,6 +39,7 @@
         var cur = document.createElement("span");
         cur.className = "plan-stop here";
         cur.setAttribute("aria-current","page");
+        cur.setAttribute("data-area", p.key);   // review-marker opt-in (assets/whats-new.js)
         cur.innerHTML = '<span class="dot"></span>'+label+
           '<em class="hereis" data-i18n="plan.heretag"> · you are here</em>';
         nav.appendChild(cur);
@@ -46,6 +47,7 @@
         var a = document.createElement("a");
         a.className = "plan-stop";
         a.href = root + p.href;
+        a.setAttribute("data-area", p.key);      // review-marker opt-in (assets/whats-new.js)
         a.innerHTML = '<span class="node"></span>'+label;
         nav.appendChild(a);
       }

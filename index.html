@@ -26,8 +26,8 @@
 <header class="top">
   <div class="wordmark">BRILL <span data-i18n="brill.sub">· a lived world · Brill Foundation</span></div>
   <nav>
-    <a href="/organodynamics/" data-i18n="brill.nav.od">Organodynamics</a>
-    <a href="/laboratory/table/" data-i18n="brill.nav.lab">Laboratory</a>
+    <a href="/organodynamics/" data-area="threshold" data-i18n="brill.nav.od">Organodynamics</a>
+    <a href="/laboratory/table/" data-area="laboratory" data-i18n="brill.nav.lab">Laboratory</a>
   </nav>
   <button class="hbtn" id="langToggle">עברית</button>
 </header>
@@ -65,14 +65,14 @@
         <p data-i18n="brill.book.p">Its architecture is being designed before it is written — structure before
         manuscript. Not yet open to read.</p>
       </span>
-      <a class="room" href="/laboratory/table/">
+      <a class="room" href="/laboratory/table/" data-area="laboratory">
         <span class="glyph" aria-hidden="true">🔬</span>
         <span class="tag" data-i18n="brill.tag.open">Open</span>
         <h3 data-i18n="brill.lab">The Laboratory</h3>
         <p data-i18n="brill.lab.p">Where the work happens — the Table, the Record, the sealed Sessions. Works
         offline; the AI seats are invited guests, never infrastructure.</p>
       </a>
-      <a class="room" href="/organodynamics/">
+      <a class="room" href="/organodynamics/" data-area="threshold">
         <span class="glyph" aria-hidden="true">🔭</span>
         <span class="tag" data-i18n="brill.tag.discipline">The discipline</span>
         <h3 data-i18n="brill.od">Organodynamics</h3>
@@ -96,5 +96,6 @@
   <span data-i18n="brill.footer.c">Reality has the final vote.</span>
 </footer>
 <script src="/assets/lang.js"></script>
+<script src="/assets/whats-new.js"></script>
 </body>
 </html>

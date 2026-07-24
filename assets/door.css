@@ -94,6 +94,34 @@ a.plan-stop:hover .node{border-color:var(--accent)}
 .plan-stop.here .dot.alive{animation:breathe 3.4s ease-in-out infinite}
 .plan-stop .hereis{font-style:normal;font-weight:400;color:var(--muted);font-size:11.5px}
 @media (prefers-reduced-motion:reduce){.plan-stop.here .dot.alive{animation:none}}
+
+/* What's-new review markers — a quiet "something new here", never a notification.
+   Answers to real content change (assets/whats-new.js): a Place is marked only
+   when its content differs from what you last saw. Rendered as pseudo-elements
+   keyed on a data-wn attribute, so language re-rendering (which rewrites element
+   innerHTML) never disturbs them. Logical properties flip cleanly in RTL. */
+[data-wn]{position:relative}
+/* inline glow dot — rail stops, nav links */
+[data-wn="dot"]::after{content:"";display:inline-block;width:7px;height:7px;border-radius:50%;
+  background:var(--accent);margin-inline-start:6px;vertical-align:middle;
+  box-shadow:0 0 6px 1px color-mix(in srgb,var(--accent) 55%,transparent);
+  animation:wn-glow 3.4s ease-in-out infinite}
+/* corner glow dot — cards float it to the leading-top corner */
+[data-wn="corner"]::after{content:"";position:absolute;inset-block-start:12px;inset-inline-end:12px;
+  width:7px;height:7px;border-radius:50%;background:var(--accent);
+  box-shadow:0 0 6px 1px color-mix(in srgb,var(--accent) 55%,transparent);
+  animation:wn-glow 3.4s ease-in-out infinite}
+@keyframes wn-glow{
+  0%,100%{opacity:.5; box-shadow:0 0 5px 0 color-mix(in srgb,var(--accent) 40%,transparent)}
+  50%    {opacity:1;  box-shadow:0 0 11px 2px color-mix(in srgb,var(--accent) 65%,transparent)}}
+@media (prefers-reduced-motion:reduce){
+  [data-wn="dot"]::after,[data-wn="corner"]::after{animation:none;opacity:.9}}
+/* Optional "New" badge for a genuinely new Place — bilingual via html[lang]. */
+[data-wn="new"]::after{content:"New";display:inline-block;font-size:9.5px;letter-spacing:.14em;
+  text-transform:uppercase;color:var(--accent);vertical-align:middle;white-space:nowrap;
+  border:1px solid color-mix(in srgb,var(--accent) 40%,transparent);border-radius:20px;
+  padding:0 6px;margin-inline-start:6px}
+html[lang="he"] [data-wn="new"]::after{content:"חדש"}
 .subtitle{font-family:var(--serif);font-style:italic;font-size:17px;color:var(--muted);margin:-6px 0 16px}
 .places-head{margin:0 0 14px}
 .places-head h2{font-family:var(--serif);font-size:19px;font-weight:600;margin:0 0 4px}
