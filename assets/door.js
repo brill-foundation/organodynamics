@@ -95,11 +95,11 @@
   (async()=>{
     const box=$("#sig-open ul");if(!box)return;
     try{
-      const t=await (await fetch("laboratory/CONSTITUTION.md",{cache:"no-store"})).text();
+      const t=await (await fetch(ROOT+"laboratory/CONSTITUTION.md",{cache:"no-store"})).text();
       const qs=[...t.matchAll(/^#{2,3}\s+\d*[a-z]?\.?\s*OPEN\s*—\s*(.+)$/gm)].map(m=>m[1].trim());
       if(!qs.length)throw 0;
       box.innerHTML="";
-      qs.forEach(q=>box.appendChild(li('<a href="constitution/">'+escapeHtml(q)+"</a>")));
+      qs.forEach(q=>box.appendChild(li('<a href="'+ROOT+'constitution/">'+escapeHtml(q)+"</a>")));
     }catch(e){
       box.innerHTML='<li class="quiet">The open questions live in the Constitution.</li>';
     }
@@ -117,13 +117,13 @@
     try{
       const rows=[];
       for(const f of files){
-        const t=await (await fetch("rfcs/"+f,{cache:"no-store"})).text();
+        const t=await (await fetch(ROOT+"rfcs/"+f,{cache:"no-store"})).text();
         const g=k=>(t.match(new RegExp("^"+k+":\\s*(.+)$","m"))||[])[1];
         if(g("id"))rows.push({id:g("id"),title:g("title"),status:g("status")});
       }
       if(!rows.length)throw 0;
       box.innerHTML="";
-      rows.forEach(r=>box.appendChild(li('<a href="rfcs/">'+escapeHtml(r.id)+" — "+escapeHtml(r.title||"")+'</a> <span class="badge">'+escapeHtml(r.status||"")+"</span>")));
+      rows.forEach(r=>box.appendChild(li('<a href="'+ROOT+'rfcs/">'+escapeHtml(r.id)+" — "+escapeHtml(r.title||"")+'</a> <span class="badge">'+escapeHtml(r.status||"")+"</span>")));
     }catch(e){
       box.innerHTML='<li class="quiet">Three RFCs so far — the Instrument, Inquiry, the Navigation Layer.</li>';
     }
