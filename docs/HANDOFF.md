@@ -27,10 +27,11 @@ npm test && node tools/conformance.js   # 50/50, 8/8
 Then read, in order: this file → `rfcs/RFC-007-reconciliation.md` →
 `cabinet/2026-07-21-*` (CAB-014/015/016) → `docs/CONSTITUTIONAL_MAP.md`.
 
-**For the Brill implementation layer (the product interface): read `docs/BRILL.md`** —
-the current interface architecture and the design decisions that carry forward. Brill is
-the implementation (how people inhabit the knowledge); Organodynamics is the discipline
-(how knowledge behaves). Brill work never modifies the corpus.
+**Brill (the product/implementation layer) has its own handoff: `docs/BRILL_HANDOFF.md`.**
+It preserves implementation continuity — the current phase, stabilized product decisions, and
+open design questions — and evolves independently of this document. This file (HANDOFF.md) is
+now purely constitutional/stewardship continuity; Brill work never modifies the corpus, and
+Brill continuity is not recorded here.
 
 ## 1. The one thing you must still NOT do
 
