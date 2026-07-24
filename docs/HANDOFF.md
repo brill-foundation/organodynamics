@@ -20,12 +20,17 @@ cd <repo>
 git status && git log --oneline -20
 node tools/lab.js status        # the Record (READ-only): 88 events, verifies
 node tools/report.js            # proprioception — still shows HABITAT_FORKED
-python3 -m http.server 8123     # then open http://localhost:8123/ — the Space
+python3 -m http.server 8123     # / is now Brill (the entry); the OD Door is /organodynamics/
 npm test && node tools/conformance.js   # 50/50, 8/8
 ```
 
 Then read, in order: this file → `rfcs/RFC-007-reconciliation.md` →
 `cabinet/2026-07-21-*` (CAB-014/015/016) → `docs/CONSTITUTIONAL_MAP.md`.
+
+**For the Brill implementation layer (the product interface): read `docs/BRILL.md`** —
+the current interface architecture and the design decisions that carry forward. Brill is
+the implementation (how people inhabit the knowledge); Organodynamics is the discipline
+(how knowledge behaves). Brill work never modifies the corpus.
 
 ## 1. The one thing you must still NOT do
 
