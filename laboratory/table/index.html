@@ -195,7 +195,7 @@
 <body>
 <div class="app">
   <header>
-    <a class="hbtn toSpace" id="toSpace" href="../../" title="Return to the Space" style="text-decoration:none">← המרחב</a>
+    <a class="hbtn toSpace" id="toSpace" href="../../" title="Return to Brill" style="text-decoration:none">← בְּריל</a>
     <div class="brand">השולחן<small>one table · לא ארבעה חלונות</small></div>
     <span class="emg" id="emg">⛑ נשבר משהו? <b>שמור</b> · <b>שמר את המקום</b> · (Git) commit+push · המשך</span>
     <div class="spacer"></div>
@@ -580,7 +580,7 @@ $("#setSave").addEventListener("click",()=>{document.querySelectorAll(".prov-set
 /* language */
 let lang="he";
 $("#langBtn").addEventListener("click",()=>{lang=lang==="he"?"en":"he";const en=lang==="en";document.documentElement.lang=lang;document.documentElement.dir=en?"ltr":"rtl";$("#langBtn").textContent=en?"עב":"EN";
-  if(en){$(".brand").innerHTML=`The Table<small>one table · not four windows</small>`;$("#toSpace").textContent="← The Space";$("#ideaLbl").textContent="THE IDEA · at the center";$("#ideaTitle").placeholder="What are we working on?";$("#ideaForm").placeholder="The idea's current formulation…";$("#rotateBtn").textContent="⟳ Rotate the table";$("#shelfBtn").textContent="Place on shelf ↓";$("#newBtn").textContent="New idea";$("#composer").placeholder="Talk to the active seat…  (Ctrl+Enter)";$("#sendBtn").textContent="Ask";$("#l2text").placeholder="What is in the shared state now?";$("#l2add").textContent="Add";document.querySelector('.rail-sec.grow .rail-head h3').textContent="SHARED STATE · L2";document.querySelector('.shelf .rail-head h3').textContent="THE SHELF";document.querySelector('.jhead h3').textContent="THE JOURNEY JOURNAL";$("#capText").placeholder="Note a moment in pencil… (one sentence)";$("#capWrite").textContent="Write";$("#cabBtn").textContent="🗄 Cabinet";$("#saveBtn").textContent="💾 Save";$("#preserveBtn").textContent="📦 Preserve the Place";$("#openBtn").textContent="📂 Open";$("#emg").innerHTML="⛑ broke? <b>Save</b> · <b>Preserve</b> · (Git) commit+push · continue";}
+  if(en){$(".brand").innerHTML=`The Table<small>one table · not four windows</small>`;$("#toSpace").textContent="← Brill";$("#ideaLbl").textContent="THE IDEA · at the center";$("#ideaTitle").placeholder="What are we working on?";$("#ideaForm").placeholder="The idea's current formulation…";$("#rotateBtn").textContent="⟳ Rotate the table";$("#shelfBtn").textContent="Place on shelf ↓";$("#newBtn").textContent="New idea";$("#composer").placeholder="Talk to the active seat…  (Ctrl+Enter)";$("#sendBtn").textContent="Ask";$("#l2text").placeholder="What is in the shared state now?";$("#l2add").textContent="Add";document.querySelector('.rail-sec.grow .rail-head h3').textContent="SHARED STATE · L2";document.querySelector('.shelf .rail-head h3').textContent="THE SHELF";document.querySelector('.jhead h3').textContent="THE JOURNEY JOURNAL";$("#capText").placeholder="Note a moment in pencil… (one sentence)";$("#capWrite").textContent="Write";$("#cabBtn").textContent="🗄 Cabinet";$("#saveBtn").textContent="💾 Save";$("#preserveBtn").textContent="📦 Preserve the Place";$("#openBtn").textContent="📂 Open";$("#emg").innerHTML="⛑ broke? <b>Save</b> · <b>Preserve</b> · (Git) commit+push · continue";}
   else location.reload();});
 window.addEventListener("keydown",e=>{if(e.altKey&&(e.key==="r"||e.key==="R")){e.preventDefault();$("#rotateBtn").click();}});
 

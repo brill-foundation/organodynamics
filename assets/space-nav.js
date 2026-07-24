@@ -19,7 +19,7 @@
 
   // The Places of the Space, in the order you meet them. hrefs are root-relative.
   var PLACES = [
-    { key:"threshold",    i18n:"plan.door",         href:"",                    en:"The Door" },
+    { key:"threshold",    i18n:"plan.door",         href:"organodynamics/",     en:"The Door" },
     { key:"laboratory",   i18n:"plan.lab",          href:"laboratory/table/",   en:"Laboratory" },
     { key:"constitution", i18n:"plan.constitution", href:"constitution/",       en:"Constitution" },
     { key:"rfcs",         i18n:"plan.rfcs",         href:"rfcs/",               en:"RFCs" },
