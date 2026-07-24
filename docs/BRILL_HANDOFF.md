@@ -82,6 +82,18 @@ architecture of the daily workspace (Places, memory, rigor placement, the worksp
   doorway, an illuminated object on a table — so the interface feels less like software and more
   like a place where life quietly continued while you were away. Regenerate the manifest
   (`node tools/signs-of-life.js`) whenever a Place's content changes.
+- **Arrival vs Return — two modes, two emotions** (`assets/arrival.js`, a layer *separate from*
+  and *above* Signs of Life; SoL is unchanged). A first-time visitor is not asking "what changed
+  since I was last here?" — they have never been here — but "**where should I begin?**" So the
+  two experiences are distinguished. **Arrival** ("Welcome — *start here*"): on a visitor's very
+  first time, the threshold gently suggests one starting Place (currently **The Laboratory**,
+  `STARTS_AT` in arrival.js — trivially re-pointable) with a calm invitation in a cooler,
+  welcoming voice (a soft green halo + "Start here", deliberately unlike the warm SoL glow, and
+  slower/steadier). It is **not** a Sign of Life and **not** "New". **Return**: the first step
+  into any Place sets `brill:arrived`; from then on the Arrival layer retires for good and Signs
+  of Life is the guide. Arrival owns only its own state and never touches SoL; on a first visit
+  SoL is silent anyway, so the two never collide. *Arrival says "Welcome"; Signs of Life says
+  "while you were away, something here continued to live."*
 
 ## Open questions actively being explored
 

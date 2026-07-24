@@ -124,6 +124,26 @@ a.plan-stop:hover .node{border-color:var(--accent)}
   border:1px solid color-mix(in srgb,var(--accent) 40%,transparent);border-radius:20px;
   padding:0 6px;margin-inline-start:6px}
 html[lang="he"] [data-sign="new"]::after{content:"חדש"}
+
+/* Arrival — a separate layer from Signs of Life, for a visitor's very first time.
+   The world gently suggests where to begin: a calm "Start here" invitation. A
+   cooler, welcoming voice (the green of growth) deliberately distinct from the
+   warm Signs of Life, and slower/steadier — an invitation, never a notification.
+   Appears only until the first exploration, then hands over to Signs of Life. */
+[data-arrival="start"]{position:relative;
+  box-shadow:0 0 0 1px color-mix(in srgb,var(--good) 42%,transparent),
+             0 6px 26px color-mix(in srgb,var(--good) 20%,transparent);
+  animation:arrival-breathe 6s ease-in-out infinite}
+[data-arrival="start"]::after{content:"Start here";position:absolute;
+  inset-block-start:12px;inset-inline-end:12px;
+  font-size:9.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--good);
+  border:1px solid color-mix(in srgb,var(--good) 40%,transparent);border-radius:20px;
+  padding:1px 8px;white-space:nowrap;background:color-mix(in srgb,var(--good) 8%,var(--card))}
+html[lang="he"] [data-arrival="start"]::after{content:"התחילו כאן"}
+@keyframes arrival-breathe{
+  0%,100%{box-shadow:0 0 0 1px color-mix(in srgb,var(--good) 34%,transparent),0 5px 20px color-mix(in srgb,var(--good) 15%,transparent)}
+  50%    {box-shadow:0 0 0 1px color-mix(in srgb,var(--good) 55%,transparent),0 9px 32px color-mix(in srgb,var(--good) 26%,transparent)}}
+@media (prefers-reduced-motion:reduce){[data-arrival="start"]{animation:none}}
 .subtitle{font-family:var(--serif);font-style:italic;font-size:17px;color:var(--muted);margin:-6px 0 16px}
 .places-head{margin:0 0 14px}
 .places-head h2{font-family:var(--serif);font-size:19px;font-weight:600;margin:0 0 4px}
