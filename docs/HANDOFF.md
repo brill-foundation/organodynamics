@@ -5,7 +5,7 @@
 read what it points at, then run the tools. It is **transient** — supersede it
 freely; the Record and the commits are the truth.*
 
-Branch: `claude/organodynamics-stewardship-onboard-ei4jwx` — HEAD `6073d25`.
+Branch: `claude/organodynamics-stewardship-onboard-ei4jwx` — HEAD `11d8be3`.
 Rewritten: 2026-07-22 (HEAD refreshed 2026-07-23). Supersedes the 2026-07-20 (session-12) handoff, which is
 now **stale**: since it was written, the fork was reconciled (judged and
 salvaged) and an entire Space-construction phase happened. Do not act on the
@@ -195,7 +195,13 @@ not a new object) and its mandate **CAB-021**. Together CAB-017/RFC-009 (interna
 excavation), CAB-018/RFC-010 (external correspondence), CAB-019/RFC-011 (organizational
 invariants), CAB-020/RFC-012 (manifestation), and CAB-021/RFC-013 (Field Capture) form
 the excavation set; all Pencil, all behind the same gate, all structurally
-non-authoritative.
+non-authoritative. Then **CAB-022** — a *decision*, not a mandate: the Reality seat
+accepted RFC-013's working conclusion (no new object/layer; refine the existing
+Observation primitives if reality ever demands more) and declared a methodological shift
+for the book — *architecture before manuscript* (stop linear chapter-drafting; design the
+blueprint — TOC, progression, dependency graph, chapter roles, canonical terminology —
+first). Recorded as testimony (no review asked, none given); the empty `drafts/` scaffold
+is the paused manuscript.
 
 ## 7. The posture (how to steward)
 
