@@ -5,7 +5,7 @@
 read what it points at, then run the tools. It is **transient** — supersede it
 freely; the Record and the commits are the truth.*
 
-Branch: `claude/organodynamics-stewardship-onboard-ei4jwx` — HEAD `11d8be3`.
+Branch: `claude/organodynamics-stewardship-onboard-ei4jwx` — HEAD `4aa79aa`.
 Rewritten: 2026-07-22 (HEAD refreshed 2026-07-23). Supersedes the 2026-07-20 (session-12) handoff, which is
 now **stale**: since it was written, the fork was reconciled (judged and
 salvaged) and an entire Space-construction phase happened. Do not act on the
@@ -201,7 +201,14 @@ Observation primitives if reality ever demands more) and declared a methodologic
 for the book — *architecture before manuscript* (stop linear chapter-drafting; design the
 blueprint — TOC, progression, dependency graph, chapter roles, canonical terminology —
 first). Recorded as testimony (no review asked, none given); the empty `drafts/` scaffold
-is the paused manuscript.
+is the paused manuscript. And **CAB-023** — a Brill-instance implementation decision
+(not Organodynamics): the Brill Living World architecture, three layers (World
+Constitution → Companion Interpreter → Scene Specification; only Scene Specs change),
+with the documentary principle "the world is the primary artifact, each image one
+observation from within it." Recorded as testimony; it introduces no new corpus
+primitives — it *instantiates* existing ones (the Companion is the Membrane RFC-008; the
+stable-core/varying-scenes split is RFC-011 I3; the documentary principle is RFC-013's
+conclusion reached from the other side).
 
 ## 7. The posture (how to steward)
 
