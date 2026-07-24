@@ -184,6 +184,9 @@ window.LAB_LANGS = {
     const btn=document.getElementById("langToggle");
     if(btn)btn.textContent=pack.meta.label;
     cur=code;store.set(code);
+    // Let content that renders documents (RFCs, Cabinet) re-render in the chosen
+    // language. A translation is a representation, so it is fetched, not toggled here.
+    document.dispatchEvent(new CustomEvent("lab-lang",{detail:pack.meta.lang}));
   }
   window.LAB_LANG={
     apply,

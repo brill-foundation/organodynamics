@@ -54,37 +54,67 @@
 <script src="/assets/signs-of-life.js"></script>
 <script src="/assets/arrival.js"></script>
 <script>
-(async()=>{
+/* Renders the cabinet/*.md artifacts. Language-aware: in Hebrew it fetches a
+   translation from cabinet/he/<file> when one exists — a representation, clearly
+   labelled, with the English original as the source of truth — falling back to the
+   English otherwise. Re-renders on language change (lang.js' lab-lang event). */
+(()=>{
   const host=document.getElementById("docs");
-  const FIELDS=[["kind","Kind"],["date","Date"],["participants","Participants"],
+  const FIELDS_EN=[["kind","Kind"],["date","Date"],["participants","Participants"],
     ["discoveries","Discoveries"],["constitutional-questions","Constitutional questions"],
     ["related","Related"],["provenance","Provenance"],["status","Status"]];
-  try{
-    const files=await (await fetch("catalog.json",{cache:"no-store"})).json();
+  const FIELDS_HE=[["kind","סוג"],["date","תאריך"],["participants","משתתפים"],
+    ["discoveries","תגליות"],["constitutional-questions","שאלות חוקתיות"],
+    ["related","קשור"],["provenance","מוצאוּת"],["status","סטטוס"]];
+  const esc=(s)=>String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;");
+  async function fetchDoc(f,he){
+    if(he){
+      try{const r=await fetch("he/"+f,{cache:"no-store"});if(r.ok)return{text:await r.text(),translated:true};}catch(e){}
+    }
+    const r=await fetch(f,{cache:"no-store"});
+    if(!r.ok)return null;
+    return{text:await r.text(),translated:false};
+  }
+  let token=0;
+  async function paint(lang){
+    const mine=++token, he=lang==="he";
+    let files;
+    try{files=await (await fetch("catalog.json",{cache:"no-store"})).json();}catch(e){
+      host.innerHTML='<p class="quiet">The artifacts live in <code>cabinet/</code> in the Record. '+
+        'Reading them here needs the deployed door or a local server — or open the files directly in the repository.</p>';
+      return;
+    }
+    if(mine!==token)return;
     let any=false;
     for(const f of files){
       try{
-        const r=await fetch(f,{cache:"no-store"});
-        if(!r.ok)continue;
-        const {front,html}=mdParse(await r.text());
+        const doc=await fetchDoc(f,he);
+        if(mine!==token)return;
+        if(!doc)continue;
+        const {front,html}=mdParse(doc.text);
         if(!any){host.innerHTML="";any=true;}
         const d=document.createElement("details");
         d.className="rfc";
         const title=(front&&front.title)||f;
+        const flabels=(he && doc.translated)?FIELDS_HE:FIELDS_EN;   // Hebrew labels only for a real translation
         const chips=front?[front.kind?'<span class="badge">'+front.kind+"</span>":"",
                            front.date?'<span class="badge" style="color:var(--muted)">'+front.date+"</span>":""].join(" "):"";
-        const meta=front?'<div class="front">'+FIELDS.filter(([k])=>front[k])
-          .map(([k,l])=>"<span><b>"+l+"</b> "+front[k].replace(/&/g,"&amp;").replace(/</g,"&lt;")+"</span>").join("")+"</div>":"";
-        d.innerHTML="<summary>"+title+" "+chips+"</summary><div class='doc-inner prose'>"+meta+html+"</div>";
+        const meta=front?'<div class="front">'+flabels.filter(([k])=>front[k])
+          .map(([k,l])=>"<span><b>"+l+"</b> "+esc(front[k])+"</span>").join("")+"</div>":"";
+        const note=he?'<p class="quiet trans-note">'+(doc.translated
+            ?"תרגום — ייצוג של המקור; הנוסח האנגלי הוא מקור האמת, פתוח לאתגור ולרוויזיה."
+            :"עדיין לא תורגם — מוצג בנוסח האנגלי המקורי.")+"</p>":"";
+        const innerDir=(he && !doc.translated)?' dir="ltr"':"";
+        d.innerHTML="<summary>"+title+" "+chips+"</summary>"+note+"<div class='doc-inner prose'"+innerDir+">"+meta+html+"</div>";
         if(front&&front.date){const age=Math.min(1,(Date.now()-new Date(front.date))/(31536e6));d.style.setProperty("--age",age.toFixed(2));}
         host.appendChild(d);
       }catch(e){}
     }
-    if(!any)throw 0;
-  }catch(e){
-    host.innerHTML='<p class="quiet">The artifacts live in <code>cabinet/</code> in the Record. '+
+    if(!any)host.innerHTML='<p class="quiet">The artifacts live in <code>cabinet/</code> in the Record. '+
       'Reading them here needs the deployed door or a local server — or open the files directly in the repository.</p>';
   }
+  paint(document.documentElement.lang||"en");
+  document.addEventListener("lab-lang",(e)=>paint(e.detail));
 })();
 </script>
 </body>

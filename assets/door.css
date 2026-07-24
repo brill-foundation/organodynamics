@@ -140,6 +140,12 @@ html[lang="he"] [data-arrival="start"]::after{content:"התחילו כאן"}
 
 @media (prefers-reduced-motion:reduce){
   [data-sign="glow"]::after,[data-sign="corner"]::after,[data-arrival="start"]{animation:none;opacity:1}}
+
+/* A quiet note marking a rendered document as a translation (a representation) —
+   the English original stays the source of truth. Shown only in Hebrew. */
+.trans-note{margin:0 0 14px;padding:6px 11px;border-radius:5px;font-size:12px;line-height:1.5;
+  border-inline-start:2px solid color-mix(in srgb,var(--accent) 45%,var(--line));
+  background:color-mix(in srgb,var(--accent) 5%,transparent)}
 .subtitle{font-family:var(--serif);font-style:italic;font-size:17px;color:var(--muted);margin:-6px 0 16px}
 .places-head{margin:0 0 14px}
 .places-head h2{font-family:var(--serif);font-size:19px;font-weight:600;margin:0 0 4px}
