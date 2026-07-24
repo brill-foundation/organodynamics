@@ -216,25 +216,24 @@ primitives — it *instantiates* existing ones (the Companion is the Membrane RF
 stable-core/varying-scenes split is RFC-011 I3; the documentary principle is RFC-013's
 conclusion reached from the other side).
 
-Then — a new object of investigation, not a constitutional change — **CAB-024/RFC-014**:
+Then — a closed investigation, not a constitutional change — **CAB-024** (now *history*):
 the Reality seat's 2026-07-24 "Architectural Continuity Update" shifted the question from
 constitutional *expansion* to constitutional *analysis* — does the corpus already possess an
 implicit **formal architecture** that can be *discovered rather than invented*? (Prompted by a
 "grammar of lawful transitions" hypothesis that adversarial review rejected — the lesson
-methodological: a model chosen before it is tested violates Recognition before Invention.) The
-instruction was to build the **evaluation instrument first and propose no model yet**. RFC-014
-does exactly that, on one recognition: a formal representation is a **Camera** onto the corpus
-(RFC-008), so the four acceptance constraints (no new primitives, no modified meaning, no
-collapsed distinctions, no imports) are the **renderer boundary** restated. From it: an
-admission gate for valid candidates (§3); a fidelity **vector** — per-feature verdicts against a
-**quoted, frozen** test corpus, never a scalar, including *negative* fidelity for the corpus's
-kept-rejections and silences (§4); decisive **falsifiers** with the burden kept permanently on
-the model (§5, the frozen-Protocol reversed burden); a **dominance** partial order that leaves
-honest ties incomparable (§6); a reflexive **no-injection** guard — test corpus by quotation
-(any neutral meta-schema is a covert candidate), every criterion licensed by a named corpus
-principle (§7); and a first-class **null result** held equal to success (§8). Pencil, imports
-nothing, proposes nothing to the corpus, models nothing — it makes the investigation *runnable
-without begging its question*. Same gate as the rest of the queue.
+methodological: a model chosen before it is tested violates Recognition before Invention.) A
+draft methodology was written as **RFC-014**, then held to the corpus's own necessity test under
+the reversed burden — and **found constitutionally unnecessary**: the instrument is already
+derivable (a formal representation is a **Camera**, RFC-008, so its acceptance constraints are
+the renderer boundary; the falsification posture is the frozen-Protocol reversed burden, CAB-008;
+grounding is obligations 2/3; RFC-002 §4 keeps the instrument at form, not substance). Decisive:
+the grammar hypothesis had already been rejected *before* any methodology document existed —
+proof the capability was in the corpus, not the draft. Per the Reality seat's decision **RFC-014
+was deleted** from the RFC lineage (Git history preserves it), **no replacement documentation was
+created** (a future investigator re-derives the instrument from principles), and **CAB-024 was
+rewritten as a short historical record** of the investigation and its outcome. Nothing was added
+to the corpus — the episode demonstrates the Constitution recognizing when one of its own
+documents should not exist (Recognition before Invention, applied to a constitutional artifact).
 
 ## 7. The posture (how to steward)
 
