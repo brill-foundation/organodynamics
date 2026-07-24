@@ -1,0 +1,30 @@
+{
+  "generatedAt": "2026-07-24T21:11:12.117Z",
+  "note": "Per-Place content tokens for the Signs of Life system. A sign appears only where a Place's token differs from the token that visitor last saw there — personal and incremental, never since production/deployment. Provenance: assets/signs-of-life.js, tools/signs-of-life.js.",
+  "areas": {
+    "threshold": {
+      "href": "organodynamics/",
+      "token": "1aab2ea5eb13"
+    },
+    "laboratory": {
+      "href": "laboratory/table/",
+      "token": "cd2c31154ae9"
+    },
+    "constitution": {
+      "href": "constitution/",
+      "token": "e1d288f49949"
+    },
+    "rfcs": {
+      "href": "rfcs/",
+      "token": "e66dd46070ad"
+    },
+    "cabinet": {
+      "href": "cabinet/",
+      "token": "f451d21bb457"
+    },
+    "sessions": {
+      "href": "laboratory/record/",
+      "token": "690803f688f5"
+    }
+  }
+}

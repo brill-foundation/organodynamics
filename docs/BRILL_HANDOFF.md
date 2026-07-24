@@ -65,6 +65,23 @@ architecture of the daily workspace (Places, memory, rigor placement, the worksp
 - **Documentary principle** (source: CAB-023): the world is the primary artifact; an image is
   one observation of it. Not-yet-real destinations are shown honestly as **"Forthcoming,"**
   never seeded with fabricated content.
+- **Signs of Life** (`assets/signs-of-life.js` · `tools/signs-of-life.js`) — part of Brill's
+  permanent language, **not** a "What's New" / notification feature. A Place quietly reveals
+  where something has evolved *since you were last there*. Design principle: **never tell the
+  visitor the world changed if the world itself can show it.** Three commitments hold it honest:
+  (1) **evidence, not authorship** — each Place carries a content token (a hash of its own
+  files); a sign appears only where the token genuinely changed, never from a hand-set "new"
+  flag; (2) **personal & incremental** — memory is per-visitor, per-Place: a sign means "since
+  *you* last looked here," never since production / deployment / branch. First arrival is quiet
+  (baseline seeded silently); if only the Cabinet changes, only the Cabinet stirs; visiting a
+  Place settles it. This is the felt experience — *the world remembers what is still waiting for
+  you.* (3) **the corpus's own vocabulary** — it extends the accepted client-side arrival
+  mechanism ("what changed while you were away") from the whole Space to each Place; provenance
+  at `window.__SIGNS_OF_LIFE__`. Today the sign is a warm glow (rail, entry cards, nav);
+  **long-term direction:** grow it into the world itself — a light in a building, a glow near a
+  doorway, an illuminated object on a table — so the interface feels less like software and more
+  like a place where life quietly continued while you were away. Regenerate the manifest
+  (`node tools/signs-of-life.js`) whenever a Place's content changes.
 
 ## Open questions actively being explored
 
