@@ -95,55 +95,51 @@ a.plan-stop:hover .node{border-color:var(--accent)}
 .plan-stop .hereis{font-style:normal;font-weight:400;color:var(--muted);font-size:11.5px}
 @media (prefers-reduced-motion:reduce){.plan-stop.here .dot.alive{animation:none}}
 
-/* Signs of Life — the Place quietly reveals where something has evolved since you
-   were last here. Not a notification: a warm sign of life, answering only to real
-   content change (assets/signs-of-life.js), personal and incremental. Rendered as
-   pseudo-elements keyed on a data-sign attribute, so language re-rendering (which
-   rewrites innerHTML) never disturbs them. Logical properties flip cleanly in RTL.
-   Over time these signs should grow into the world itself (a light in a building,
-   a glow near a doorway); the warm glow here is the first step. */
-[data-sign]{position:relative}
-/* inline sign of life — rail stops, nav links */
-[data-sign="glow"]::after{content:"";display:inline-block;width:7px;height:7px;border-radius:50%;
-  background:var(--accent);margin-inline-start:6px;vertical-align:middle;
-  box-shadow:0 0 6px 1px color-mix(in srgb,var(--accent) 55%,transparent);
-  animation:life-glow 3.4s ease-in-out infinite}
-/* corner sign of life — cards float it to the leading-top corner */
-[data-sign="corner"]::after{content:"";position:absolute;inset-block-start:12px;inset-inline-end:12px;
-  width:7px;height:7px;border-radius:50%;background:var(--accent);
-  box-shadow:0 0 6px 1px color-mix(in srgb,var(--accent) 55%,transparent);
-  animation:life-glow 3.4s ease-in-out infinite}
-@keyframes life-glow{
-  0%,100%{opacity:.5; box-shadow:0 0 5px 0 color-mix(in srgb,var(--accent) 40%,transparent)}
-  50%    {opacity:1;  box-shadow:0 0 11px 2px color-mix(in srgb,var(--accent) 65%,transparent)}}
-@media (prefers-reduced-motion:reduce){
-  [data-sign="glow"]::after,[data-sign="corner"]::after{animation:none;opacity:.9}}
-/* A Place that appeared since you began carries a quiet "New" word — bilingual. */
-[data-sign="new"]::after{content:"New";display:inline-block;font-size:9.5px;letter-spacing:.14em;
-  text-transform:uppercase;color:var(--accent);vertical-align:middle;white-space:nowrap;
-  border:1px solid color-mix(in srgb,var(--accent) 40%,transparent);border-radius:20px;
-  padding:0 6px;margin-inline-start:6px}
-html[lang="he"] [data-sign="new"]::after{content:"חדש"}
+/* ── Signs of Life & Arrival ──────────────────────────────────────────────────
+   The two ways a Place quietly speaks — never notifications, always answering to
+   real state, flipping cleanly in RTL, resting under reduced motion. Shared shape,
+   distinct voice: Signs of Life is warm (the accent) and reveals where a Place has
+   evolved since you last looked; Arrival is cooler (the green of growth) and only
+   welcomes a first-time visitor toward a place to begin. Rendered as pseudo-
+   elements keyed on a data attribute, so language re-rendering (which rewrites
+   innerHTML) never disturbs them. Over time the signs should grow into the world
+   itself — a light in a building, a glow near a doorway; these cues are step one. */
 
-/* Arrival — a separate layer from Signs of Life, for a visitor's very first time.
-   The world gently suggests where to begin: a calm "Start here" invitation. A
-   cooler, welcoming voice (the green of growth) deliberately distinct from the
-   warm Signs of Life, and slower/steadier — an invitation, never a notification.
-   Appears only until the first exploration, then hands over to Signs of Life. */
+/* the small word-pill shared by "New" (Signs of Life) and "Start here" (Arrival) */
+[data-sign="new"]::after,[data-arrival="start"]::after{
+  display:inline-block;vertical-align:middle;white-space:nowrap;
+  font-size:9.5px;letter-spacing:.14em;text-transform:uppercase;
+  border:1px solid;border-radius:20px;padding:1px 7px}
+
+/* Signs of Life — a warm glow where a Place changed since you last looked here */
+[data-sign="corner"]{position:relative}                 /* the card anchors its corner cue */
+[data-sign="glow"]::after,[data-sign="corner"]::after{content:"";width:7px;height:7px;
+  border-radius:50%;background:var(--accent);
+  box-shadow:0 0 7px 1px color-mix(in srgb,var(--accent) 55%,transparent);
+  animation:sign-breathe 3.4s ease-in-out infinite}
+[data-sign="glow"]::after{display:inline-block;vertical-align:middle;margin-inline-start:6px}
+[data-sign="corner"]::after{position:absolute;inset-block-start:12px;inset-inline-end:12px}
+[data-sign="new"]::after{content:"New";color:var(--accent);margin-inline-start:6px;
+  border-color:color-mix(in srgb,var(--accent) 42%,transparent)}
+html[lang="he"] [data-sign="new"]::after{content:"חדש"}
+@keyframes sign-breathe{0%,100%{opacity:.5}50%{opacity:1}}   /* opacity only — compositor-friendly */
+
+/* Arrival — a calm invitation to begin, only on a visitor's very first time */
 [data-arrival="start"]{position:relative;
   box-shadow:0 0 0 1px color-mix(in srgb,var(--good) 42%,transparent),
              0 6px 26px color-mix(in srgb,var(--good) 20%,transparent);
   animation:arrival-breathe 6s ease-in-out infinite}
 [data-arrival="start"]::after{content:"Start here";position:absolute;
-  inset-block-start:12px;inset-inline-end:12px;
-  font-size:9.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--good);
-  border:1px solid color-mix(in srgb,var(--good) 40%,transparent);border-radius:20px;
-  padding:1px 8px;white-space:nowrap;background:color-mix(in srgb,var(--good) 8%,var(--card))}
+  inset-block-start:12px;inset-inline-end:12px;color:var(--good);
+  border-color:color-mix(in srgb,var(--good) 40%,transparent);
+  background:color-mix(in srgb,var(--good) 8%,var(--card))}
 html[lang="he"] [data-arrival="start"]::after{content:"התחילו כאן"}
 @keyframes arrival-breathe{
   0%,100%{box-shadow:0 0 0 1px color-mix(in srgb,var(--good) 34%,transparent),0 5px 20px color-mix(in srgb,var(--good) 15%,transparent)}
   50%    {box-shadow:0 0 0 1px color-mix(in srgb,var(--good) 55%,transparent),0 9px 32px color-mix(in srgb,var(--good) 26%,transparent)}}
-@media (prefers-reduced-motion:reduce){[data-arrival="start"]{animation:none}}
+
+@media (prefers-reduced-motion:reduce){
+  [data-sign="glow"]::after,[data-sign="corner"]::after,[data-arrival="start"]{animation:none;opacity:1}}
 .subtitle{font-family:var(--serif);font-style:italic;font-size:17px;color:var(--muted);margin:-6px 0 16px}
 .places-head{margin:0 0 14px}
 .places-head h2{font-family:var(--serif);font-size:19px;font-weight:600;margin:0 0 4px}
