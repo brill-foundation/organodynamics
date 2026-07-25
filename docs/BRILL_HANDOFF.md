@@ -4,7 +4,9 @@
 **constitutional / stewardship** continuity (the discipline). This one preserves **Brill
 implementation** continuity (the product). The two evolve independently.*
 
-Branch: `claude/organodynamics-stewardship-onboard-ei4jwx`. Updated 2026-07-25 (close of `Organodynamics 006`).
+Branch: `claude/organodynamics-stewardship-onboard-ei4jwx` (Organodynamics 006); a follow‑up
+session continues on `claude/brill-architecture-gating-v5obzm` (based on the ei4jwx tip).
+Updated 2026-07-25 (close of `Organodynamics 006`; then the two gating decisions closed).
 Transient — supersede freely; the commits are the truth.
 
 > **Read first:** the `Organodynamics 006` workshop distilled a substantial
@@ -43,7 +45,7 @@ architecture of the daily workspace (Places, memory, rigor placement, the worksp
 |---|---|
 | **Product UX — foundational restructure** | **Done** — Brill is the public entry; the OD Door is `/organodynamics/`; navigation reorganized around `← Brill`. Live in the repo. |
 | **Inhabitation layers** | **Built, in Preview, awaiting review** — Signs of Life (personal/incremental), Arrival/Return, Reading Layers (Canonical · Representation · Explanation) + a Hebrew translation layer (first batch). See BRILL_EXPERIENCE_ARCHITECTURE §6. |
-| **Experience Architecture (Home · Window · World · Living Map · Orientation)** | **Recognized, not built** — the `Organodynamics 006` distillation. Architecture settled to the point of §5's open decisions; **no code**. Two decisions gate the Living Map: the canonical containment spine, and how deep the zoom goes. |
+| **Experience Architecture (Home · Window · World · Living Map · Orientation)** | **Recognized, not built** — the `Organodynamics 006` distillation. Architecture settled; **no code**. The two decisions that gated the Living Map are now **closed** (2026‑07‑25): the canonical containment spine (Brill *is* the World; OD inside it as the canonical core; Record and sessions off‑map) and the zoom depth (a document is content in a Room; spatial zoom stops at the Room). See BRILL_EXPERIENCE_ARCHITECTURE §5. Next: the paper geography (§7 step 2), still no Map code. |
 | **Living World** | **Future** — awaits real world content and the documentary "Observe" verb. |
 | **Book Architecture** | **Future** — architecture-before-manuscript (recorded in CAB-022); awaits the blueprint. |
 

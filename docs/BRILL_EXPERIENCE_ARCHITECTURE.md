@@ -171,12 +171,11 @@ asymmetry is a live hypothesis, not a settled equivalence.
   question is a fixed frame over a *variable* neighbourhood (overflow/underflow).
 
 ### Open questions (need answers before building the Map)
-- **The canonical containment spine** — what is really `within` what (where the
-  Record/Sessions sits; is Organodynamics *inside* Brill or *beside* it). A statement
-  about what Brill *is*; the human's to make.
+> **Two of these are now closed** (2026‑07‑25, a follow‑up session): the **canonical
+> containment spine** and the **zoom depth**. They are struck from this list — see
+> *“Closed 2026‑07‑25 — the two gating decisions”* below — because the Living Map no
+> longer waits on them.
 - **Tree vs. DAG** for containment (multi‑parent membership; neighbourhoods as views).
-- **How deep the zoom goes** — is a Document a **leaf Place** you zoom *into*, or
-  content shown while you are *in* a Room? Governs URL↔camera mapping.
 - **Sovereignty vs. persistent shell** — reconcile "each Place is a bare,
   offline‑openable file" (Axiom 10) with "one continuous windowed world." Proposed:
   progressive enhancement (the window enriches, never a dependency). Not locked.
@@ -196,6 +195,65 @@ asymmetry is a live hypothesis, not a settled equivalence.
   implementations").
 - The **Living World** documentary "Observe" verb (awaits real world content;
   from CAB‑023).
+
+### Closed 2026‑07‑25 (a follow‑up session) — the two gating decisions
+
+Both decisions §7 named as gating the Living Map are now made — the human's call,
+this session. The Map is no longer blocked on them. They add nothing to the
+constitutional grammar; each is an *application* of the grammar the corpus already
+ships (`Place` + `within()`), which is why neither introduces a new primitive.
+
+**Decision (a) — the canonical containment spine.** *Brill **is** the World* — the
+maximal Place, the top of `within`. **Organodynamics sits *inside* Brill, as its
+canonical core / origin**, not beside it: the constitutional corpus is a contained
+region at the centre of the World, and the working regions extend outward from it
+(centrifugal — journeys out). The fixed "outward / return" direction ascends toward
+the **Brill** frame (the maximal element); the innermost pull is toward the **OD**
+core. Two things the §3 sextet already placed stay **off the map**: the
+**Repository / Record** is the memory *beneath* the World (Spine 1) — rendered as the
+ground everything is derived from, never a room; the **numbered sessions**
+(`Organodynamics NNN`) are ephemeral context windows — never a Place. So the sub‑question
+"where the Record / Sessions sits" is answered by *not on the map at all*: only the
+**corpus‑as‑readable‑region** is a Place; the Record‑as‑memory and the
+sessions‑as‑workshops are not. This fixes the **top and centre** of the DAG the Map
+renders — `Brill (World, maximal) ⊃ … ⊃ Organodynamics (canonical core) ⊃
+{Constitution · RFCs · Cabinet}`. The full room‑by‑room geography (§7 step 2) is now
+unblocked and is the immediate next step; the exact enumeration of the working
+regions, and whether "Reference" is a *view onto* the OD core rather than a sibling
+region, are drawn there — but the invariants above are fixed.
+
+**Decision (b) — how deep the zoom goes.** *A document is **content in a Room**, not a
+leaf Place.* Spatial zoom (motion along `within`) **terminates at the Room**: the Room
+is the deepest Place — "somewhere you can be and observe *from*." A document is what
+you *read while standing in* a Room (it is observed, not observed‑*from*), so it never
+becomes its own camera position. This keeps the Living Map bounded — a museum
+floor‑plan of **rooms**, not a node per document — and, decisively, keeps two
+"depths" separate: **spatial zoom** (along `within`, stops at the Room) is a different
+axis from **reading depth** (Canonical → Representation → Explanation, *inside* the
+document — already shipped in Reading Layers). The leaf‑Place model would have
+conflated camera motion with reading.
+
+*URL ↔ camera mapping (what (b) governs).* A room path is a camera **position**; a
+document is a **focus within the frame**, not a new position:
+- `/organodynamics/rfcs/` → camera **in** the RFCs room.
+- `/organodynamics/rfcs/RFC‑002` → the **same** room, RFC‑002 in focus (a
+  selection / fragment, not a descent).
+- "Up / return" ascends **rooms**; opening or closing a document does **not** change
+  your Place.
+
+**The unifying rule (one test at every level of `within`).** Both decisions are
+instances of a single test the corpus already uses ("does it hold state, or merely
+afford activity?" — the neighbourhood‑container test in `BRILL_HANDOFF`):
+
+> A thing is a **Place** (a node on the Map) only if it *holds state of its own and
+> affords being‑in‑and‑observing‑from*. Otherwise it is a **view** over Places (above
+> — e.g. a neighbourhood) or **content** within a Place (below — e.g. a document).
+
+One test settles the neighbourhood‑vs‑container question, decision (a)'s "is OD a
+Place" (yes — a canonical region), and decision (b)'s "is a document a Place" (no —
+content), with no new primitive. The single edge it leaves open: a document large
+enough to *hold state and be inhabited* (the Constitution as a whole? a Book?) becomes
+a Room by the very same test — decided per artifact, not by fiat.
 
 ## 6. Implementation status (as of the close of `Organodynamics 006`)
 
@@ -238,13 +296,16 @@ render of the deployed commit is the substitute).
 
 Not a task list — where the next workshop should *naturally* begin:
 
-1. **Close two decisions before any Map code**, because they govern everything
-   downstream (both from §5 open questions): **(a)** the canonical containment spine
-   (what is `within` what), and **(b)** how deep the zoom goes (Document as leaf‑Place
-   vs. content‑in‑a‑Room). Until these are settled, a Living Map cannot be honest.
-2. **Then a paper geography, not code** — write the canonical `within()` structure of
-   Brill down (in this doc or a sibling), as the single source the Map will render.
-   The Map is a Camera; it needs its territory fixed first.
+1. ~~**Close two decisions before any Map code.**~~ **Done (2026‑07‑25).** Both are
+   now decided — **(a)** the canonical containment spine (Brill *is* the World; OD
+   inside it as the canonical core; Record and sessions off‑map) and **(b)** the zoom
+   depth (a document is content in a Room; spatial zoom stops at the Room). See §5,
+   *“Closed 2026‑07‑25 — the two gating decisions.”* The Map is no longer gated.
+2. **Now: a paper geography, not code** — this is the *current* starting point. With
+   the spine's top and centre fixed, write the canonical `within()` structure of Brill
+   down (in this doc or a sibling), as the single source the Map will render: the
+   working regions, their rooms, and whether "Reference" is a view onto the OD core.
+   The Map is a Camera; it needs its full territory fixed first.
 3. **Keep the review loop** — the human reviews through the Vercel Preview; a task
    isn't done until it's rendered there (EN + HE/RTL where applicable) and they've
    seen it. Production stays an explicit release decision (PR #2).
