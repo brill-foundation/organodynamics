@@ -75,6 +75,20 @@ architecture of the daily workspace (Places, memory, rigor placement, the worksp
   reversed burden — judges epistemic primitives; killed Field Capture). *Brill-inhabitation*
   (fitness for daily work — judges Brill's vocabulary; Place passes, Habitat fails). A Brill
   concept is judged by the second, never the first.
+- **The participant test (standing design test).** *"Would this still be true if Claude
+  disappeared tomorrow?"* If yes, it belongs to the **architecture**; if no, it belongs to
+  **today's implementation** — keep them separate, and never freeze an implementation fact into
+  the architecture. This is the reversed burden applied to the inhabitation layer: it has
+  already protected **Home**, the **Window**, the **Repository**, and **Arrival** (each survived
+  the test and so is architecture, not tooling; e.g. the agent's non-persistent memory *fails*
+  the test, so amnesia stays out of the model). Apply it whenever a new object is introduced.
+- **Arrival / Orientation is participant-centered, not tool-centered.** `CLAUDE.md` (the
+  arriving participant's threshold) + `ORIENTATION.md` (the living standpoint / desk) are one
+  *surface* of the universal Arrival pattern — the AI participant's; the human's is
+  `README` → `WELCOME.md` → the Living Map. `CLAUDE.md` stays frozen (protocol + the
+  workshop rule); `ORIENTATION.md` carries the live, layer-neutral dashboard and routes to the
+  layer handoffs, restating nothing. See BRILL_EXPERIENCE_ARCHITECTURE §4, "Arrival is
+  universal."
 - **Documentary principle** (source: CAB-023): the world is the primary artifact; an image is
   one observation of it. Not-yet-real destinations are shown honestly as **"Forthcoming,"**
   never seeded with fabricated content.

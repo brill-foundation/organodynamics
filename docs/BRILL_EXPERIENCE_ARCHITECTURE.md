@@ -130,7 +130,9 @@ asymmetry is a live hypothesis, not a settled equivalence.
   yet implemented as a map; today only the flat plan‑rail exists.*
 - **Arrival** — a Home event: the participant's first sitting‑down; a calm invitation
   ("Start here"), distinct from Signs of Life. Hands over to Return once the visitor
-  first explores. *Implemented (entry‑page layer).*
+  first explores. *Implemented (entry‑page layer for humans; the AI‑participant
+  surface — `CLAUDE.md` + `ORIENTATION.md` — added 2026‑07‑25; see "Arrival is
+  universal" below.)*
 - **Signs of Life** — the Home remembering what has changed since *you* last looked
   at *that* Place; personal and incremental, evidence‑driven (a per‑Place content
   token), never "since production." *Implemented.*
@@ -138,6 +140,32 @@ asymmetry is a live hypothesis, not a settled equivalence.
   source of truth), **Representation** (a faithful translation, marked as a
   representation), **Explanation** (plain language, never the constitutional text).
   *Implemented, with a first batch of content.*
+
+### Arrival is universal (the participant, not the tool)
+
+A recognition distilled 2026‑07‑25 (a follow‑up workshop): **Arrival is not a
+human‑only event, and not a Claude‑specific one.** Every participant — a human, an
+AI agent, a future participant we have not imagined — performs the *same*
+architectural act on entering Brill:
+
+1. **establish a standpoint** (sit down at Home),
+2. **orient** (turn the Computer toward the current World — the always‑answered
+   "where am I"),
+3. **turn toward the World**, then
+4. **begin work**.
+
+The *surfaces* differ; the *act* does not. A human first‑timer arrives through
+`README` → `laboratory/arrival/WELCOME.md` and will orient through the Living Map;
+an AI participant arrives through `CLAUDE.md` and orients through `ORIENTATION.md`.
+These are two implementations of one pattern — **Arrival, then Orientation** — both
+already named in this section, now recognized as *participant‑centered*. The
+repository is the sovereign memory each relies on **regardless of how much they
+personally remember**: some arrive with a Home already prepared, some reconstruct
+it — the architecture assumes only that everyone arrives at Home. `CLAUDE.md` is
+named for today's mechanism; if the mechanism is replaced, the surface is replaced
+and the architecture stands. (This passed the standing test below: *it would remain
+true if Claude disappeared tomorrow* — so it belongs to the architecture, not to the
+implementation.)
 
 ## 5. Status of every idea
 
