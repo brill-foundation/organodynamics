@@ -4,8 +4,18 @@
 **constitutional / stewardship** continuity (the discipline). This one preserves **Brill
 implementation** continuity (the product). The two evolve independently.*
 
-Branch: `claude/organodynamics-stewardship-onboard-ei4jwx`. Updated 2026-07-24.
+Branch: `claude/organodynamics-stewardship-onboard-ei4jwx`. Updated 2026-07-25 (close of `Organodynamics 006`).
 Transient — supersede freely; the commits are the truth.
+
+> **Read first:** the `Organodynamics 006` workshop distilled a substantial
+> **experience architecture** — Home · Computer · Window · World · Living Map ·
+> Orientation · Arrival · Signs of Life · Reading Layers — into
+> **`docs/BRILL_EXPERIENCE_ARCHITECTURE.md`**. That document is the transition
+> package: the stable recognitions, what is ratified vs. hypothesis vs. open vs.
+> intentionally‑unresolved, the current implementation status, and where the next
+> workshop should begin. This file (HANDOFF) remains the *operational* continuity;
+> the architecture doc is the *conceptual* continuity. Start with the architecture
+> doc, then return here.
 
 ---
 
@@ -32,7 +42,8 @@ architecture of the daily workspace (Places, memory, rigor placement, the worksp
 | Phase | Status |
 |---|---|
 | **Product UX — foundational restructure** | **Done** — Brill is the public entry; the OD Door is `/organodynamics/`; navigation reorganized around `← Brill`. Live in the repo. |
-| **Workspace Definition** | **Active** — spatial vocabulary, memory model, rigor placement, and the daily-workspace IA are being defined. Decisions below; open items further down. Not yet built. |
+| **Inhabitation layers** | **Built, in Preview, awaiting review** — Signs of Life (personal/incremental), Arrival/Return, Reading Layers (Canonical · Representation · Explanation) + a Hebrew translation layer (first batch). See BRILL_EXPERIENCE_ARCHITECTURE §6. |
+| **Experience Architecture (Home · Window · World · Living Map · Orientation)** | **Recognized, not built** — the `Organodynamics 006` distillation. Architecture settled to the point of §5's open decisions; **no code**. Two decisions gate the Living Map: the canonical containment spine, and how deep the zoom goes. |
 | **Living World** | **Future** — awaits real world content and the documentary "Observe" verb. |
 | **Book Architecture** | **Future** — architecture-before-manuscript (recorded in CAB-022); awaits the blueprint. |
 
