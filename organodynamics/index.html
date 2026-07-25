@@ -1,0 +1,146 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Organodynamics — The Space</title>
+<meta name="description" content="The threshold of the Organodynamics Space — a living habitat of distinct places, each with its own responsibility. The Laboratory is one place within it.">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🔭</text></svg>">
+<link rel="stylesheet" href="/assets/door.css">
+</head>
+<body data-place="threshold" data-root="/">
+<!--
+  The Door — the canonical entrance to the laboratory.
+  It is a Camera, not the Place: build-less, read-only, storing nothing,
+  judging nothing. The Place itself lives in /laboratory and travels as a
+  sovereign folder. Language is an interpretive layer (assets/lang.js), not
+  localization. Constitution: laboratory/CONSTITUTION.md
+-->
+<header class="top">
+  <div class="wordmark">ORGANODYNAMICS <span data-i18n="brand.sub">· a living habitat · Brill Foundation</span></div>
+  <nav>
+    <a href="/" class="up" data-i18n="nav.brill">↑ Brill</a>
+    <a href="/constitution/" data-i18n="nav.constitution">Constitution</a>
+    <a href="/rfcs/" data-i18n="nav.rfcs">RFCs</a>
+    <a href="/cabinet/" data-i18n="nav.cabinet">Cabinet</a>
+    <a href="https://github.com/brill-foundation/organodynamics" data-i18n="nav.record">The Record</a>
+  </nav>
+  <button class="hbtn" id="langToggle">עברית</button>
+</header>
+
+<main>
+  <section class="arrival">
+    <p class="kicker" data-i18n="door.kicker">You are at the threshold of</p>
+    <h1 class="door"><span data-i18n="door.title">The Space</span><span class="pulse" id="alive" title="signs of life"></span></h1>
+    <p class="subtitle" data-i18n="door.subtitle">a living habitat — many places, one whole</p>
+    <p class="lede" data-i18n="door.lede">Organodynamics is an engineering discipline for evolving representations
+    of reality. What you are entering is not a single tool but a <strong>Space</strong> — a living habitat of
+    distinct places, each with its own responsibility: the Laboratory where the work happens, the Constitution
+    reality ratified, the Cabinet that remembers, the Record that forgets nothing. Ideas mature from pencil to
+    ink to print; what happened is never renegotiated. This is not software to operate — it is a place to inhabit.</p>
+    <p class="vote" data-i18n="door.vote">Reality has the final vote.</p>
+    <p class="sidenote" data-i18n="door.brill"><strong>Organodynamics is the discipline; Brill is an implementation built on it.</strong> This Door opens onto the discipline — its grammar and its Record. Brill is a coherent, continuously existing world built on that discipline; its images are documentary observations from within it, where the world — never any single image — is the primary artifact.</p>
+    <p class="sidenote" style="margin-top:10px"><strong data-i18n="door.entrance">New here — or inviting someone?
+    The entrance is one file:</strong> <a href="https://github.com/brill-foundation/organodynamics/blob/main/laboratory/arrival/WELCOME.md"><code>laboratory/arrival/WELCOME.md</code></a></p>
+    <details class="guide">
+      <summary data-i18n="guide.door.s">✎ A local note — how to enter</summary>
+      <p class="gbody" data-i18n="guide.door.b">This is a threshold, not a control panel. The canonical entrance for
+      any new participant — human or AI — is one file: <code>laboratory/arrival/WELCOME.md</code> in the Record.
+      Beyond it, the Space opens into its places: the Laboratory's table, the Constitution, the binders of
+      arguments, the Cabinet that remembers them, the sealed Sessions. Take the Place home if you want it with no
+      server at all. Nothing here is operated — it is inhabited.</p>
+    </details>
+  </section>
+
+  <nav class="plan" data-space-nav></nav>
+
+  <div class="hall">
+    <section class="places-col">
+    <header class="places-head">
+      <h2 data-i18n="places.h2">The places</h2>
+      <p class="sidenote" data-i18n="places.note">Each place holds one responsibility and no other. You move between them; nothing here is a screen to operate.</p>
+    </header>
+    <section class="rooms" aria-label="The places of the Space">
+      <a class="room" data-obj="table" href="/laboratory/table/">
+        <span class="fig fig-table" aria-hidden="true"><i class="top"></i><i class="idea"></i><i class="seat s1"></i><i class="seat s2"></i><i class="seat s3"></i><i class="seat s4"></i></span>
+        <span class="tag" data-i18n="tag.inhabit">Inhabit</span>
+        <h3 data-i18n="room.lab">The Laboratory <small>השולחן</small></h3>
+        <p data-i18n="room.lab.p">The Place itself — the Table, the Journal, the Cabinet, the Shelf, the Press.
+        Works offline; the AI seats are invited guests, never infrastructure.</p>
+      </a>
+      <a class="room" data-obj="charter" href="/constitution/">
+        <span class="fig fig-charter" aria-hidden="true"><i class="page"></i><i class="seal"></i><i class="ribbon"></i></span>
+        <span class="tag" data-i18n="tag.constitution">What reality ratified</span>
+        <h3 data-i18n="room.constitution">The Constitution</h3>
+        <p data-i18n="room.constitution.p">Objects own responsibilities; furniture stays unintelligent; preservation is
+        not optional. Some questions are deliberately left open.</p>
+      </a>
+      <a class="room" data-obj="binder" href="/rfcs/">
+        <span class="fig fig-binder" aria-hidden="true"><i class="cover"></i><i class="label"></i><i class="tab"></i></span>
+        <span class="tag" data-i18n="tag.rfcs">Under challenge</span>
+        <h3 data-i18n="room.rfcs">The RFCs</h3>
+        <p data-i18n="room.rfcs.p">The Instrument · Inquiry · The Navigation Layer. Proposals that mature by
+        challenge and revision — and keep their rejections.</p>
+      </a>
+      <a class="room" data-obj="drawers" href="/cabinet/">
+        <span class="fig fig-drawers" aria-hidden="true"><i class="d d1"></i><i class="d d2"></i><i class="d d3"></i></span>
+        <span class="tag" data-i18n="tag.cabinet">Archive</span>
+        <h3 data-i18n="room.cabinet">The Cabinet <small>הארון</small></h3>
+        <p data-i18n="room.cabinet.p">Research artifacts, kept as they were — reviews, readings, debates.
+        Deposited by their authors; interpreted by no one.</p>
+      </a>
+      <a class="room" data-obj="sessions" href="/laboratory/record/">
+        <span class="fig fig-ledger" aria-hidden="true"><i class="v v1"></i><i class="v v2"></i><i class="v v3"></i></span>
+        <span class="tag" data-i18n="tag.sessions">Sealed &amp; verified</span>
+        <h3 data-i18n="room.sessions">The Sessions <small>המושבים</small></h3>
+        <p data-i18n="room.sessions.p">The living record of the autonomous Laboratory — Participants arrive, work
+        under the five obligations, seal, and depart. Your browser re-verifies the chain.</p>
+      </a>
+      <a class="room" data-obj="box" href="/laboratory/releases/RealityGame-0.0.1.zip" download>
+        <span class="fig fig-box" aria-hidden="true"><i class="b"></i><i class="tape"></i><i class="tape2"></i></span>
+        <span class="tag" data-i18n="tag.release">Sovereign release</span>
+        <h3 data-i18n="room.release">Take the Place home</h3>
+        <p data-i18n="room.release.p">RealityGame 0.0.1 — download, unzip, double-click. The whole laboratory in one
+        folder: no server, no cloud, no account.</p>
+      </a>
+      <a class="room" data-obj="ledger" href="https://github.com/brill-foundation/organodynamics">
+        <span class="fig fig-ledger" aria-hidden="true"><i class="v v1"></i><i class="v v2"></i><i class="v v3"></i></span>
+        <span class="tag" data-i18n="tag.record">Append-only</span>
+        <h3 data-i18n="room.record">The Record</h3>
+        <p data-i18n="room.record.p">Every commit, every revision, every preserved learning. The Record is
+        infallible only about itself — and it forgets nothing.</p>
+      </a>
+    </section>
+    </section>
+
+    <aside class="orient" aria-label="Orientation">
+      <h2 data-i18n="orient.h2">Orientation</h2>
+      <p class="orient-here" data-i18n="orient.here">You are at the threshold. The Space is alive; here is what has changed while you were away — not alerts to clear, but your bearings.</p>
+      <p class="orient-since" id="orient-since" hidden></p>
+      <p class="orient-observing" id="observing" hidden></p>
+      <details class="why" id="why" hidden><summary id="why-q">Why does the Space feel like this?</summary><div class="why-body" id="why-body"></div></details>
+      <div class="winframe">
+      <div class="sig" id="sig-preserve"><h3 data-i18n="orient.preserve">Recently, in the Space</h3><ul><li class="quiet">listening…</li></ul></div>
+      <div class="sig" id="sig-open"><h3 data-i18n="orient.open">Questions still open</h3><ul><li class="quiet">listening…</li></ul></div>
+      <div class="sig" id="sig-rfc"><h3 data-i18n="orient.rfc">Under challenge</h3><ul><li class="quiet">listening…</li></ul></div>
+      <p class="sidenote" data-i18n="orient.note">Bearings are shown side by side, never combined into a score — disagreement is information.</p>
+      </div>
+      <noscript><p class="sidenote">Orientation needs JavaScript; the places do not.</p></noscript>
+    </aside>
+  </div>
+</main>
+
+<footer>
+  <span data-i18n="footer.a">Organodynamics · Brill Foundation</span>
+  <span data-i18n="footer.b">The entrance is a camera; the Place travels in a folder.</span>
+  <span data-i18n="footer.c">Reality has the final vote.</span>
+  <span class="space-age" id="space-age" hidden></span>
+</footer>
+<script src="/assets/space-nav.js"></script>
+<script src="/assets/environment.js"></script>
+<script src="/assets/lang.js"></script>
+<script src="/assets/signs-of-life.js"></script>
+<script src="/assets/arrival.js"></script>
+<script src="/assets/door.js"></script>
+</body>
+</html>

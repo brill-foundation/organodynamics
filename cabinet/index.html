@@ -7,14 +7,14 @@
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🔭</text></svg>">
 <link rel="stylesheet" href="../assets/door.css">
 </head>
-<body class="room-cabinet">
+<body class="room-cabinet" data-place="cabinet" data-root="../">
 <!-- The Cabinet, Record-level implementation: archival furniture for research
      artifacts. One responsibility (the Cabinet owns memory), two
      implementations — the in-Place cabinet holds raw material; this room holds
      authored artifacts. Depositing is an authored act; all metadata is
      author-declared frontmatter. The furniture interprets nothing. -->
 <header class="top">
-  <div class="wordmark"><a href="../" data-i18n="reader.back">← THE DOOR</a></div>
+  <div class="wordmark"><a href="../" data-i18n="reader.back">← BRILL</a></div>
   <nav>
     <a href="../constitution/" data-i18n="nav.constitution">Constitution</a>
     <a href="../rfcs/" data-i18n="nav.rfcs">RFCs</a>
@@ -23,6 +23,7 @@
   <button class="hbtn" id="langToggle">עברית</button>
 </header>
 <div class="pagewrap">
+  <nav class="plan" data-space-nav></nav>
   <div class="arrival" style="padding:44px 0 8px">
     <p class="kicker" data-i18n="cabinet.kicker">Archival furniture</p>
     <h1 class="door" style="font-size:32px"><span data-i18n="cabinet.title">The Cabinet</span></h1>
@@ -34,8 +35,10 @@
     <summary data-i18n="guide.cabinet.s">✎ A local note — what an artifact is</summary>
     <p class="gbody" data-i18n="guide.cabinet.b">An artifact is a research conversation preserved as it was,
     with metadata its author declared. The drawers darken with the true age of what they hold. The Cabinet
-    remembers; it never interprets, summarizes, or ranks.</p>
+    remembers; it never interprets, summarizes, or ranks.
+    The medium here is ink — kept exactly as deposited; certainty belongs to each author, not to the room.</p>
   </details>
+  <div id="layerbar" class="layerbar"></div>
   <div id="docs"><p class="quiet">Fetching the artifacts from the Record…</p></div>
   <p class="sidenote" style="margin-top:22px" data-i18n="cabinet.deposit">Depositing is an authored
   act: add a markdown file with frontmatter beside these and list it in <code>catalog.json</code>.
@@ -43,41 +46,69 @@
 </div>
 <footer>
   <span data-i18n="cabinet.footer">This room renders <code>cabinet/*.md</code> verbatim — the Record is the source of truth.</span>
+  <details class="why" id="why" hidden><summary id="why-q">Why does the Space feel like this?</summary><div class="why-body" id="why-body"></div></details>
 </footer>
 <script src="../assets/md.js"></script>
+<script src="../assets/space-nav.js"></script>
+<script src="../assets/environment.js"></script>
 <script src="../assets/lang.js"></script>
+<script src="/assets/doc-layers.js"></script>
+<script src="/assets/signs-of-life.js"></script>
+<script src="/assets/arrival.js"></script>
 <script>
-(async()=>{
+/* Renders the cabinet/*.md artifacts. Language-aware: in Hebrew it fetches a
+   translation from cabinet/he/<file> when one exists — a representation, clearly
+   labelled, with the English original as the source of truth — falling back to the
+   English otherwise. Re-renders on language change (lang.js' lab-lang event). */
+(()=>{
   const host=document.getElementById("docs");
-  const FIELDS=[["kind","Kind"],["date","Date"],["participants","Participants"],
+  const FIELDS_EN=[["kind","Kind"],["date","Date"],["participants","Participants"],
     ["discoveries","Discoveries"],["constitutional-questions","Constitutional questions"],
     ["related","Related"],["provenance","Provenance"],["status","Status"]];
-  try{
-    const files=await (await fetch("catalog.json",{cache:"no-store"})).json();
+  const FIELDS_HE=[["kind","סוג"],["date","תאריך"],["participants","משתתפים"],
+    ["discoveries","תגליות"],["constitutional-questions","שאלות חוקתיות"],
+    ["related","קשור"],["provenance","מוצאוּת"],["status","סטטוס"]];
+  const esc=(s)=>String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;");
+  const bar=document.getElementById("layerbar");
+  let layer=DocLayers.get(), token=0;
+  async function paint(lang){
+    const mine=++token, he=lang==="he";
+    DocLayers.control(bar,lang,layer,(l)=>{layer=l;DocLayers.set(l);paint(document.documentElement.lang||"en");});
+    let files;
+    try{files=await (await fetch("catalog.json",{cache:"no-store"})).json();}catch(e){
+      host.innerHTML='<p class="quiet">The artifacts live in <code>cabinet/</code> in the Record. '+
+        'Reading them here needs the deployed door or a local server — or open the files directly in the repository.</p>';
+      return;
+    }
+    if(mine!==token)return;
     let any=false;
     for(const f of files){
       try{
-        const r=await fetch(f,{cache:"no-store"});
-        if(!r.ok)continue;
-        const {front,html}=mdParse(await r.text());
+        const doc=await DocLayers.resolve(f,lang,layer);
+        if(mine!==token)return;
+        if(!doc)continue;
+        const {front,html}=mdParse(doc.text);
         if(!any){host.innerHTML="";any=true;}
         const d=document.createElement("details");
         d.className="rfc";
         const title=(front&&front.title)||f;
+        const heContent=(he && doc.dir!=="ltr");                   // Hebrew labels only when showing Hebrew content
+        const flabels=heContent?FIELDS_HE:FIELDS_EN;
         const chips=front?[front.kind?'<span class="badge">'+front.kind+"</span>":"",
                            front.date?'<span class="badge" style="color:var(--muted)">'+front.date+"</span>":""].join(" "):"";
-        const meta=front?'<div class="front">'+FIELDS.filter(([k])=>front[k])
-          .map(([k,l])=>"<span><b>"+l+"</b> "+front[k].replace(/&/g,"&amp;").replace(/</g,"&lt;")+"</span>").join("")+"</div>":"";
-        d.innerHTML="<summary>"+title+" "+chips+"</summary><div class='doc-inner prose'>"+meta+html+"</div>";
+        const meta=front?'<div class="front">'+flabels.filter(([k])=>front[k])
+          .map(([k,l])=>"<span><b>"+l+"</b> "+esc(front[k])+"</span>").join("")+"</div>":"";
+        const innerDir=doc.dir?' dir="'+doc.dir+'"':"";
+        d.innerHTML="<summary>"+title+" "+chips+"</summary>"+doc.note+"<div class='doc-inner prose'"+innerDir+">"+meta+html+"</div>";
         if(front&&front.date){const age=Math.min(1,(Date.now()-new Date(front.date))/(31536e6));d.style.setProperty("--age",age.toFixed(2));}
         host.appendChild(d);
       }catch(e){}
     }
-    if(!any)throw 0;
-  }catch(e){
-    host.innerHTML='<p class="quiet">The artifacts live in <code>cabinet/</code> in the Record. '+
+    if(!any)host.innerHTML='<p class="quiet">The artifacts live in <code>cabinet/</code> in the Record. '+
       'Reading them here needs the deployed door or a local server — or open the files directly in the repository.</p>';
   }
+  paint(document.documentElement.lang||"en");
+  document.addEventListener("lab-lang",(e)=>paint(e.detail));
 })();
 </script>
 </body>

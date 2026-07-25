@@ -13,9 +13,33 @@
   --card:#26231e;--accent:#d68a4e;--accent-soft:#3a2f24;--good:#7fb08f;
   --shadow:0 1px 2px rgba(0,0,0,.3),0 8px 30px rgba(0,0,0,.35);
 }}
+/* ---- the light of the Space is a projection of its integrity, not the hour.
+   The Environmental Engine (assets/environment.js) re-verifies the hash chain
+   in this browser and sets data-integrity on <html>. A verified chain gives
+   clear light (the default); a chain that fails its own verification desaturates
+   and cools — a troubled light. Nothing here is aesthetic: the light means the
+   Record, and its provenance is answerable ("why does the Space feel like
+   this?"). ---- */
+:root[data-integrity=troubled]{--bg:#ecebe6;--bg2:#e6e4dd;--accent:#8a7f72;--good:#71847a;--muted:#8a8377}
+@media (prefers-color-scheme:dark){
+  :root[data-integrity=troubled]{--bg:#191816;--bg2:#1d1b18;--accent:#968b7d;--good:#7f8f85}
+}
 *{box-sizing:border-box}
 body{margin:0;background:radial-gradient(120% 90% at 50% -10%,var(--bg2),var(--bg));
   color:var(--ink);font:15px/1.6 var(--sans);-webkit-font-smoothing:antialiased;min-height:100vh}
+/* the room breathes — a slow ambient swell, far below attention. A rhythm, not
+   a signal. Its tempo is projected from the Record by the Environmental Engine
+   (assets/environment.js sets data-rest): recently stirred breathes a touch
+   quicker and fuller; long at rest breathes slow and faint. The breath means
+   the Space's recent life; its provenance is answerable. Stilled — not frozen
+   mid-breath — for reduced motion. */
+body::before{content:"";position:fixed;inset:0;pointer-events:none;z-index:-1;
+  background:radial-gradient(85% 60% at 50% 0%,color-mix(in srgb,var(--accent) 5%,transparent),transparent 70%);
+  opacity:0;animation:ambient var(--breath,92s) ease-in-out infinite alternate}
+@keyframes ambient{to{opacity:var(--breath-peak,.85)}}
+:root[data-rest=stirring]{--breath:76s;--breath-peak:1}
+:root[data-rest=still]{--breath:124s;--breath-peak:.5}
+@media (prefers-reduced-motion:reduce){body::before{animation:none;opacity:.5}}
 a{color:var(--accent);text-decoration:none}
 a:hover{text-decoration:underline}
 
@@ -49,6 +73,114 @@ h1.door{font-family:var(--serif);font-size:40px;line-height:1.15;margin:0 0 16px
 .room h3 small{font-family:var(--sans);color:var(--muted);font-weight:400;font-size:12.5px;margin-inline-start:6px}
 .room p{margin:0;color:var(--muted);font-size:13.5px}
 
+/* the plan of the Space — one wayfinding rail on every reading Place.
+   You-are-here is a filled accent node; the other Places are hollow-node links,
+   joined transit-style. Shared component: assets/space-nav.js. */
+.plan{display:flex;flex-wrap:wrap;align-items:center;gap:2px 2px;margin:6px 0 30px;
+  padding:11px 16px;background:var(--bg2);border:1px solid var(--line);border-radius:12px}
+.plan:empty{display:none}
+.pagewrap>.plan{margin-top:20px}
+.plan-stop{display:inline-flex;align-items:center;gap:7px;font-size:12.5px;color:var(--muted);
+  padding:4px 9px;border-radius:20px;white-space:nowrap;transition:color .15s,background .15s}
+.plan-stop::before{content:"";width:18px;height:2px;background:var(--line);border-radius:2px;flex:none}
+.plan-stop:first-child::before{display:none}
+.plan-stop .node{width:9px;height:9px;border-radius:50%;background:var(--card);
+  border:2px solid var(--muted);flex:none;transition:border-color .15s}
+a.plan-stop:hover{color:var(--accent);background:var(--card);text-decoration:none}
+a.plan-stop:hover .node{border-color:var(--accent)}
+.plan-stop.here{color:var(--ink);font-weight:600}
+.plan-stop.here .dot{width:11px;height:11px;border-radius:50%;background:var(--accent);
+  box-shadow:0 0 0 4px var(--accent-soft);flex:none}
+.plan-stop.here .dot.alive{animation:breathe 3.4s ease-in-out infinite}
+.plan-stop .hereis{font-style:normal;font-weight:400;color:var(--muted);font-size:11.5px}
+@media (prefers-reduced-motion:reduce){.plan-stop.here .dot.alive{animation:none}}
+
+/* ── Signs of Life & Arrival ──────────────────────────────────────────────────
+   The two ways a Place quietly speaks — never notifications, always answering to
+   real state, flipping cleanly in RTL, resting under reduced motion. Shared shape,
+   distinct voice: Signs of Life is warm (the accent) and reveals where a Place has
+   evolved since you last looked; Arrival is cooler (the green of growth) and only
+   welcomes a first-time visitor toward a place to begin. Rendered as pseudo-
+   elements keyed on a data attribute, so language re-rendering (which rewrites
+   innerHTML) never disturbs them. Over time the signs should grow into the world
+   itself — a light in a building, a glow near a doorway; these cues are step one. */
+
+/* the small word-pill shared by "New" (Signs of Life) and "Start here" (Arrival) */
+[data-sign="new"]::after,[data-arrival="start"]::after{
+  display:inline-block;vertical-align:middle;white-space:nowrap;
+  font-size:9.5px;letter-spacing:.14em;text-transform:uppercase;
+  border:1px solid;border-radius:20px;padding:1px 7px}
+
+/* Signs of Life — a warm glow where a Place changed since you last looked here */
+[data-sign="corner"]{position:relative}                 /* the card anchors its corner cue */
+[data-sign="glow"]::after,[data-sign="corner"]::after{content:"";width:7px;height:7px;
+  border-radius:50%;background:var(--accent);
+  box-shadow:0 0 7px 1px color-mix(in srgb,var(--accent) 55%,transparent);
+  animation:sign-breathe 3.4s ease-in-out infinite}
+[data-sign="glow"]::after{display:inline-block;vertical-align:middle;margin-inline-start:6px}
+[data-sign="corner"]::after{position:absolute;inset-block-start:12px;inset-inline-end:12px}
+[data-sign="new"]::after{content:"New";color:var(--accent);margin-inline-start:6px;
+  border-color:color-mix(in srgb,var(--accent) 42%,transparent)}
+html[lang="he"] [data-sign="new"]::after{content:"חדש"}
+@keyframes sign-breathe{0%,100%{opacity:.5}50%{opacity:1}}   /* opacity only — compositor-friendly */
+
+/* Arrival — a calm invitation to begin, only on a visitor's very first time */
+[data-arrival="start"]{position:relative;
+  box-shadow:0 0 0 1px color-mix(in srgb,var(--good) 42%,transparent),
+             0 6px 26px color-mix(in srgb,var(--good) 20%,transparent);
+  animation:arrival-breathe 6s ease-in-out infinite}
+[data-arrival="start"]::after{content:"Start here";position:absolute;
+  inset-block-start:12px;inset-inline-end:12px;color:var(--good);
+  border-color:color-mix(in srgb,var(--good) 40%,transparent);
+  background:color-mix(in srgb,var(--good) 8%,var(--card))}
+html[lang="he"] [data-arrival="start"]::after{content:"התחילו כאן"}
+@keyframes arrival-breathe{
+  0%,100%{box-shadow:0 0 0 1px color-mix(in srgb,var(--good) 34%,transparent),0 5px 20px color-mix(in srgb,var(--good) 15%,transparent)}
+  50%    {box-shadow:0 0 0 1px color-mix(in srgb,var(--good) 55%,transparent),0 9px 32px color-mix(in srgb,var(--good) 26%,transparent)}}
+
+@media (prefers-reduced-motion:reduce){
+  [data-sign="glow"]::after,[data-sign="corner"]::after,[data-arrival="start"]{animation:none;opacity:1}}
+
+/* A quiet note marking a rendered document as a translation (a representation) —
+   the English original stays the source of truth. Shown only in Hebrew. */
+.trans-note{margin:0 0 14px;padding:6px 11px;border-radius:5px;font-size:12px;line-height:1.5;
+  border-inline-start:2px solid color-mix(in srgb,var(--accent) 45%,var(--line));
+  background:color-mix(in srgb,var(--accent) 5%,transparent)}
+
+/* Reading-mode control — the three layers (Canonical · Representation · Explanation).
+   Textual and quiet, not chrome: the active layer is named in the accent, the rest
+   rest muted. A choice of vantage, not a toolbar. */
+.layerbar{display:flex;flex-wrap:wrap;align-items:baseline;gap:3px 8px;margin:20px 0 4px;font-size:12.5px}
+.layerbar-lead{color:var(--muted);letter-spacing:.04em}
+.layer-opt{font:inherit;color:var(--muted);background:none;border:0;padding:2px 1px;cursor:pointer;
+  border-bottom:1px solid transparent}
+.layer-opt:hover{color:var(--ink)}
+.layer-opt.on{color:var(--accent);font-weight:600;border-bottom-color:color-mix(in srgb,var(--accent) 45%,transparent)}
+.subtitle{font-family:var(--serif);font-style:italic;font-size:17px;color:var(--muted);margin:-6px 0 16px}
+.places-head{margin:0 0 14px}
+.places-head h2{font-family:var(--serif);font-size:19px;font-weight:600;margin:0 0 4px}
+.orient h2{font-family:var(--serif);font-size:17px;margin:2px 0 6px}
+.orient-here{font-size:13px;line-height:1.55;color:var(--muted);margin:0 2px 8px;
+  border-inline-start:2px solid var(--accent-soft);padding-inline-start:12px}
+.orient-since{font-size:12.5px;line-height:1.55;color:var(--ink);margin:0 2px 8px;
+  border-inline-start:2px solid var(--accent);padding-inline-start:12px}
+.orient-observing{font-size:12px;line-height:1.5;color:var(--muted);margin:0 2px 10px;
+  border-inline-start:2px solid var(--line);padding-inline-start:12px}
+/* the environment's provenance — "why does the Space feel like this?" Every
+   environmental variable, traced to its evidence in the Record. */
+details.why{margin:2px 0 4px;font-size:12px}
+details.why>summary{cursor:pointer;list-style:none;color:var(--muted);font-family:var(--serif);
+  font-style:italic;padding:2px 0}
+details.why>summary::-webkit-details-marker{display:none}
+details.why>summary::before{content:"›";margin-inline-end:6px;color:var(--muted);
+  display:inline-block;transition:transform .15s}
+details.why[open]>summary::before{transform:rotate(90deg)}
+.why-body{padding:6px 0 2px}
+.why-line{margin:0 0 6px;padding-inline-start:12px;line-height:1.5;color:var(--ink);
+  border-inline-start:2px solid var(--accent-soft)}
+footer details.why{flex-basis:100%;margin-top:2px}
+.sig li.fresh::before{content:"";display:inline-block;width:6px;height:6px;border-radius:50%;
+  background:var(--accent);margin-inline-end:7px;vertical-align:middle}
 .signals h2{font-family:var(--serif);font-size:17px;margin:2px 0 12px}
 .sig{background:var(--bg2);border:1px solid var(--line);border-radius:12px;padding:12px 14px;margin-bottom:12px}
 .sig h3{margin:0 0 6px;font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
@@ -62,6 +194,8 @@ h1.door{font-family:var(--serif);font-size:40px;line-height:1.15;margin:0 0 16px
 
 footer{border-top:1px solid var(--line);color:var(--muted);font-size:12.5px;
   padding:18px 24px;display:flex;gap:18px;flex-wrap:wrap}
+/* the age inscription — carved quietly into the footer, derived from the Record */
+.space-age{font-family:var(--serif);font-style:italic}
 
 /* ---- document reader (Constitution, RFCs) ---- */
 .pagewrap{max-width:860px;margin:0 auto;padding:0 24px 80px}
