@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-07-24T23:10:34.762Z",
+  "generatedAt": "2026-07-25T02:46:01.279Z",
   "note": "Per-Place content tokens for the Signs of Life system. A sign appears only where a Place's token differs from the token that visitor last saw there — personal and incremental, never since production/deployment. Provenance: assets/signs-of-life.js, tools/signs-of-life.js.",
   "areas": {
     "threshold": {
@@ -16,11 +16,11 @@
     },
     "rfcs": {
       "href": "rfcs/",
-      "token": "af0c40acc93d"
+      "token": "4d0e09f96f6e"
     },
     "cabinet": {
       "href": "cabinet/",
-      "token": "55a83204924d"
+      "token": "e62ca2b15c69"
     },
     "sessions": {
       "href": "laboratory/record/",

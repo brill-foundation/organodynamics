@@ -38,6 +38,7 @@
     remembers; it never interprets, summarizes, or ranks.
     The medium here is ink — kept exactly as deposited; certainty belongs to each author, not to the room.</p>
   </details>
+  <div id="layerbar" class="layerbar"></div>
   <div id="docs"><p class="quiet">Fetching the artifacts from the Record…</p></div>
   <p class="sidenote" style="margin-top:22px" data-i18n="cabinet.deposit">Depositing is an authored
   act: add a markdown file with frontmatter beside these and list it in <code>catalog.json</code>.
@@ -51,6 +52,7 @@
 <script src="../assets/space-nav.js"></script>
 <script src="../assets/environment.js"></script>
 <script src="../assets/lang.js"></script>
+<script src="/assets/doc-layers.js"></script>
 <script src="/assets/signs-of-life.js"></script>
 <script src="/assets/arrival.js"></script>
 <script>
@@ -67,17 +69,11 @@
     ["discoveries","תגליות"],["constitutional-questions","שאלות חוקתיות"],
     ["related","קשור"],["provenance","מוצאוּת"],["status","סטטוס"]];
   const esc=(s)=>String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;");
-  async function fetchDoc(f,he){
-    if(he){
-      try{const r=await fetch("he/"+f,{cache:"no-store"});if(r.ok)return{text:await r.text(),translated:true};}catch(e){}
-    }
-    const r=await fetch(f,{cache:"no-store"});
-    if(!r.ok)return null;
-    return{text:await r.text(),translated:false};
-  }
-  let token=0;
+  const bar=document.getElementById("layerbar");
+  let layer=DocLayers.get(), token=0;
   async function paint(lang){
     const mine=++token, he=lang==="he";
+    DocLayers.control(bar,lang,layer,(l)=>{layer=l;DocLayers.set(l);paint(document.documentElement.lang||"en");});
     let files;
     try{files=await (await fetch("catalog.json",{cache:"no-store"})).json();}catch(e){
       host.innerHTML='<p class="quiet">The artifacts live in <code>cabinet/</code> in the Record. '+
@@ -88,7 +84,7 @@
     let any=false;
     for(const f of files){
       try{
-        const doc=await fetchDoc(f,he);
+        const doc=await DocLayers.resolve(f,lang,layer);
         if(mine!==token)return;
         if(!doc)continue;
         const {front,html}=mdParse(doc.text);
@@ -96,16 +92,14 @@
         const d=document.createElement("details");
         d.className="rfc";
         const title=(front&&front.title)||f;
-        const flabels=(he && doc.translated)?FIELDS_HE:FIELDS_EN;   // Hebrew labels only for a real translation
+        const heContent=(he && doc.dir!=="ltr");                   // Hebrew labels only when showing Hebrew content
+        const flabels=heContent?FIELDS_HE:FIELDS_EN;
         const chips=front?[front.kind?'<span class="badge">'+front.kind+"</span>":"",
                            front.date?'<span class="badge" style="color:var(--muted)">'+front.date+"</span>":""].join(" "):"";
         const meta=front?'<div class="front">'+flabels.filter(([k])=>front[k])
           .map(([k,l])=>"<span><b>"+l+"</b> "+esc(front[k])+"</span>").join("")+"</div>":"";
-        const note=he?'<p class="quiet trans-note">'+(doc.translated
-            ?"תרגום — ייצוג של המקור; הנוסח האנגלי הוא מקור האמת, פתוח לאתגור ולרוויזיה."
-            :"עדיין לא תורגם — מוצג בנוסח האנגלי המקורי.")+"</p>":"";
-        const innerDir=(he && !doc.translated)?' dir="ltr"':"";
-        d.innerHTML="<summary>"+title+" "+chips+"</summary>"+note+"<div class='doc-inner prose'"+innerDir+">"+meta+html+"</div>";
+        const innerDir=doc.dir?' dir="'+doc.dir+'"':"";
+        d.innerHTML="<summary>"+title+" "+chips+"</summary>"+doc.note+"<div class='doc-inner prose'"+innerDir+">"+meta+html+"</div>";
         if(front&&front.date){const age=Math.min(1,(Date.now()-new Date(front.date))/(31536e6));d.style.setProperty("--age",age.toFixed(2));}
         host.appendChild(d);
       }catch(e){}

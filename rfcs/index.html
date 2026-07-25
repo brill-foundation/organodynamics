@@ -26,6 +26,7 @@
     in the lineage. The stamps on the spine are real — they come from the document itself.
     The medium here is ink — an author's commitment, open to challenge; certainty is still being earned.</p>
   </details>
+  <div id="layerbar" class="layerbar"></div>
   <div id="docs"><p class="quiet" style="margin-top:34px">Fetching the RFCs from the Record…</p></div>
 </div>
 <footer>
@@ -36,6 +37,7 @@
 <script src="../assets/space-nav.js"></script>
 <script src="../assets/environment.js"></script>
 <script src="../assets/lang.js"></script>
+<script src="/assets/doc-layers.js"></script>
 <script src="/assets/signs-of-life.js"></script>
 <script src="/assets/arrival.js"></script>
 <script>
@@ -61,22 +63,16 @@
     ["RFC-013-field-capture.md",false],
     ["../laboratory/rotating-table.md",false]
   ];
-  async function fetchDoc(f,he){
-    if(he && !f.startsWith("../")){
-      try{const r=await fetch("he/"+f,{cache:"no-store"});if(r.ok)return{text:await r.text(),translated:true};}catch(e){}
-    }
-    const r=await fetch(f,{cache:"no-store"});
-    if(!r.ok)return null;
-    return{text:await r.text(),translated:false};
-  }
-  let token=0;
+  const bar=document.getElementById("layerbar");
+  let layer=DocLayers.get(), token=0;
   async function paint(lang){
     const mine=++token, he=lang==="he";
+    DocLayers.control(bar,lang,layer,(l)=>{layer=l;DocLayers.set(l);paint(document.documentElement.lang||"en");});
     let any=false;
     for(const [f,open] of docs){
       try{
-        const doc=await fetchDoc(f,he);
-        if(mine!==token)return;                 // a newer language change superseded this pass
+        const doc=await DocLayers.resolve(f,lang,layer);
+        if(mine!==token)return;                 // a newer language/layer change superseded this pass
         if(!doc)continue;
         const {front,html}=mdParse(doc.text);
         if(!any){host.innerHTML="";any=true;}
@@ -86,11 +82,8 @@
         const chips=front?[front.status?'<span class="badge">'+front.status+'</span>':"",
                            front.revision?'<span class="badge" style="color:var(--muted)">rev '+front.revision+'</span>':"",
                            front.confidence?'<span class="badge" style="color:var(--muted)">'+front.confidence+'</span>':""].join(" "):"";
-        const note=he?'<p class="quiet trans-note">'+(doc.translated
-            ?"תרגום — ייצוג של המקור; הנוסח האנגלי הוא מקור האמת, פתוח לאתגור ולרוויזיה."
-            :"עדיין לא תורגם — מוצג בנוסח האנגלי המקורי.")+"</p>":"";
-        const innerDir=(he && !doc.translated)?' dir="ltr"':"";
-        d.innerHTML="<summary>"+label+" "+chips+"</summary>"+note+"<div class='doc-inner prose'"+innerDir+">"+html+"</div>";
+        const innerDir=doc.dir?' dir="'+doc.dir+'"':"";
+        d.innerHTML="<summary>"+label+" "+chips+"</summary>"+doc.note+"<div class='doc-inner prose'"+innerDir+">"+html+"</div>";
         host.appendChild(d);
       }catch(e){}
     }
