@@ -15,7 +15,7 @@
   .home { position: fixed; inset: 0; width: 100vw; height: 100vh;
     object-fit: cover; object-position: center; display: block; user-select: none; -webkit-user-drag: none; }
 
-  /* The Beacons layer — markers placed on the scene. */
+  /* The Beacons layer. Colour marks kind: blue = a Place in our git, yellow = the Internet. */
   .layer { position: fixed; inset: 0; pointer-events: none; }
   .beacon { position: absolute; transform: translate(-50%, -50%); pointer-events: auto; width: 24px; height: 24px; cursor: pointer; }
   body.mode-arrange .beacon { cursor: grab; }
@@ -24,9 +24,13 @@
   .beacon .ring { position: absolute; left: 50%; top: 50%; width: 24px; height: 24px;
     transform: translate(-50%, -50%); border-radius: 50%; border: 1px solid rgba(255,255,255,.4); }
   .beacon .dot { position: absolute; left: 50%; top: 50%; width: 13px; height: 13px;
-    transform: translate(-50%, -50%); border-radius: 50%;
-    background: radial-gradient(circle at 50% 40%, #fff 0%, #ffe6a8 34%, #ffb443 66%, rgba(255,150,40,0) 70%);
+    transform: translate(-50%, -50%); border-radius: 50%; }
+  .beacon.kind-web .dot { background: radial-gradient(circle at 50% 40%, #fff 0%, #ffe6a8 34%, #ffb443 66%, rgba(255,150,40,0) 70%);
     box-shadow: 0 0 12px 3px rgba(255,180,80,.8), 0 0 2px 1px rgba(0,0,0,.55); }
+  .beacon.kind-git .dot { background: radial-gradient(circle at 50% 40%, #fff 0%, #cfe6ff 34%, #4aa3ff 66%, rgba(60,150,255,0) 70%);
+    box-shadow: 0 0 12px 3px rgba(80,160,255,.8), 0 0 2px 1px rgba(0,0,0,.55); }
+  .beacon.kind-none .dot { background: radial-gradient(circle at 50% 40%, #fff 0%, #eaeaea 40%, rgba(255,255,255,0) 70%);
+    box-shadow: 0 0 11px 3px rgba(255,255,255,.55), 0 0 2px 1px rgba(0,0,0,.55); }
   .beacon .label { position: absolute; left: 50%; top: calc(50% + 17px); transform: translateX(-50%);
     white-space: nowrap; background: rgba(10,10,14,.74); color: #f2efe9; font-size: 12px; line-height: 1;
     padding: 5px 9px; border-radius: 999px; opacity: 0; transition: opacity .15s; pointer-events: none;
@@ -52,13 +56,19 @@
     border-bottom: 1px solid rgba(255,255,255,.1); }
   .ptitle { font-size: 12px; letter-spacing: .12em; text-transform: uppercase; opacity: .7; }
   .addwrap { position: relative; }
-  .addmenu { position: absolute; right: 0; top: 34px; width: 210px; background: rgba(18,18,24,.97);
-    border: 1px solid rgba(255,255,255,.16); border-radius: 10px; padding: 6px; z-index: 20;
+  .addmenu { position: absolute; right: 0; top: 34px; width: 216px; max-height: min(70vh, 520px); overflow-y: auto;
+    background: rgba(18,18,24,.98); border: 1px solid rgba(255,255,255,.16); border-radius: 10px; padding: 6px; z-index: 20;
     box-shadow: 0 12px 34px rgba(0,0,0,.5); }
-  .addmenu button { display: block; width: 100%; text-align: left; background: transparent; border: 0;
-    color: #eee; font: inherit; font-size: 13px; padding: 8px 9px; border-radius: 7px; cursor: pointer; }
-  .addmenu button:hover { background: rgba(255,255,255,.09); }
-  .addmenu .sep { height: 1px; background: rgba(255,255,255,.12); margin: 5px 4px; }
+  .mhead { font-size: 10px; letter-spacing: .11em; text-transform: uppercase; opacity: .55; padding: 8px 9px 4px; }
+  .mhead.kind-git { color: #8fc2ff; } .mhead.kind-web { color: #ffd27a; }
+  .mitem { display: flex; align-items: center; gap: 8px; width: 100%; text-align: left; background: transparent;
+    border: 0; font: inherit; font-size: 13px; color: #eee; padding: 7px 9px; border-radius: 7px; cursor: pointer; }
+  .mitem:hover { background: rgba(255,255,255,.09); }
+  .mitem::before { content: ""; width: 9px; height: 9px; border-radius: 50%; flex: 0 0 auto; }
+  .mitem.kind-git::before { background: #4aa3ff; box-shadow: 0 0 6px 1px rgba(80,160,255,.6); }
+  .mitem.kind-web::before { background: #ffb443; box-shadow: 0 0 6px 1px rgba(255,180,80,.6); }
+  .mitem.kind-none::before { background: #eaeaea; box-shadow: 0 0 6px 1px rgba(255,255,255,.4); }
+  .addmenu .sep { height: 1px; background: rgba(255,255,255,.12); margin: 6px 4px; }
 
   .list { list-style: none; margin: 0; padding: 8px; overflow-y: auto; flex: 1; }
   .empty { padding: 16px; font-size: 13px; line-height: 1.5; opacity: .6; }
@@ -69,32 +79,33 @@
   .grip { cursor: grab; opacity: .7; font-size: 15px; line-height: 1; padding: 2px 3px; touch-action: none; user-select: none; }
   .item.locked .grip { cursor: not-allowed; opacity: .3; }
   .grip.dragging { cursor: grabbing; }
-  .swatch { width: 11px; height: 11px; border-radius: 50%; flex: 0 0 auto;
-    background: radial-gradient(circle at 50% 40%, #fff 0%, #ffe6a8 34%, #ffb443 66%, rgba(255,150,40,.15) 72%);
-    box-shadow: 0 0 6px 1px rgba(255,180,80,.6); }
+  .swatch { width: 11px; height: 11px; border-radius: 50%; flex: 0 0 auto; }
+  .swatch.kind-web { background: radial-gradient(circle at 50% 40%, #fff 0%, #ffe6a8 34%, #ffb443 66%, rgba(255,150,40,.15) 72%); box-shadow: 0 0 6px 1px rgba(255,180,80,.6); }
+  .swatch.kind-git { background: radial-gradient(circle at 50% 40%, #fff 0%, #cfe6ff 34%, #4aa3ff 66%, rgba(60,150,255,.15) 72%); box-shadow: 0 0 6px 1px rgba(80,160,255,.6); }
+  .swatch.kind-none { background: radial-gradient(circle at 50% 40%, #fff 0%, #eaeaea 40%, rgba(255,255,255,.12) 72%); box-shadow: 0 0 6px 1px rgba(255,255,255,.35); }
   .iname { flex: 1; min-width: 0; background: rgba(255,255,255,.06); border: 1px solid rgba(255,255,255,.16);
     color: #fff; border-radius: 7px; padding: 6px 8px; font: inherit; font-size: 13px; }
-  .ilock, .idel { background: transparent; border: 0; cursor: pointer; font-size: 14px; line-height: 1;
-    padding: 4px; border-radius: 6px; }
-  .ilock:hover, .idel:hover { background: rgba(255,255,255,.1); }
+  .ipin, .idel { background: transparent; border: 0; cursor: pointer; font-size: 14px; line-height: 1; padding: 4px; border-radius: 6px; }
+  .ipin:hover, .idel:hover { background: rgba(255,255,255,.1); }
+  .pin { display: inline-block; transition: transform .15s, opacity .15s; }
+  .item:not(.locked) .pin { opacity: .4; transform: rotate(42deg); }
+  .item.locked .pin { opacity: 1; transform: rotate(0deg); }
   .itarget { width: 100%; box-sizing: border-box; margin-top: 7px; background: rgba(255,255,255,.05);
-    border: 1px solid rgba(255,255,255,.14); color: #d8d4cc; border-radius: 7px; padding: 5px 8px;
-    font: inherit; font-size: 12px; }
+    border: 1px solid rgba(255,255,255,.14); color: #d8d4cc; border-radius: 7px; padding: 5px 8px; font: inherit; font-size: 12px; }
   [hidden] { display: none !important; }
 </style>
 </head>
 <body>
 <!--
-  The Home, with its living Beacons layer and a side panel.
+  The Home, its Beacons layer, and a side panel.
 
-  Home is the image — unchanged. The panel is two things at once: a menu of
-  points one can add onto the scene (the known Places, or a blank point), and
-  the roster of points already placed. From the roster each point can be
-  renamed, dragged onto the scene by its ⠿ handle, locked in position, given a
-  target, or deleted; it returns to the same spot on the next visit.
+  The panel is a menu of points one can add — the Places in our git (blue) and
+  common places on the Internet (yellow) — and the roster of points already
+  placed. Colour marks kind and is taken from the target itself: a relative
+  Place is blue, an http(s) address is yellow. From each row a point can be
+  renamed, dragged onto the scene by its ⠿ handle, pinned in place (📌), given
+  a target, or deleted; it returns to the same spot on the next visit.
 
-  Still deliberately absent: dynamic colors, beacon types, permissions, many
-  users, personal Home, uploads, meaning-of-the-Window, advanced interactions.
   Persistence is the browser's localStorage — private to this browser, not
   committed and not part of the Record. A working experience, held provisional.
 -->
@@ -112,7 +123,7 @@
     </div>
   </div>
   <ul class="list" id="list"></ul>
-  <p class="empty" id="empty">No points yet. Use “+ Add”, then drag a point onto the scene by its ⠿ handle.</p>
+  <p class="empty" id="empty">No points yet. Open “+ Add”, pick a point, then drag it onto the scene by its ⠿ handle.</p>
 </aside>
 
 <button class="btn mode" id="modeBtn">Live</button>
@@ -122,17 +133,37 @@
 <script>
 (function () {
   const KEY = 'brill.home.v1';
-  const PLACES = [
+
+  // Blue — Places inside our git (relative targets).
+  const GIT = [
     { name: 'The Laboratory — the Table', target: 'laboratory/table/' },
     { name: 'The Record — the Sessions', target: 'laboratory/record/' },
     { name: 'The Constitution', target: 'constitution/' },
     { name: 'The RFCs', target: 'rfcs/' },
     { name: 'The Cabinet', target: 'cabinet/' }
   ];
+  // Yellow — common places on the Internet.
+  const WEB = [
+    { name: 'Google', target: 'https://www.google.com' },
+    { name: 'Gmail', target: 'https://mail.google.com' },
+    { name: 'YouTube', target: 'https://www.youtube.com' },
+    { name: 'Google Translate', target: 'https://translate.google.com' },
+    { name: 'Google Maps', target: 'https://maps.google.com' },
+    { name: 'Wikipedia', target: 'https://www.wikipedia.org' },
+    { name: 'Facebook', target: 'https://www.facebook.com' },
+    { name: 'Instagram', target: 'https://www.instagram.com' },
+    { name: 'WhatsApp', target: 'https://web.whatsapp.com' },
+    { name: 'X (Twitter)', target: 'https://x.com' },
+    { name: 'LinkedIn', target: 'https://www.linkedin.com' },
+    { name: 'Reddit', target: 'https://www.reddit.com' },
+    { name: 'ChatGPT', target: 'https://chat.openai.com' },
+    { name: 'Claude', target: 'https://claude.ai' },
+    { name: 'Spotify', target: 'https://open.spotify.com' },
+    { name: 'Netflix', target: 'https://www.netflix.com' }
+  ];
 
   const img = document.querySelector('.home');
   const layer = document.getElementById('layer');
-  const panel = document.getElementById('panel');
   const listEl = document.getElementById('list');
   const emptyEl = document.getElementById('empty');
   const addBtn = document.getElementById('addBtn');
@@ -142,15 +173,22 @@
 
   let state = load();
   let selectedId = null;
-  const dots = new Map();   // id -> scene beacon element
-  const rows = new Map();   // id -> list <li> element
+  const dots = new Map();
+  const rows = new Map();
   let drag = null;
 
-  // Datalist + add-menu, both built from the known Places.
-  for (const p of PLACES) { const o = document.createElement('option'); o.value = p.target; o.label = p.name; placesList.appendChild(o); }
-  for (const p of PLACES) { const b = document.createElement('button'); b.textContent = p.name; b.addEventListener('click', () => addBeacon(p.name, p.target)); addMenu.appendChild(b); }
+  function kindOf(target) { if (!target) return 'none'; return /^https?:\/\//i.test(target) ? 'web' : 'git'; }
+
+  // Build the datalist (all known targets) and the add-menu (grouped, coloured).
+  for (const p of GIT.concat(WEB)) { const o = document.createElement('option'); o.value = p.target; o.label = p.name; placesList.appendChild(o); }
+  function addGroup(title, items) {
+    const h = document.createElement('div'); h.className = 'mhead kind-' + kindOf(items[0].target); h.textContent = title; addMenu.appendChild(h);
+    for (const p of items) { const b = document.createElement('button'); b.className = 'mitem kind-' + kindOf(p.target); b.textContent = p.name; b.addEventListener('click', () => addBeacon(p.name, p.target)); addMenu.appendChild(b); }
+  }
+  addGroup('Our git', GIT);
+  addGroup('The Internet', WEB);
   { const sep = document.createElement('div'); sep.className = 'sep'; addMenu.appendChild(sep);
-    const b = document.createElement('button'); b.textContent = 'Blank point'; b.addEventListener('click', () => addBeacon('', '')); addMenu.appendChild(b); }
+    const b = document.createElement('button'); b.className = 'mitem kind-none'; b.textContent = 'Blank point'; b.addEventListener('click', () => addBeacon('', '')); addMenu.appendChild(b); }
 
   function load() {
     try { const s = JSON.parse(localStorage.getItem(KEY)); if (s && Array.isArray(s.beacons)) return { beacons: s.beacons, mode: s.mode || 'arrange' }; } catch (e) {}
@@ -158,7 +196,6 @@
   }
   function save() { localStorage.setItem(KEY, JSON.stringify(state)); }
 
-  // Positions live in the image's own 0..1 space, projected through object-fit: cover.
   function cover() {
     const nw = img.naturalWidth || 1536, nh = img.naturalHeight || 1024;
     const vw = window.innerWidth, vh = window.innerHeight;
@@ -169,8 +206,8 @@
   function toImage(cx, cy) { const c = cover(); return { x: clamp((cx - c.ox) / (c.nw * c.scale)), y: clamp((cy - c.oy) / (c.nh * c.scale)) }; }
   function clamp(v) { return Math.max(0, Math.min(1, v)); }
   function newId() { return 'b' + Date.now().toString(36) + Math.random().toString(36).slice(2, 6); }
-  function selected() { return state.beacons.find(b => b.id === selectedId); }
   function beaconById(id) { return state.beacons.find(b => b.id === id); }
+  function setKind(el, target) { el.classList.remove('kind-git', 'kind-web', 'kind-none'); el.classList.add('kind-' + kindOf(target)); }
 
   function render() {
     document.body.classList.toggle('mode-arrange', state.mode === 'arrange');
@@ -186,6 +223,7 @@
       let el = dots.get(b.id);
       if (!el) { el = makeDot(b); layer.appendChild(el); dots.set(b.id, el); }
       placeDot(el, b);
+      setKind(el, b.target);
       el.classList.toggle('locked', !!b.locked);
       el.classList.toggle('selected', b.id === selectedId && state.mode === 'arrange');
       el.querySelector('.label').textContent = b.name || '(unnamed)';
@@ -210,11 +248,11 @@
       if (!li) { li = makeRow(b.id); listEl.appendChild(li); rows.set(b.id, li); }
       li.classList.toggle('selected', b.id === selectedId);
       li.classList.toggle('locked', !!b.locked);
+      setKind(li.querySelector('.swatch'), b.target);
       const nameI = li.querySelector('.iname'); if (document.activeElement !== nameI) nameI.value = b.name || '';
       const tgtI = li.querySelector('.itarget'); if (document.activeElement !== tgtI) tgtI.value = b.target || '';
-      li.querySelector('.ilock').textContent = b.locked ? '🔒' : '🔓';
+      li.querySelector('.ipin').title = b.locked ? 'Pinned in place — click to unpin' : 'Click to pin in place';
     }
-    // keep DOM order in step with state order
     for (const b of state.beacons) listEl.appendChild(rows.get(b.id));
   }
   function makeRow(id) {
@@ -225,22 +263,21 @@
         '<span class="grip" title="Drag onto the scene">⠿</span>' +
         '<span class="swatch"></span>' +
         '<input class="iname" type="text" placeholder="(unnamed)" autocomplete="off">' +
-        '<button class="ilock" title="Lock in place">🔓</button>' +
+        '<button class="ipin" title="Click to pin in place"><span class="pin">📌</span></button>' +
         '<button class="idel" title="Delete">✕</button>' +
       '</div>' +
       '<input class="itarget" type="text" list="places" placeholder="Target — URL or Place" autocomplete="off">';
     const nameI = li.querySelector('.iname');
     const tgtI = li.querySelector('.itarget');
     nameI.addEventListener('input', () => { const b = beaconById(id); if (b) { b.name = nameI.value; save(); const d = dots.get(id); if (d) d.querySelector('.label').textContent = b.name || '(unnamed)'; } });
-    tgtI.addEventListener('input', () => { const b = beaconById(id); if (b) { b.target = tgtI.value; save(); } });
-    li.querySelector('.ilock').addEventListener('click', () => { const b = beaconById(id); if (b) { b.locked = !b.locked; save(); render(); } });
+    tgtI.addEventListener('input', () => { const b = beaconById(id); if (b) { b.target = tgtI.value; save(); const d = dots.get(id); if (d) setKind(d, b.target); setKind(li.querySelector('.swatch'), b.target); } });
+    li.querySelector('.ipin').addEventListener('click', () => { const b = beaconById(id); if (b) { b.locked = !b.locked; save(); render(); } });
     li.querySelector('.idel').addEventListener('click', () => { state.beacons = state.beacons.filter(x => x.id !== id); if (selectedId === id) selectedId = null; save(); render(); });
     li.querySelector('.grip').addEventListener('pointerdown', e => onGripDown(e, id));
     li.addEventListener('pointerdown', e => { if (!e.target.closest('input,button,.grip')) { selectedId = id; render(); } });
     return li;
   }
 
-  // Dragging by the scene dot.
   function onDotDown(e, id) {
     if (state.mode !== 'arrange') return;
     selectedId = id;
@@ -255,8 +292,6 @@
     if (state.mode === 'live') { const b = beaconById(id); if (b && b.target) { e.preventDefault(); window.location.href = b.target; } return; }
     selectedId = id; render();
   }
-
-  // Dragging a point out of the list by its ⠿ handle.
   function onGripDown(e, id) {
     if (state.mode !== 'arrange') return;
     const b = beaconById(id);
