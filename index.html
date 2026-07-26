@@ -92,12 +92,13 @@
 <!--
   The Home, with Beacons living directly on the scene.
 
-  Points sit on the cover image itself — there is no roster. Adding a point is
-  the + Add menu (Places in our git are blue, places on the Internet are
-  yellow, a blank point is grey — the colour is read from the target). Editing
-  a point is a small menu that opens on the point when you click it: rename,
-  set a target, pin in place (📌), or delete. A point returns to the same spot
-  on the next visit.
+  Points sit on the cover image itself — there is no roster. The + Add menu is
+  a reservoir: it lists only the points NOT yet on the page (Places in our git
+  are blue, places on the Internet are yellow — the colour is read from the
+  target). Placing a point moves it out of the menu and onto the scene;
+  deleting it from the scene returns it to the menu. Editing a point is a small
+  menu that opens on the point when you click it: rename, set a target, pin in
+  place (📌), or delete. A point returns to the same spot on the next visit.
 
   Persistence is the browser's localStorage — private to this browser, not
   committed and not part of the Record. A working experience, held provisional.
@@ -182,14 +183,20 @@
   function setKind(el, t) { el.classList.remove('kind-git', 'kind-web', 'kind-none'); el.classList.add('kind-' + kindOf(t)); }
 
   for (const p of GIT.concat(WEB)) { const o = document.createElement('option'); o.value = p.target; o.label = p.name; placesList.appendChild(o); }
-  function addGroup(title, items) {
-    const h = document.createElement('div'); h.className = 'mhead kind-' + kindOf(items[0].target); h.textContent = title; addMenu.appendChild(h);
-    for (const p of items) { const b = document.createElement('button'); b.className = 'mitem kind-' + kindOf(p.target); b.textContent = p.name; b.addEventListener('click', () => addBeacon(p.name, p.target)); addMenu.appendChild(b); }
+
+  // The menu is the reservoir: catalogue points that are NOT yet on the page.
+  function renderMenu() {
+    addMenu.innerHTML = '';
+    const placed = new Set(state.beacons.map(b => b.target).filter(Boolean));
+    for (const [title, items] of [['Our git', GIT], ['The Internet', WEB]]) {
+      const avail = items.filter(p => !placed.has(p.target));
+      if (!avail.length) continue;
+      const h = document.createElement('div'); h.className = 'mhead kind-' + kindOf(items[0].target); h.textContent = title; addMenu.appendChild(h);
+      for (const p of avail) { const b = document.createElement('button'); b.className = 'mitem kind-' + kindOf(p.target); b.textContent = p.name; b.addEventListener('click', () => { addBeacon(p.name, p.target, true); renderMenu(); }); addMenu.appendChild(b); }
+    }
+    const sep = document.createElement('div'); sep.className = 'sep'; addMenu.appendChild(sep);
+    const blank = document.createElement('button'); blank.className = 'mitem kind-none'; blank.textContent = 'Blank point'; blank.addEventListener('click', () => addBeacon('', '', false)); addMenu.appendChild(blank);
   }
-  addGroup('Our git', GIT);
-  addGroup('The Internet', WEB);
-  { const sep = document.createElement('div'); sep.className = 'sep'; addMenu.appendChild(sep);
-    const b = document.createElement('button'); b.className = 'mitem kind-none'; b.textContent = 'Blank point'; b.addEventListener('click', () => addBeacon('', '')); addMenu.appendChild(b); }
 
   function load() {
     try { const s = JSON.parse(localStorage.getItem(KEY)); if (s && Array.isArray(s.beacons)) return { beacons: s.beacons, mode: s.mode || 'arrange' }; } catch (e) {}
@@ -294,19 +301,22 @@
     ePin.title = b.locked ? 'Click to unpin' : 'Click to pin in place';
     const d = dots.get(b.id); if (d) d.classList.toggle('locked', b.locked);
   });
-  eDel.addEventListener('click', () => { if (selectedId) { state.beacons = state.beacons.filter(x => x.id !== selectedId); selectedId = null; editor.hidden = true; save(); render(); } });
+  eDel.addEventListener('click', () => { if (selectedId) { state.beacons = state.beacons.filter(x => x.id !== selectedId); selectedId = null; editor.hidden = true; save(); render(); if (!addMenu.hidden) renderMenu(); } });
 
-  addBtn.addEventListener('click', e => { e.stopPropagation(); addMenu.hidden = !addMenu.hidden; });
+  addBtn.addEventListener('click', e => { e.stopPropagation(); if (addMenu.hidden) { renderMenu(); addMenu.hidden = false; } else { addMenu.hidden = true; } });
   document.addEventListener('pointerdown', e => {
     if (!addMenu.hidden && !e.target.closest('.addwrap')) addMenu.hidden = true;
     if (e.target.closest('.editor') || e.target.closest('.toolbar') || e.target.closest('.beacon')) return;
     if (selectedId) { selectedId = null; editor.hidden = true; render(); }
   });
 
-  function addBeacon(name, target) {
-    const b = { id: newId(), x: 0.5, y: 0.5, name: name || '', target: target || '', locked: false };
-    state.beacons.push(b); selectedId = b.id; state.mode = 'arrange'; addMenu.hidden = true;
-    save(); render(); showEditor(b);
+  function addBeacon(name, target, keepMenu) {
+    const jit = () => 0.5 + (Math.random() - 0.5) * 0.14;
+    const b = { id: newId(), x: jit(), y: jit(), name: name || '', target: target || '', locked: false };
+    state.beacons.push(b); selectedId = b.id; state.mode = 'arrange';
+    if (!keepMenu) addMenu.hidden = true;
+    save(); render();
+    if (!target) showEditor(b);   // a blank point opens its editor to be filled
   }
 
   modeBtn.addEventListener('click', () => {
