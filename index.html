@@ -7,29 +7,251 @@
 <meta name="description" content="Home — the desk from which everything begins, and the World seen through the Window.">
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🔭</text></svg>">
 <style>
-  html, body { margin: 0; height: 100%; background: #0b0b0d; }
+  html, body { margin: 0; height: 100%; background: #0b0b0d;
+    font-family: system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; }
   body { overflow: hidden; }
+
+  /* The Home — a full-bleed view of the desk, the Window, and the World. */
   .home {
-    position: fixed;
-    inset: 0;
-    width: 100vw;
-    height: 100vh;
-    object-fit: cover;
-    object-position: center;
-    display: block;
+    position: fixed; inset: 0;
+    width: 100vw; height: 100vh;
+    object-fit: cover; object-position: center;
+    display: block; user-select: none; -webkit-user-drag: none;
   }
+
+  /* The Beacons layer — markers placed on the scene. */
+  .layer { position: fixed; inset: 0; pointer-events: none; }
+
+  .beacon { position: absolute; transform: translate(-50%, -50%); pointer-events: auto; width: 24px; height: 24px; cursor: pointer; }
+  body.mode-arrange .beacon { cursor: grab; }
+  body.mode-arrange .beacon.locked { cursor: pointer; }
+  .beacon.dragging { cursor: grabbing; }
+
+  .beacon .ring { position: absolute; left: 50%; top: 50%; width: 24px; height: 24px;
+    transform: translate(-50%, -50%); border-radius: 50%; border: 1px solid rgba(255,255,255,.4); }
+  .beacon .dot { position: absolute; left: 50%; top: 50%; width: 13px; height: 13px;
+    transform: translate(-50%, -50%); border-radius: 50%;
+    background: radial-gradient(circle at 50% 40%, #fff 0%, #ffe6a8 34%, #ffb443 66%, rgba(255,150,40,0) 70%);
+    box-shadow: 0 0 12px 3px rgba(255,180,80,.8), 0 0 2px 1px rgba(0,0,0,.55); }
+  .beacon .label { position: absolute; left: 50%; top: calc(50% + 17px); transform: translateX(-50%);
+    white-space: nowrap; background: rgba(10,10,14,.74); color: #f2efe9; font-size: 12px; line-height: 1;
+    padding: 5px 9px; border-radius: 999px; opacity: 0; transition: opacity .15s; pointer-events: none;
+    -webkit-backdrop-filter: blur(3px); backdrop-filter: blur(3px); }
+  .beacon:hover .label, .beacon.selected .label { opacity: 1; }
+  .beacon.selected .ring { border-color: #ffd27a; box-shadow: 0 0 0 2px rgba(255,210,122,.5); }
+
+  /* Chrome — the smallest arranging tools. */
+  .chrome { position: fixed; left: 16px; bottom: 16px; display: flex; gap: 8px; z-index: 10; }
+  .btn { background: rgba(10,10,14,.7); color: #f2efe9; border: 1px solid rgba(255,255,255,.18);
+    border-radius: 999px; padding: 9px 15px; font: inherit; font-size: 13px; cursor: pointer;
+    -webkit-backdrop-filter: blur(4px); backdrop-filter: blur(4px); }
+  .btn:hover { background: rgba(34,34,40,.82); }
+
+  .hint { position: fixed; left: 50%; top: 22px; transform: translateX(-50%); z-index: 10;
+    background: rgba(10,10,14,.62); color: #eee; font-size: 12.5px; padding: 7px 13px; border-radius: 999px;
+    -webkit-backdrop-filter: blur(4px); backdrop-filter: blur(4px); }
+
+  /* The editor for one beacon. */
+  .editor { position: fixed; right: 16px; bottom: 16px; width: min(280px, calc(100vw - 32px));
+    background: rgba(12,12,16,.85); color: #f2efe9; border: 1px solid rgba(255,255,255,.15);
+    border-radius: 12px; padding: 14px 15px; z-index: 11; box-shadow: 0 10px 34px rgba(0,0,0,.45);
+    -webkit-backdrop-filter: blur(6px); backdrop-filter: blur(6px); }
+  .editor h2 { font-size: 11px; letter-spacing: .1em; text-transform: uppercase; opacity: .6; margin: 0 0 4px; }
+  .editor label { display: block; font-size: 12px; opacity: .8; margin: 12px 0 5px; }
+  .editor input[type=text] { width: 100%; box-sizing: border-box; background: rgba(255,255,255,.06);
+    border: 1px solid rgba(255,255,255,.18); color: #fff; border-radius: 8px; padding: 8px 9px; font: inherit; }
+  .editor .row { display: flex; align-items: center; justify-content: space-between; gap: 10px; margin-top: 14px; }
+  .editor .lockrow { display: flex; align-items: center; gap: 7px; font-size: 13px; }
+  .editor .del { background: transparent; border: 1px solid rgba(255,120,120,.5); color: #ff9b9b;
+    border-radius: 8px; padding: 6px 11px; font: inherit; font-size: 13px; cursor: pointer; }
+  .editor .del:hover { background: rgba(255,90,90,.14); }
+  [hidden] { display: none !important; }
 </style>
 </head>
 <body>
 <!--
-  The Home. A full-bleed view — the desk, the Window, and the World beyond it.
-  Deliberately not a control panel and not a navigation menu: no tabbed
-  interface, and, for now, no way in. The computer is part of the view, not
-  yet an instrument you can click. How one crosses from Home into the World is
-  an open question we are leaving open until we have lived with Home itself.
-  This is a working experience, held provisional; nothing here is constitutional.
+  The Home, with its first living layer of Beacons.
+
+  Home is the image — unchanged. A Beacon is a marker placed on the scene: it
+  can be created, dragged anywhere, named, given a target (a URL or a Place),
+  and locked in position; it waits in the same spot on the next visit. That is
+  all this layer does — no colors, types, permissions, multiple users, personal
+  Home, uploads, or meaning-of-the-Window yet. Those are questions we are
+  choosing to let reality answer after we have lived a while with real beacons.
+
+  Persistence is the browser's own localStorage: private to this browser, not
+  committed to the repository and not part of the Record. This is a working
+  experience, held provisional.
 -->
 <img class="home" src="assets/images/workspace.webp"
      alt="A workspace at dusk. A person sits at a desk before a wide window — a laptop, an open notebook, a warm cup — looking out over a vast, luminous city of domes, waterways, gardens, and a great living library. The World, seen through the Window.">
+
+<div class="layer" id="layer"></div>
+
+<div class="hint" id="hint" hidden>Arrange mode — add a beacon, drag it onto the scene, give it a name and a place.</div>
+
+<div class="chrome">
+  <button class="btn" id="addBtn" aria-label="Add a beacon">+ Beacon</button>
+  <button class="btn" id="modeBtn" aria-label="Toggle arrange and live modes">Live</button>
+</div>
+
+<div class="editor" id="editor" hidden>
+  <h2>Beacon</h2>
+  <label for="bName">Name</label>
+  <input type="text" id="bName" placeholder="What is here?" autocomplete="off">
+  <label for="bTarget">Target — a URL or a Place</label>
+  <input type="text" id="bTarget" list="places" placeholder="e.g. constitution/  or  https://…" autocomplete="off">
+  <datalist id="places">
+    <option value="laboratory/table/">The Laboratory — the Table</option>
+    <option value="laboratory/record/">The Record — the Sessions</option>
+    <option value="constitution/">The Constitution</option>
+    <option value="rfcs/">The RFCs</option>
+    <option value="cabinet/">The Cabinet</option>
+  </datalist>
+  <div class="row">
+    <span class="lockrow"><input type="checkbox" id="bLock"><label for="bLock" style="margin:0">Locked in place</label></span>
+    <button class="del" id="bDel">Delete</button>
+  </div>
+</div>
+
+<script>
+(function () {
+  const KEY = 'brill.home.v1';
+  const img = document.querySelector('.home');
+  const layer = document.getElementById('layer');
+  const addBtn = document.getElementById('addBtn');
+  const modeBtn = document.getElementById('modeBtn');
+  const editor = document.getElementById('editor');
+  const hint = document.getElementById('hint');
+  const nameInput = document.getElementById('bName');
+  const targetInput = document.getElementById('bTarget');
+  const lockChk = document.getElementById('bLock');
+  const delBtn = document.getElementById('bDel');
+
+  let state = load();
+  let selectedId = null;
+  const els = new Map();          // beacon id -> DOM element
+  let drag = null;
+
+  function load() {
+    try {
+      const s = JSON.parse(localStorage.getItem(KEY));
+      if (s && Array.isArray(s.beacons)) return { beacons: s.beacons, mode: s.mode || 'arrange' };
+    } catch (e) {}
+    return { beacons: [], mode: 'arrange' };
+  }
+  function save() { localStorage.setItem(KEY, JSON.stringify(state)); }
+
+  // Positions are stored in the image's own 0..1 space and projected through
+  // the object-fit: cover transform, so beacons stay pinned to the scene at any size.
+  function cover() {
+    const nw = img.naturalWidth || 1536, nh = img.naturalHeight || 1024;
+    const vw = window.innerWidth, vh = window.innerHeight;
+    const scale = Math.max(vw / nw, vh / nh);
+    return { scale, ox: (vw - nw * scale) / 2, oy: (vh - nh * scale) / 2, nw, nh };
+  }
+  function toScreen(x, y) { const c = cover(); return { sx: c.ox + x * c.nw * c.scale, sy: c.oy + y * c.nh * c.scale }; }
+  function toImage(cx, cy) { const c = cover(); return { x: clamp((cx - c.ox) / (c.nw * c.scale)), y: clamp((cy - c.oy) / (c.nh * c.scale)) }; }
+  function clamp(v) { return Math.max(0, Math.min(1, v)); }
+  function newId() { return 'b' + Date.now().toString(36) + Math.random().toString(36).slice(2, 6); }
+  function selected() { return state.beacons.find(b => b.id === selectedId); }
+
+  function render() {
+    document.body.classList.toggle('mode-arrange', state.mode === 'arrange');
+    addBtn.hidden = state.mode !== 'arrange';
+    modeBtn.textContent = state.mode === 'arrange' ? 'Live' : 'Arrange';
+    hint.hidden = !(state.mode === 'arrange' && state.beacons.length === 0);
+
+    const ids = new Set(state.beacons.map(b => b.id));
+    for (const [id, el] of els) { if (!ids.has(id)) { el.remove(); els.delete(id); } }
+
+    for (const b of state.beacons) {
+      let el = els.get(b.id);
+      if (!el) { el = makeEl(b); layer.appendChild(el); els.set(b.id, el); }
+      place(el, b);
+      el.classList.toggle('locked', !!b.locked);
+      el.classList.toggle('selected', b.id === selectedId && state.mode === 'arrange');
+      el.querySelector('.label').textContent = b.name || '(unnamed)';
+    }
+
+    const sel = selected();
+    if (sel && state.mode === 'arrange') {
+      editor.hidden = false;
+      if (document.activeElement !== nameInput) nameInput.value = sel.name || '';
+      if (document.activeElement !== targetInput) targetInput.value = sel.target || '';
+      lockChk.checked = !!sel.locked;
+    } else {
+      editor.hidden = true;
+    }
+  }
+  function place(el, b) { const { sx, sy } = toScreen(b.x, b.y); el.style.left = sx + 'px'; el.style.top = sy + 'px'; }
+
+  function makeEl(b) {
+    const el = document.createElement('div');
+    el.className = 'beacon';
+    el.innerHTML = '<span class="ring"></span><span class="dot"></span><span class="label"></span>';
+    el.addEventListener('pointerdown', e => onDown(e, b));
+    el.addEventListener('click', e => onClick(e, b));
+    return el;
+  }
+
+  function onDown(e, b) {
+    if (state.mode !== 'arrange') return;
+    selectedId = b.id;
+    if (b.locked) { render(); return; }            // locked: select, do not drag
+    e.preventDefault();
+    const el = els.get(b.id);
+    el.setPointerCapture(e.pointerId);
+    drag = { b, id: e.pointerId, moved: false };
+    render();
+  }
+  window.addEventListener('pointermove', e => {
+    if (!drag || e.pointerId !== drag.id) return;
+    const p = toImage(e.clientX, e.clientY);
+    drag.b.x = p.x; drag.b.y = p.y; drag.moved = true;
+    const el = els.get(drag.b.id);
+    place(el, drag.b); el.classList.add('dragging');
+  });
+  window.addEventListener('pointerup', e => {
+    if (!drag || e.pointerId !== drag.id) return;
+    const el = els.get(drag.b.id); if (el) el.classList.remove('dragging');
+    if (drag.moved) save();
+    drag = null;
+  });
+
+  function onClick(e, b) {
+    if (state.mode === 'live') { if (b.target) { e.preventDefault(); window.location.href = b.target; } return; }
+    selectedId = b.id; render();
+    if (document.activeElement !== nameInput && document.activeElement !== targetInput) nameInput.focus();
+  }
+
+  addBtn.addEventListener('click', () => {
+    const b = { id: newId(), x: 0.5, y: 0.5, name: '', target: '', locked: false };
+    state.beacons.push(b); selectedId = b.id; state.mode = 'arrange';
+    save(); render(); nameInput.focus();
+  });
+  modeBtn.addEventListener('click', () => {
+    state.mode = state.mode === 'arrange' ? 'live' : 'arrange';
+    if (state.mode === 'live') selectedId = null;
+    save(); render();
+  });
+  nameInput.addEventListener('input', () => { const s = selected(); if (s) { s.name = nameInput.value; save(); const el = els.get(s.id); if (el) el.querySelector('.label').textContent = s.name || '(unnamed)'; } });
+  targetInput.addEventListener('input', () => { const s = selected(); if (s) { s.target = targetInput.value; save(); } });
+  lockChk.addEventListener('change', () => { const s = selected(); if (s) { s.locked = lockChk.checked; save(); render(); } });
+  delBtn.addEventListener('click', () => { const s = selected(); if (s) { state.beacons = state.beacons.filter(x => x.id !== s.id); selectedId = null; save(); render(); } });
+
+  document.addEventListener('pointerdown', e => {
+    if (state.mode !== 'arrange') return;
+    if (e.target.closest('.beacon') || e.target.closest('.editor') || e.target.closest('.chrome')) return;
+    if (selectedId) { selectedId = null; render(); }
+  });
+
+  window.addEventListener('resize', () => { for (const b of state.beacons) { const el = els.get(b.id); if (el) place(el, b); } });
+
+  if (img.complete && img.naturalWidth) render();
+  else img.addEventListener('load', render);
+  render();
+})();
+</script>
 </body>
 </html>
