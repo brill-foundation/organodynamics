@@ -12,21 +12,15 @@
   body { overflow: hidden; }
 
   /* The Home — a full-bleed view of the desk, the Window, and the World. */
-  .home {
-    position: fixed; inset: 0;
-    width: 100vw; height: 100vh;
-    object-fit: cover; object-position: center;
-    display: block; user-select: none; -webkit-user-drag: none;
-  }
+  .home { position: fixed; inset: 0; width: 100vw; height: 100vh;
+    object-fit: cover; object-position: center; display: block; user-select: none; -webkit-user-drag: none; }
 
   /* The Beacons layer — markers placed on the scene. */
   .layer { position: fixed; inset: 0; pointer-events: none; }
-
   .beacon { position: absolute; transform: translate(-50%, -50%); pointer-events: auto; width: 24px; height: 24px; cursor: pointer; }
   body.mode-arrange .beacon { cursor: grab; }
   body.mode-arrange .beacon.locked { cursor: pointer; }
   .beacon.dragging { cursor: grabbing; }
-
   .beacon .ring { position: absolute; left: 50%; top: 50%; width: 24px; height: 24px;
     transform: translate(-50%, -50%); border-radius: 50%; border: 1px solid rgba(255,255,255,.4); }
   .beacon .dot { position: absolute; left: 50%; top: 50%; width: 13px; height: 13px;
@@ -40,110 +34,131 @@
   .beacon:hover .label, .beacon.selected .label { opacity: 1; }
   .beacon.selected .ring { border-color: #ffd27a; box-shadow: 0 0 0 2px rgba(255,210,122,.5); }
 
-  /* Chrome — the smallest arranging tools. */
-  .chrome { position: fixed; left: 16px; bottom: 16px; display: flex; gap: 8px; z-index: 10; }
-  .btn { background: rgba(10,10,14,.7); color: #f2efe9; border: 1px solid rgba(255,255,255,.18);
+  /* Buttons */
+  .btn { background: rgba(10,10,14,.72); color: #f2efe9; border: 1px solid rgba(255,255,255,.18);
     border-radius: 999px; padding: 9px 15px; font: inherit; font-size: 13px; cursor: pointer;
     -webkit-backdrop-filter: blur(4px); backdrop-filter: blur(4px); }
-  .btn:hover { background: rgba(34,34,40,.82); }
+  .btn:hover { background: rgba(34,34,40,.85); }
+  .btn.small { padding: 6px 11px; font-size: 12px; }
+  .btn.mode { position: fixed; left: 16px; bottom: 16px; z-index: 12; }
 
-  .hint { position: fixed; left: 50%; top: 22px; transform: translateX(-50%); z-index: 10;
-    background: rgba(10,10,14,.62); color: #eee; font-size: 12.5px; padding: 7px 13px; border-radius: 999px;
-    -webkit-backdrop-filter: blur(4px); backdrop-filter: blur(4px); }
+  /* The side panel — the menu of points, and the roster of placed ones. */
+  .panel { position: fixed; top: 0; right: 0; width: min(272px, 82vw); height: 100vh; z-index: 11;
+    display: none; flex-direction: column; box-sizing: border-box; color: #f2efe9;
+    background: rgba(12,12,16,.82); border-left: 1px solid rgba(255,255,255,.12);
+    -webkit-backdrop-filter: blur(7px); backdrop-filter: blur(7px); }
+  body.mode-arrange .panel { display: flex; }
+  .phead { display: flex; align-items: center; justify-content: space-between; padding: 14px 14px 10px;
+    border-bottom: 1px solid rgba(255,255,255,.1); }
+  .ptitle { font-size: 12px; letter-spacing: .12em; text-transform: uppercase; opacity: .7; }
+  .addwrap { position: relative; }
+  .addmenu { position: absolute; right: 0; top: 34px; width: 210px; background: rgba(18,18,24,.97);
+    border: 1px solid rgba(255,255,255,.16); border-radius: 10px; padding: 6px; z-index: 20;
+    box-shadow: 0 12px 34px rgba(0,0,0,.5); }
+  .addmenu button { display: block; width: 100%; text-align: left; background: transparent; border: 0;
+    color: #eee; font: inherit; font-size: 13px; padding: 8px 9px; border-radius: 7px; cursor: pointer; }
+  .addmenu button:hover { background: rgba(255,255,255,.09); }
+  .addmenu .sep { height: 1px; background: rgba(255,255,255,.12); margin: 5px 4px; }
 
-  /* The editor for one beacon. */
-  .editor { position: fixed; right: 16px; bottom: 16px; width: min(280px, calc(100vw - 32px));
-    background: rgba(12,12,16,.85); color: #f2efe9; border: 1px solid rgba(255,255,255,.15);
-    border-radius: 12px; padding: 14px 15px; z-index: 11; box-shadow: 0 10px 34px rgba(0,0,0,.45);
-    -webkit-backdrop-filter: blur(6px); backdrop-filter: blur(6px); }
-  .editor h2 { font-size: 11px; letter-spacing: .1em; text-transform: uppercase; opacity: .6; margin: 0 0 4px; }
-  .editor label { display: block; font-size: 12px; opacity: .8; margin: 12px 0 5px; }
-  .editor input[type=text] { width: 100%; box-sizing: border-box; background: rgba(255,255,255,.06);
-    border: 1px solid rgba(255,255,255,.18); color: #fff; border-radius: 8px; padding: 8px 9px; font: inherit; }
-  .editor .row { display: flex; align-items: center; justify-content: space-between; gap: 10px; margin-top: 14px; }
-  .editor .lockrow { display: flex; align-items: center; gap: 7px; font-size: 13px; }
-  .editor .del { background: transparent; border: 1px solid rgba(255,120,120,.5); color: #ff9b9b;
-    border-radius: 8px; padding: 6px 11px; font: inherit; font-size: 13px; cursor: pointer; }
-  .editor .del:hover { background: rgba(255,90,90,.14); }
+  .list { list-style: none; margin: 0; padding: 8px; overflow-y: auto; flex: 1; }
+  .empty { padding: 16px; font-size: 13px; line-height: 1.5; opacity: .6; }
+  .item { background: rgba(255,255,255,.05); border: 1px solid rgba(255,255,255,.1); border-radius: 10px;
+    padding: 8px; margin-bottom: 8px; }
+  .item.selected { border-color: #ffd27a; background: rgba(255,210,122,.1); }
+  .itemhead { display: flex; align-items: center; gap: 7px; }
+  .grip { cursor: grab; opacity: .7; font-size: 15px; line-height: 1; padding: 2px 3px; touch-action: none; user-select: none; }
+  .item.locked .grip { cursor: not-allowed; opacity: .3; }
+  .grip.dragging { cursor: grabbing; }
+  .swatch { width: 11px; height: 11px; border-radius: 50%; flex: 0 0 auto;
+    background: radial-gradient(circle at 50% 40%, #fff 0%, #ffe6a8 34%, #ffb443 66%, rgba(255,150,40,.15) 72%);
+    box-shadow: 0 0 6px 1px rgba(255,180,80,.6); }
+  .iname { flex: 1; min-width: 0; background: rgba(255,255,255,.06); border: 1px solid rgba(255,255,255,.16);
+    color: #fff; border-radius: 7px; padding: 6px 8px; font: inherit; font-size: 13px; }
+  .ilock, .idel { background: transparent; border: 0; cursor: pointer; font-size: 14px; line-height: 1;
+    padding: 4px; border-radius: 6px; }
+  .ilock:hover, .idel:hover { background: rgba(255,255,255,.1); }
+  .itarget { width: 100%; box-sizing: border-box; margin-top: 7px; background: rgba(255,255,255,.05);
+    border: 1px solid rgba(255,255,255,.14); color: #d8d4cc; border-radius: 7px; padding: 5px 8px;
+    font: inherit; font-size: 12px; }
   [hidden] { display: none !important; }
 </style>
 </head>
 <body>
 <!--
-  The Home, with its first living layer of Beacons.
+  The Home, with its living Beacons layer and a side panel.
 
-  Home is the image — unchanged. A Beacon is a marker placed on the scene: it
-  can be created, dragged anywhere, named, given a target (a URL or a Place),
-  and locked in position; it waits in the same spot on the next visit. That is
-  all this layer does — no colors, types, permissions, multiple users, personal
-  Home, uploads, or meaning-of-the-Window yet. Those are questions we are
-  choosing to let reality answer after we have lived a while with real beacons.
+  Home is the image — unchanged. The panel is two things at once: a menu of
+  points one can add onto the scene (the known Places, or a blank point), and
+  the roster of points already placed. From the roster each point can be
+  renamed, dragged onto the scene by its ⠿ handle, locked in position, given a
+  target, or deleted; it returns to the same spot on the next visit.
 
-  Persistence is the browser's own localStorage: private to this browser, not
-  committed to the repository and not part of the Record. This is a working
-  experience, held provisional.
+  Still deliberately absent: dynamic colors, beacon types, permissions, many
+  users, personal Home, uploads, meaning-of-the-Window, advanced interactions.
+  Persistence is the browser's localStorage — private to this browser, not
+  committed and not part of the Record. A working experience, held provisional.
 -->
 <img class="home" src="assets/images/workspace.webp"
      alt="A workspace at dusk. A person sits at a desk before a wide window — a laptop, an open notebook, a warm cup — looking out over a vast, luminous city of domes, waterways, gardens, and a great living library. The World, seen through the Window.">
 
 <div class="layer" id="layer"></div>
 
-<div class="hint" id="hint" hidden>Arrange mode — add a beacon, drag it onto the scene, give it a name and a place.</div>
-
-<div class="chrome">
-  <button class="btn" id="addBtn" aria-label="Add a beacon">+ Beacon</button>
-  <button class="btn" id="modeBtn" aria-label="Toggle arrange and live modes">Live</button>
-</div>
-
-<div class="editor" id="editor" hidden>
-  <h2>Beacon</h2>
-  <label for="bName">Name</label>
-  <input type="text" id="bName" placeholder="What is here?" autocomplete="off">
-  <label for="bTarget">Target — a URL or a Place</label>
-  <input type="text" id="bTarget" list="places" placeholder="e.g. constitution/  or  https://…" autocomplete="off">
-  <datalist id="places">
-    <option value="laboratory/table/">The Laboratory — the Table</option>
-    <option value="laboratory/record/">The Record — the Sessions</option>
-    <option value="constitution/">The Constitution</option>
-    <option value="rfcs/">The RFCs</option>
-    <option value="cabinet/">The Cabinet</option>
-  </datalist>
-  <div class="row">
-    <span class="lockrow"><input type="checkbox" id="bLock"><label for="bLock" style="margin:0">Locked in place</label></span>
-    <button class="del" id="bDel">Delete</button>
+<aside class="panel" id="panel">
+  <div class="phead">
+    <span class="ptitle">Points</span>
+    <div class="addwrap">
+      <button class="btn small" id="addBtn">+ Add</button>
+      <div class="addmenu" id="addMenu" hidden></div>
+    </div>
   </div>
-</div>
+  <ul class="list" id="list"></ul>
+  <p class="empty" id="empty">No points yet. Use “+ Add”, then drag a point onto the scene by its ⠿ handle.</p>
+</aside>
+
+<button class="btn mode" id="modeBtn">Live</button>
+
+<datalist id="places"></datalist>
 
 <script>
 (function () {
   const KEY = 'brill.home.v1';
+  const PLACES = [
+    { name: 'The Laboratory — the Table', target: 'laboratory/table/' },
+    { name: 'The Record — the Sessions', target: 'laboratory/record/' },
+    { name: 'The Constitution', target: 'constitution/' },
+    { name: 'The RFCs', target: 'rfcs/' },
+    { name: 'The Cabinet', target: 'cabinet/' }
+  ];
+
   const img = document.querySelector('.home');
   const layer = document.getElementById('layer');
+  const panel = document.getElementById('panel');
+  const listEl = document.getElementById('list');
+  const emptyEl = document.getElementById('empty');
   const addBtn = document.getElementById('addBtn');
+  const addMenu = document.getElementById('addMenu');
   const modeBtn = document.getElementById('modeBtn');
-  const editor = document.getElementById('editor');
-  const hint = document.getElementById('hint');
-  const nameInput = document.getElementById('bName');
-  const targetInput = document.getElementById('bTarget');
-  const lockChk = document.getElementById('bLock');
-  const delBtn = document.getElementById('bDel');
+  const placesList = document.getElementById('places');
 
   let state = load();
   let selectedId = null;
-  const els = new Map();          // beacon id -> DOM element
+  const dots = new Map();   // id -> scene beacon element
+  const rows = new Map();   // id -> list <li> element
   let drag = null;
 
+  // Datalist + add-menu, both built from the known Places.
+  for (const p of PLACES) { const o = document.createElement('option'); o.value = p.target; o.label = p.name; placesList.appendChild(o); }
+  for (const p of PLACES) { const b = document.createElement('button'); b.textContent = p.name; b.addEventListener('click', () => addBeacon(p.name, p.target)); addMenu.appendChild(b); }
+  { const sep = document.createElement('div'); sep.className = 'sep'; addMenu.appendChild(sep);
+    const b = document.createElement('button'); b.textContent = 'Blank point'; b.addEventListener('click', () => addBeacon('', '')); addMenu.appendChild(b); }
+
   function load() {
-    try {
-      const s = JSON.parse(localStorage.getItem(KEY));
-      if (s && Array.isArray(s.beacons)) return { beacons: s.beacons, mode: s.mode || 'arrange' };
-    } catch (e) {}
+    try { const s = JSON.parse(localStorage.getItem(KEY)); if (s && Array.isArray(s.beacons)) return { beacons: s.beacons, mode: s.mode || 'arrange' }; } catch (e) {}
     return { beacons: [], mode: 'arrange' };
   }
   function save() { localStorage.setItem(KEY, JSON.stringify(state)); }
 
-  // Positions are stored in the image's own 0..1 space and projected through
-  // the object-fit: cover transform, so beacons stay pinned to the scene at any size.
+  // Positions live in the image's own 0..1 space, projected through object-fit: cover.
   function cover() {
     const nw = img.naturalWidth || 1536, nh = img.naturalHeight || 1024;
     const vw = window.innerWidth, vh = window.innerHeight;
@@ -155,98 +170,143 @@
   function clamp(v) { return Math.max(0, Math.min(1, v)); }
   function newId() { return 'b' + Date.now().toString(36) + Math.random().toString(36).slice(2, 6); }
   function selected() { return state.beacons.find(b => b.id === selectedId); }
+  function beaconById(id) { return state.beacons.find(b => b.id === id); }
 
   function render() {
     document.body.classList.toggle('mode-arrange', state.mode === 'arrange');
-    addBtn.hidden = state.mode !== 'arrange';
     modeBtn.textContent = state.mode === 'arrange' ? 'Live' : 'Arrange';
-    hint.hidden = !(state.mode === 'arrange' && state.beacons.length === 0);
+    renderScene();
+    renderList();
+  }
 
+  function renderScene() {
     const ids = new Set(state.beacons.map(b => b.id));
-    for (const [id, el] of els) { if (!ids.has(id)) { el.remove(); els.delete(id); } }
-
+    for (const [id, el] of dots) { if (!ids.has(id)) { el.remove(); dots.delete(id); } }
     for (const b of state.beacons) {
-      let el = els.get(b.id);
-      if (!el) { el = makeEl(b); layer.appendChild(el); els.set(b.id, el); }
-      place(el, b);
+      let el = dots.get(b.id);
+      if (!el) { el = makeDot(b); layer.appendChild(el); dots.set(b.id, el); }
+      placeDot(el, b);
       el.classList.toggle('locked', !!b.locked);
       el.classList.toggle('selected', b.id === selectedId && state.mode === 'arrange');
       el.querySelector('.label').textContent = b.name || '(unnamed)';
     }
-
-    const sel = selected();
-    if (sel && state.mode === 'arrange') {
-      editor.hidden = false;
-      if (document.activeElement !== nameInput) nameInput.value = sel.name || '';
-      if (document.activeElement !== targetInput) targetInput.value = sel.target || '';
-      lockChk.checked = !!sel.locked;
-    } else {
-      editor.hidden = true;
-    }
   }
-  function place(el, b) { const { sx, sy } = toScreen(b.x, b.y); el.style.left = sx + 'px'; el.style.top = sy + 'px'; }
-
-  function makeEl(b) {
+  function placeDot(el, b) { const { sx, sy } = toScreen(b.x, b.y); el.style.left = sx + 'px'; el.style.top = sy + 'px'; }
+  function makeDot(b) {
     const el = document.createElement('div');
     el.className = 'beacon';
     el.innerHTML = '<span class="ring"></span><span class="dot"></span><span class="label"></span>';
-    el.addEventListener('pointerdown', e => onDown(e, b));
-    el.addEventListener('click', e => onClick(e, b));
+    el.addEventListener('pointerdown', e => onDotDown(e, b.id));
+    el.addEventListener('click', e => onDotClick(e, b.id));
     return el;
   }
 
-  function onDown(e, b) {
+  function renderList() {
+    emptyEl.hidden = state.beacons.length !== 0;
+    const ids = new Set(state.beacons.map(b => b.id));
+    for (const [id, li] of rows) { if (!ids.has(id)) { li.remove(); rows.delete(id); } }
+    for (const b of state.beacons) {
+      let li = rows.get(b.id);
+      if (!li) { li = makeRow(b.id); listEl.appendChild(li); rows.set(b.id, li); }
+      li.classList.toggle('selected', b.id === selectedId);
+      li.classList.toggle('locked', !!b.locked);
+      const nameI = li.querySelector('.iname'); if (document.activeElement !== nameI) nameI.value = b.name || '';
+      const tgtI = li.querySelector('.itarget'); if (document.activeElement !== tgtI) tgtI.value = b.target || '';
+      li.querySelector('.ilock').textContent = b.locked ? '🔒' : '🔓';
+    }
+    // keep DOM order in step with state order
+    for (const b of state.beacons) listEl.appendChild(rows.get(b.id));
+  }
+  function makeRow(id) {
+    const li = document.createElement('li');
+    li.className = 'item'; li.dataset.id = id;
+    li.innerHTML =
+      '<div class="itemhead">' +
+        '<span class="grip" title="Drag onto the scene">⠿</span>' +
+        '<span class="swatch"></span>' +
+        '<input class="iname" type="text" placeholder="(unnamed)" autocomplete="off">' +
+        '<button class="ilock" title="Lock in place">🔓</button>' +
+        '<button class="idel" title="Delete">✕</button>' +
+      '</div>' +
+      '<input class="itarget" type="text" list="places" placeholder="Target — URL or Place" autocomplete="off">';
+    const nameI = li.querySelector('.iname');
+    const tgtI = li.querySelector('.itarget');
+    nameI.addEventListener('input', () => { const b = beaconById(id); if (b) { b.name = nameI.value; save(); const d = dots.get(id); if (d) d.querySelector('.label').textContent = b.name || '(unnamed)'; } });
+    tgtI.addEventListener('input', () => { const b = beaconById(id); if (b) { b.target = tgtI.value; save(); } });
+    li.querySelector('.ilock').addEventListener('click', () => { const b = beaconById(id); if (b) { b.locked = !b.locked; save(); render(); } });
+    li.querySelector('.idel').addEventListener('click', () => { state.beacons = state.beacons.filter(x => x.id !== id); if (selectedId === id) selectedId = null; save(); render(); });
+    li.querySelector('.grip').addEventListener('pointerdown', e => onGripDown(e, id));
+    li.addEventListener('pointerdown', e => { if (!e.target.closest('input,button,.grip')) { selectedId = id; render(); } });
+    return li;
+  }
+
+  // Dragging by the scene dot.
+  function onDotDown(e, id) {
     if (state.mode !== 'arrange') return;
-    selectedId = b.id;
-    if (b.locked) { render(); return; }            // locked: select, do not drag
+    selectedId = id;
+    const b = beaconById(id);
+    if (b.locked) { render(); return; }
     e.preventDefault();
-    const el = els.get(b.id);
-    el.setPointerCapture(e.pointerId);
-    drag = { b, id: e.pointerId, moved: false };
+    dots.get(id).setPointerCapture(e.pointerId);
+    drag = { id, pid: e.pointerId, moved: false, via: dots.get(id) };
     render();
   }
+  function onDotClick(e, id) {
+    if (state.mode === 'live') { const b = beaconById(id); if (b && b.target) { e.preventDefault(); window.location.href = b.target; } return; }
+    selectedId = id; render();
+  }
+
+  // Dragging a point out of the list by its ⠿ handle.
+  function onGripDown(e, id) {
+    if (state.mode !== 'arrange') return;
+    const b = beaconById(id);
+    selectedId = id;
+    if (b.locked) { render(); return; }
+    e.preventDefault();
+    const grip = e.currentTarget;
+    grip.setPointerCapture(e.pointerId);
+    grip.classList.add('dragging');
+    drag = { id, pid: e.pointerId, moved: false, via: grip };
+    render();
+  }
+
   window.addEventListener('pointermove', e => {
-    if (!drag || e.pointerId !== drag.id) return;
+    if (!drag || e.pointerId !== drag.pid) return;
+    const b = beaconById(drag.id); if (!b) return;
     const p = toImage(e.clientX, e.clientY);
-    drag.b.x = p.x; drag.b.y = p.y; drag.moved = true;
-    const el = els.get(drag.b.id);
-    place(el, drag.b); el.classList.add('dragging');
+    b.x = p.x; b.y = p.y; drag.moved = true;
+    const d = dots.get(drag.id); if (d) { placeDot(d, b); d.classList.add('dragging'); }
   });
   window.addEventListener('pointerup', e => {
-    if (!drag || e.pointerId !== drag.id) return;
-    const el = els.get(drag.b.id); if (el) el.classList.remove('dragging');
+    if (!drag || e.pointerId !== drag.pid) return;
+    const d = dots.get(drag.id); if (d) d.classList.remove('dragging');
+    if (drag.via && drag.via.classList) drag.via.classList.remove('dragging');
     if (drag.moved) save();
     drag = null;
   });
 
-  function onClick(e, b) {
-    if (state.mode === 'live') { if (b.target) { e.preventDefault(); window.location.href = b.target; } return; }
-    selectedId = b.id; render();
-    if (document.activeElement !== nameInput && document.activeElement !== targetInput) nameInput.focus();
+  addBtn.addEventListener('click', e => { e.stopPropagation(); addMenu.hidden = !addMenu.hidden; });
+  document.addEventListener('pointerdown', e => {
+    if (!addMenu.hidden && !e.target.closest('.addwrap')) addMenu.hidden = true;
+    if (state.mode === 'arrange' && !e.target.closest('.beacon') && !e.target.closest('.panel') && !e.target.closest('.btn')) {
+      if (selectedId) { selectedId = null; render(); }
+    }
+  });
+
+  function addBeacon(name, target) {
+    const b = { id: newId(), x: 0.5, y: 0.5, name: name || '', target: target || '', locked: false };
+    state.beacons.push(b); selectedId = b.id; state.mode = 'arrange'; addMenu.hidden = true;
+    save(); render();
+    const li = rows.get(b.id); if (li) { li.scrollIntoView({ block: 'nearest' }); li.querySelector('.iname').focus(); }
   }
 
-  addBtn.addEventListener('click', () => {
-    const b = { id: newId(), x: 0.5, y: 0.5, name: '', target: '', locked: false };
-    state.beacons.push(b); selectedId = b.id; state.mode = 'arrange';
-    save(); render(); nameInput.focus();
-  });
   modeBtn.addEventListener('click', () => {
     state.mode = state.mode === 'arrange' ? 'live' : 'arrange';
-    if (state.mode === 'live') selectedId = null;
+    if (state.mode === 'live') { selectedId = null; addMenu.hidden = true; }
     save(); render();
   });
-  nameInput.addEventListener('input', () => { const s = selected(); if (s) { s.name = nameInput.value; save(); const el = els.get(s.id); if (el) el.querySelector('.label').textContent = s.name || '(unnamed)'; } });
-  targetInput.addEventListener('input', () => { const s = selected(); if (s) { s.target = targetInput.value; save(); } });
-  lockChk.addEventListener('change', () => { const s = selected(); if (s) { s.locked = lockChk.checked; save(); render(); } });
-  delBtn.addEventListener('click', () => { const s = selected(); if (s) { state.beacons = state.beacons.filter(x => x.id !== s.id); selectedId = null; save(); render(); } });
 
-  document.addEventListener('pointerdown', e => {
-    if (state.mode !== 'arrange') return;
-    if (e.target.closest('.beacon') || e.target.closest('.editor') || e.target.closest('.chrome')) return;
-    if (selectedId) { selectedId = null; render(); }
-  });
-
-  window.addEventListener('resize', () => { for (const b of state.beacons) { const el = els.get(b.id); if (el) place(el, b); } });
+  window.addEventListener('resize', () => { for (const b of state.beacons) { const el = dots.get(b.id); if (el) placeDot(el, b); } });
 
   if (img.complete && img.naturalWidth) render();
   else img.addEventListener('load', render);
