@@ -11,11 +11,10 @@
     font-family: system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; }
   body { overflow: hidden; }
 
-  /* The Home — a full-bleed view of the desk, the Window, and the World. */
   .home { position: fixed; inset: 0; width: 100vw; height: 100vh;
     object-fit: cover; object-position: center; display: block; user-select: none; -webkit-user-drag: none; }
 
-  /* The Beacons layer. Colour marks kind: blue = a Place in our git, yellow = the Internet, grey = no target yet. */
+  /* The Beacons layer. Colour marks a point's category; the drawer is violet. */
   .layer { position: fixed; inset: 0; pointer-events: none; }
   .beacon { position: absolute; transform: translate(-50%, -50%); pointer-events: auto; width: 24px; height: 24px; cursor: pointer; }
   body.mode-arrange .beacon { cursor: grab; }
@@ -23,14 +22,7 @@
   .beacon.dragging { cursor: grabbing; }
   .beacon .ring { position: absolute; left: 50%; top: 50%; width: 24px; height: 24px;
     transform: translate(-50%, -50%); border-radius: 50%; border: 1px solid rgba(255,255,255,.4); }
-  .beacon .dot { position: absolute; left: 50%; top: 50%; width: 13px; height: 13px;
-    transform: translate(-50%, -50%); border-radius: 50%; }
-  .beacon.kind-web .dot { background: radial-gradient(circle at 50% 40%, #fff 0%, #ffe6a8 34%, #ffb443 66%, rgba(255,150,40,0) 70%);
-    box-shadow: 0 0 12px 3px rgba(255,180,80,.8), 0 0 2px 1px rgba(0,0,0,.55); }
-  .beacon.kind-git .dot { background: radial-gradient(circle at 50% 40%, #fff 0%, #cfe6ff 34%, #4aa3ff 66%, rgba(60,150,255,0) 70%);
-    box-shadow: 0 0 12px 3px rgba(80,160,255,.8), 0 0 2px 1px rgba(0,0,0,.55); }
-  .beacon.kind-none .dot { background: radial-gradient(circle at 50% 40%, #cdd2d8 0%, #7d838d 42%, rgba(110,118,130,0) 70%);
-    box-shadow: 0 0 8px 2px rgba(120,130,145,.5), 0 0 2px 1px rgba(0,0,0,.55); }
+  .beacon .dot { position: absolute; left: 50%; top: 50%; width: 13px; height: 13px; transform: translate(-50%, -50%); border-radius: 50%; }
   .beacon .label { position: absolute; left: 50%; top: calc(50% + 17px); transform: translateX(-50%);
     white-space: nowrap; background: rgba(10,10,14,.74); color: #f2efe9; font-size: 12px; line-height: 1;
     padding: 5px 9px; border-radius: 999px; opacity: 0; transition: opacity .15s; pointer-events: none;
@@ -38,41 +30,40 @@
   .beacon:hover .label, .beacon.selected .label { opacity: 1; }
   .beacon.selected .ring { border-color: #ffd27a; box-shadow: 0 0 0 2px rgba(255,210,122,.5); }
 
+  /* The drawer point — special, and only present while arranging. */
+  .beacon.drawer { display: none; }
+  body.mode-arrange .beacon.drawer { display: block; }
+  .beacon.drawer .ring { width: 26px; height: 26px; border-color: rgba(167,139,250,.85); box-shadow: 0 0 0 3px rgba(167,139,250,.16); }
+  .count { position: absolute; left: calc(50% + 8px); top: calc(50% - 15px); min-width: 16px; height: 16px; padding: 0 4px;
+    box-sizing: border-box; background: #a78bfa; color: #1a1330; font-size: 10px; font-weight: 700; line-height: 16px;
+    text-align: center; border-radius: 999px; pointer-events: none; box-shadow: 0 0 0 1px rgba(0,0,0,.45); }
+
   /* Toolbar */
-  .toolbar { position: fixed; left: 16px; bottom: 16px; z-index: 12; display: flex; gap: 8px; align-items: center; }
+  .toolbar { position: fixed; left: 16px; bottom: 16px; z-index: 12; }
   .btn { background: rgba(10,10,14,.72); color: #f2efe9; border: 1px solid rgba(255,255,255,.18);
     border-radius: 999px; padding: 9px 15px; font: inherit; font-size: 13px; cursor: pointer;
     -webkit-backdrop-filter: blur(4px); backdrop-filter: blur(4px); }
   .btn:hover { background: rgba(34,34,40,.85); }
-  .btn.small { padding: 8px 13px; }
 
-  /* The add-menu — points one can add. */
-  .addwrap { position: relative; }
-  .addmenu { position: absolute; left: 0; bottom: 44px; width: 216px; max-height: min(66vh, 520px); overflow-y: auto;
+  /* The drawer's contents — points not on the page. */
+  .addmenu { position: fixed; width: 220px; max-height: min(66vh, 520px); overflow-y: auto;
     background: rgba(18,18,24,.98); border: 1px solid rgba(255,255,255,.16); border-radius: 10px; padding: 6px; z-index: 20;
     box-shadow: 0 12px 34px rgba(0,0,0,.5); }
-  .mhead { font-size: 10px; letter-spacing: .11em; text-transform: uppercase; opacity: .55; padding: 8px 9px 4px; }
-  .mhead.kind-git { color: #8fc2ff; } .mhead.kind-web { color: #ffd27a; }
+  .mhead { font-size: 10px; letter-spacing: .11em; text-transform: uppercase; opacity: .7; padding: 8px 9px 4px; }
+  .mempty { padding: 9px; font-size: 12px; opacity: .5; }
   .mitem { display: flex; align-items: center; gap: 8px; width: 100%; text-align: left; background: transparent;
     border: 0; font: inherit; font-size: 13px; color: #eee; padding: 7px 9px; border-radius: 7px; cursor: pointer; }
   .mitem:hover { background: rgba(255,255,255,.09); }
-  .mitem::before { content: ""; width: 9px; height: 9px; border-radius: 50%; flex: 0 0 auto; }
-  .mitem.kind-git::before { background: #4aa3ff; box-shadow: 0 0 6px 1px rgba(80,160,255,.6); }
-  .mitem.kind-web::before { background: #ffb443; box-shadow: 0 0 6px 1px rgba(255,180,80,.6); }
-  .mitem.kind-none::before { background: #808894; box-shadow: 0 0 6px 1px rgba(120,130,145,.5); }
+  .mdot { width: 9px; height: 9px; border-radius: 50%; flex: 0 0 auto; }
   .addmenu .sep { height: 1px; background: rgba(255,255,255,.12); margin: 6px 4px; }
 
   /* The editor — opens on a point, on click. */
   .editor { position: fixed; z-index: 13; width: min(248px, calc(100vw - 24px)); box-sizing: border-box;
     background: rgba(12,12,16,.9); border: 1px solid rgba(255,255,255,.16); border-radius: 11px; padding: 11px;
-    box-shadow: 0 12px 34px rgba(0,0,0,.5); color: #f2efe9;
-    -webkit-backdrop-filter: blur(6px); backdrop-filter: blur(6px); }
+    box-shadow: 0 12px 34px rgba(0,0,0,.5); color: #f2efe9; -webkit-backdrop-filter: blur(6px); backdrop-filter: blur(6px); }
   .editor .erow { display: flex; align-items: center; gap: 8px; }
   .editor .erow.between { justify-content: space-between; margin-top: 10px; }
   .swatch { width: 12px; height: 12px; border-radius: 50%; flex: 0 0 auto; }
-  .swatch.kind-web { background: radial-gradient(circle at 50% 40%, #fff 0%, #ffe6a8 34%, #ffb443 66%, rgba(255,150,40,.15) 72%); box-shadow: 0 0 6px 1px rgba(255,180,80,.6); }
-  .swatch.kind-git { background: radial-gradient(circle at 50% 40%, #fff 0%, #cfe6ff 34%, #4aa3ff 66%, rgba(60,150,255,.15) 72%); box-shadow: 0 0 6px 1px rgba(80,160,255,.6); }
-  .swatch.kind-none { background: radial-gradient(circle at 50% 40%, #cdd2d8 0%, #7d838d 44%, rgba(110,118,130,.15) 72%); box-shadow: 0 0 6px 1px rgba(120,130,145,.5); }
   .iname { flex: 1; min-width: 0; background: rgba(255,255,255,.06); border: 1px solid rgba(255,255,255,.16);
     color: #fff; border-radius: 7px; padding: 6px 8px; font: inherit; font-size: 13px; }
   .itarget { width: 100%; box-sizing: border-box; margin-top: 8px; background: rgba(255,255,255,.05);
@@ -90,15 +81,14 @@
 </head>
 <body>
 <!--
-  The Home, with Beacons living directly on the scene.
+  The Home, its Beacons, and a drawer.
 
-  Points sit on the cover image itself — there is no roster. The + Add menu is
-  a reservoir: it lists only the points NOT yet on the page (Places in our git
-  are blue, places on the Internet are yellow — the colour is read from the
-  target). Placing a point moves it out of the menu and onto the scene;
-  deleting it from the scene returns it to the menu. Editing a point is a small
-  menu that opens on the point when you click it: rename, set a target, pin in
-  place (📌), or delete. A point returns to the same spot on the next visit.
+  By default every point is already on the scene, arranged in clusters by topic
+  and colour: Laboratory (our git, blue), Search & Tools (green), Social
+  (magenta), Media (amber); a blank point is grey. Clicking a point lets you
+  drag, edit, or delete it. Deleting a point sends it into the drawer — itself
+  a special violet point on the scene; clicking the drawer opens a scrolling
+  list of the points it holds, from which any can be returned to the page.
 
   Persistence is the browser's localStorage — private to this browser, not
   committed and not part of the Record. A working experience, held provisional.
@@ -106,15 +96,17 @@
 <img class="home" src="assets/images/workspace.webp"
      alt="A workspace at dusk. A person sits at a desk before a wide window — a laptop, an open notebook, a warm cup — looking out over a vast, luminous city of domes, waterways, gardens, and a great living library. The World, seen through the Window.">
 
-<div class="layer" id="layer"></div>
-
-<div class="toolbar">
-  <div class="addwrap">
-    <button class="btn small" id="addBtn">+ Add</button>
-    <div class="addmenu" id="addMenu" hidden></div>
+<div class="layer" id="layer">
+  <div class="beacon drawer" id="drawer">
+    <span class="ring"></span><span class="dot"></span>
+    <span class="count" id="drawerCount" hidden>0</span>
+    <span class="label">Drawer</span>
   </div>
-  <button class="btn" id="modeBtn">Live</button>
 </div>
+
+<div class="addmenu" id="addMenu" hidden></div>
+
+<div class="toolbar"><button class="btn" id="modeBtn">Live</button></div>
 
 <div class="editor" id="editor" hidden>
   <div class="erow">
@@ -124,7 +116,7 @@
   <input class="itarget" id="eTarget" type="text" list="places" placeholder="Target — URL or Place" autocomplete="off">
   <div class="erow between">
     <button class="epin" id="ePin"><span class="pin">📌</span><span id="ePinTxt">Pin</span></button>
-    <button class="edel" id="eDel">Delete</button>
+    <button class="edel" id="eDel" title="Delete — sends it to the drawer">Delete</button>
   </div>
 </div>
 
@@ -132,37 +124,45 @@
 
 <script>
 (function () {
-  const KEY = 'brill.home.v1';
+  const KEY = 'brill.home.v2';
 
-  const GIT = [
-    { name: 'The Laboratory — the Table', target: 'laboratory/table/' },
-    { name: 'The Record — the Sessions', target: 'laboratory/record/' },
-    { name: 'The Constitution', target: 'constitution/' },
-    { name: 'The RFCs', target: 'rfcs/' },
-    { name: 'The Cabinet', target: 'cabinet/' }
-  ];
-  const WEB = [
-    { name: 'Google', target: 'https://www.google.com' },
-    { name: 'Gmail', target: 'https://mail.google.com' },
-    { name: 'YouTube', target: 'https://www.youtube.com' },
-    { name: 'Google Translate', target: 'https://translate.google.com' },
-    { name: 'Google Maps', target: 'https://maps.google.com' },
-    { name: 'Wikipedia', target: 'https://www.wikipedia.org' },
-    { name: 'Facebook', target: 'https://www.facebook.com' },
-    { name: 'Instagram', target: 'https://www.instagram.com' },
-    { name: 'WhatsApp', target: 'https://web.whatsapp.com' },
-    { name: 'X (Twitter)', target: 'https://x.com' },
-    { name: 'LinkedIn', target: 'https://www.linkedin.com' },
-    { name: 'Reddit', target: 'https://www.reddit.com' },
-    { name: 'ChatGPT', target: 'https://chat.openai.com' },
-    { name: 'Claude', target: 'https://claude.ai' },
-    { name: 'Spotify', target: 'https://open.spotify.com' },
-    { name: 'Netflix', target: 'https://www.netflix.com' }
+  const CATS = {
+    lab:    { label: 'Laboratory',     color: '#4aa3ff', anchor: [0.20, 0.34] },
+    tools:  { label: 'Search & Tools', color: '#54c98b', anchor: [0.44, 0.20] },
+    social: { label: 'Social',         color: '#e069c9', anchor: [0.66, 0.24] },
+    media:  { label: 'Media',          color: '#ffb443', anchor: [0.86, 0.42] }
+  };
+  const COLOR = { lab: '#4aa3ff', tools: '#54c98b', social: '#e069c9', media: '#ffb443', none: '#7d838d', drawer: '#a78bfa' };
+  const ORDER = ['lab', 'tools', 'social', 'media', 'none'];
+
+  const CATALOG = [
+    { name: 'The Laboratory — the Table', target: 'laboratory/table/', cat: 'lab' },
+    { name: 'The Record — the Sessions', target: 'laboratory/record/', cat: 'lab' },
+    { name: 'The Constitution', target: 'constitution/', cat: 'lab' },
+    { name: 'The RFCs', target: 'rfcs/', cat: 'lab' },
+    { name: 'The Cabinet', target: 'cabinet/', cat: 'lab' },
+    { name: 'Google', target: 'https://www.google.com', cat: 'tools' },
+    { name: 'Gmail', target: 'https://mail.google.com', cat: 'tools' },
+    { name: 'Google Translate', target: 'https://translate.google.com', cat: 'tools' },
+    { name: 'Google Maps', target: 'https://maps.google.com', cat: 'tools' },
+    { name: 'Wikipedia', target: 'https://www.wikipedia.org', cat: 'tools' },
+    { name: 'ChatGPT', target: 'https://chat.openai.com', cat: 'tools' },
+    { name: 'Claude', target: 'https://claude.ai', cat: 'tools' },
+    { name: 'Facebook', target: 'https://www.facebook.com', cat: 'social' },
+    { name: 'Instagram', target: 'https://www.instagram.com', cat: 'social' },
+    { name: 'X (Twitter)', target: 'https://x.com', cat: 'social' },
+    { name: 'LinkedIn', target: 'https://www.linkedin.com', cat: 'social' },
+    { name: 'Reddit', target: 'https://www.reddit.com', cat: 'social' },
+    { name: 'WhatsApp', target: 'https://web.whatsapp.com', cat: 'social' },
+    { name: 'YouTube', target: 'https://www.youtube.com', cat: 'media' },
+    { name: 'Spotify', target: 'https://open.spotify.com', cat: 'media' },
+    { name: 'Netflix', target: 'https://www.netflix.com', cat: 'media' }
   ];
 
   const img = document.querySelector('.home');
   const layer = document.getElementById('layer');
-  const addBtn = document.getElementById('addBtn');
+  const drawerEl = document.getElementById('drawer');
+  const drawerCount = document.getElementById('drawerCount');
   const addMenu = document.getElementById('addMenu');
   const modeBtn = document.getElementById('modeBtn');
   const placesList = document.getElementById('places');
@@ -174,33 +174,42 @@
   const ePinTxt = document.getElementById('ePinTxt');
   const eDel = document.getElementById('eDel');
 
+  for (const p of CATALOG) { const o = document.createElement('option'); o.value = p.target; o.label = p.name; placesList.appendChild(o); }
+
   let state = load();
   let selectedId = null;
   const dots = new Map();
   let drag = null;
 
-  function kindOf(t) { if (!t) return 'none'; return /^https?:\/\//i.test(t) ? 'web' : 'git'; }
-  function setKind(el, t) { el.classList.remove('kind-git', 'kind-web', 'kind-none'); el.classList.add('kind-' + kindOf(t)); }
+  function newId() { return 'b' + Date.now().toString(36) + Math.random().toString(36).slice(2, 6); }
+  function clamp(v) { return Math.max(0, Math.min(1, v)); }
+  function clampM(v) { return Math.max(0.05, Math.min(0.95, v)); }
+  function colorOf(cat) { return COLOR[cat] || COLOR.none; }
+  function rgba(hex, a) { const n = parseInt(hex.slice(1), 16); return 'rgba(' + ((n >> 16) & 255) + ',' + ((n >> 8) & 255) + ',' + (n & 255) + ',' + a + ')'; }
+  function beaconById(id) { return state.beacons.find(b => b.id === id); }
 
-  for (const p of GIT.concat(WEB)) { const o = document.createElement('option'); o.value = p.target; o.label = p.name; placesList.appendChild(o); }
-
-  // The menu is the reservoir: catalogue points that are NOT yet on the page.
-  function renderMenu() {
-    addMenu.innerHTML = '';
-    const placed = new Set(state.beacons.map(b => b.target).filter(Boolean));
-    for (const [title, items] of [['Our git', GIT], ['The Internet', WEB]]) {
-      const avail = items.filter(p => !placed.has(p.target));
-      if (!avail.length) continue;
-      const h = document.createElement('div'); h.className = 'mhead kind-' + kindOf(items[0].target); h.textContent = title; addMenu.appendChild(h);
-      for (const p of avail) { const b = document.createElement('button'); b.className = 'mitem kind-' + kindOf(p.target); b.textContent = p.name; b.addEventListener('click', () => { addBeacon(p.name, p.target, true); renderMenu(); }); addMenu.appendChild(b); }
-    }
-    const sep = document.createElement('div'); sep.className = 'sep'; addMenu.appendChild(sep);
-    const blank = document.createElement('button'); blank.className = 'mitem kind-none'; blank.textContent = 'Blank point'; blank.addEventListener('click', () => addBeacon('', '', false)); addMenu.appendChild(blank);
+  function layoutGroup(items, anchor) {
+    const cols = 3, dx = 0.055, dy = 0.062, rows = Math.ceil(items.length / cols);
+    return items.map((p, i) => {
+      const c = i % cols, r = Math.floor(i / cols);
+      return { x: clampM(anchor[0] + (c - (cols - 1) / 2) * dx), y: clampM(anchor[1] + (r - (rows - 1) / 2) * dy) };
+    });
   }
-
+  function buildDefault() {
+    const beacons = [], groups = {};
+    for (const p of CATALOG) (groups[p.cat] = groups[p.cat] || []).push(p);
+    for (const cat in groups) {
+      const pos = layoutGroup(groups[cat], CATS[cat].anchor);
+      groups[cat].forEach((p, i) => beacons.push({ id: newId(), name: p.name, target: p.target, cat: p.cat, x: pos[i].x, y: pos[i].y, locked: false }));
+    }
+    return { beacons, stash: [], drawer: { x: 0.06, y: 0.86 }, mode: 'arrange' };
+  }
   function load() {
-    try { const s = JSON.parse(localStorage.getItem(KEY)); if (s && Array.isArray(s.beacons)) return { beacons: s.beacons, mode: s.mode || 'arrange' }; } catch (e) {}
-    return { beacons: [], mode: 'arrange' };
+    try {
+      const s = JSON.parse(localStorage.getItem(KEY));
+      if (s && Array.isArray(s.beacons)) return { beacons: s.beacons, stash: Array.isArray(s.stash) ? s.stash : [], drawer: s.drawer || { x: 0.06, y: 0.86 }, mode: s.mode || 'arrange' };
+    } catch (e) {}
+    return buildDefault();
   }
   function save() { localStorage.setItem(KEY, JSON.stringify(state)); }
 
@@ -212,9 +221,27 @@
   }
   function toScreen(x, y) { const c = cover(); return { sx: c.ox + x * c.nw * c.scale, sy: c.oy + y * c.nh * c.scale }; }
   function toImage(cx, cy) { const c = cover(); return { x: clamp((cx - c.ox) / (c.nw * c.scale)), y: clamp((cy - c.oy) / (c.nh * c.scale)) }; }
-  function clamp(v) { return Math.max(0, Math.min(1, v)); }
-  function newId() { return 'b' + Date.now().toString(36) + Math.random().toString(36).slice(2, 6); }
-  function beaconById(id) { return state.beacons.find(b => b.id === id); }
+
+  function paintDot(dot, cat) {
+    const color = colorOf(cat), dim = cat === 'none', core = dim ? '#cdd2d8' : '#fff';
+    dot.style.background = 'radial-gradient(circle at 50% 40%, ' + core + ' 0%, ' + color + ' ' + (dim ? 44 : 60) + '%, ' + rgba(color, 0) + ' 72%)';
+    dot.style.boxShadow = '0 0 ' + (dim ? 8 : 12) + 'px ' + (dim ? 2 : 3) + 'px ' + rgba(color, dim ? 0.5 : 0.8) + ', 0 0 2px 1px rgba(0,0,0,.55)';
+  }
+  function paintSwatch(el, cat) {
+    const color = colorOf(cat);
+    el.style.background = 'radial-gradient(circle at 50% 40%, #fff 0%, ' + color + ' 62%, ' + rgba(color, 0.15) + ' 74%)';
+    el.style.boxShadow = '0 0 6px 1px ' + rgba(color, 0.6);
+  }
+  function placeEl(el, x, y) { const { sx, sy } = toScreen(x, y); el.style.left = sx + 'px'; el.style.top = sy + 'px'; }
+
+  function makeDot(id) {
+    const el = document.createElement('div');
+    el.className = 'beacon';
+    el.innerHTML = '<span class="ring"></span><span class="dot"></span><span class="label"></span>';
+    el.addEventListener('pointerdown', e => onBeaconDown(e, id));
+    el.addEventListener('click', e => onBeaconClick(e, id));
+    return el;
+  }
 
   function render() {
     document.body.classList.toggle('mode-arrange', state.mode === 'arrange');
@@ -223,57 +250,112 @@
     for (const [id, el] of dots) { if (!ids.has(id)) { el.remove(); dots.delete(id); } }
     for (const b of state.beacons) {
       let el = dots.get(b.id);
-      if (!el) { el = makeDot(b); layer.appendChild(el); dots.set(b.id, el); }
-      placeDot(el, b);
-      setKind(el, b.target);
+      if (!el) { el = makeDot(b.id); layer.appendChild(el); dots.set(b.id, el); }
+      placeEl(el, b.x, b.y); paintDot(el.querySelector('.dot'), b.cat);
       el.classList.toggle('locked', !!b.locked);
       el.classList.toggle('selected', b.id === selectedId && state.mode === 'arrange');
       el.querySelector('.label').textContent = b.name || '(unnamed)';
     }
+    placeEl(drawerEl, state.drawer.x, state.drawer.y);
+    paintDot(drawerEl.querySelector('.dot'), 'drawer');
+    updateCount();
   }
-  function placeDot(el, b) { const { sx, sy } = toScreen(b.x, b.y); el.style.left = sx + 'px'; el.style.top = sy + 'px'; }
-  function makeDot(b) {
-    const el = document.createElement('div');
-    el.className = 'beacon';
-    el.innerHTML = '<span class="ring"></span><span class="dot"></span><span class="label"></span>';
-    el.addEventListener('pointerdown', e => onDown(e, b.id));
-    el.addEventListener('click', e => onClick(e, b.id));
-    return el;
+  function updateCount() { const n = state.stash.length; drawerCount.hidden = n === 0; drawerCount.textContent = n; }
+
+  function nearDrawer() { const j = () => (Math.random() - 0.5) * 0.08; return { x: clampM(state.drawer.x + 0.07 + j()), y: clampM(state.drawer.y - 0.07 + j()) }; }
+
+  // The drawer's contents.
+  function renderMenu() {
+    addMenu.innerHTML = '';
+    const byCat = {};
+    for (const it of state.stash) (byCat[it.cat] = byCat[it.cat] || []).push(it);
+    let any = false;
+    for (const cat of ORDER) {
+      const items = byCat[cat]; if (!items || !items.length) continue; any = true;
+      const h = document.createElement('div'); h.className = 'mhead'; h.style.color = colorOf(cat); h.textContent = (CATS[cat] && CATS[cat].label) || 'Other'; addMenu.appendChild(h);
+      for (const it of items) addMenu.appendChild(menuItem(it.name || '(unnamed)', it.cat, () => restore(it.id)));
+    }
+    if (!any) { const e = document.createElement('div'); e.className = 'mempty'; e.textContent = 'The drawer is empty.'; addMenu.appendChild(e); }
+    const sep = document.createElement('div'); sep.className = 'sep'; addMenu.appendChild(sep);
+    addMenu.appendChild(menuItem('Blank point', 'none', () => addBeacon('', '', 'none')));
+  }
+  function menuItem(text, cat, onClick) {
+    const b = document.createElement('button'); b.className = 'mitem';
+    const d = document.createElement('span'); d.className = 'mdot'; const color = colorOf(cat);
+    d.style.background = color; d.style.boxShadow = '0 0 6px 1px ' + rgba(color, 0.6);
+    b.appendChild(d); b.appendChild(document.createTextNode(text));
+    b.addEventListener('click', onClick);
+    return b;
+  }
+  function openMenu() { renderMenu(); addMenu.hidden = false; positionMenu(); }
+  function positionMenu() {
+    const { sx, sy } = toScreen(state.drawer.x, state.drawer.y);
+    const w = addMenu.offsetWidth || 220, h = addMenu.offsetHeight || 320;
+    let left = sx + 18, top = sy - h - 8;
+    if (top < 8) top = sy + 18;
+    if (left + w > window.innerWidth - 8) left = sx - w - 18;
+    if (left < 8) left = 8;
+    if (top + h > window.innerHeight - 8) top = window.innerHeight - h - 8;
+    if (top < 8) top = 8;
+    addMenu.style.left = left + 'px'; addMenu.style.top = top + 'px';
   }
 
-  function onDown(e, id) {
-    if (state.mode !== 'arrange') return;
-    const b = beaconById(id);
-    selectedId = id; render();
-    if (b.locked) { showEditor(b); return; }   // pinned: cannot drag, but can edit
-    e.preventDefault();
-    dots.get(id).setPointerCapture(e.pointerId);
-    editor.hidden = true;
-    drag = { id, pid: e.pointerId, moved: false };
+  function restore(stashId) {
+    const i = state.stash.findIndex(x => x.id === stashId); if (i < 0) return;
+    const it = state.stash.splice(i, 1)[0];
+    const p = nearDrawer();
+    state.beacons.push({ id: newId(), name: it.name, target: it.target, cat: it.cat, x: p.x, y: p.y, locked: false });
+    save(); render(); renderMenu();
   }
-  function onClick(e, id) {
+  function addBeacon(name, target, cat) {
+    const p = nearDrawer();
+    const b = { id: newId(), name: name || '', target: target || '', cat: cat || 'none', x: p.x, y: p.y, locked: false };
+    state.beacons.push(b); selectedId = b.id; state.mode = 'arrange';
+    save(); render();
+    if (!target) showEditor(b); else renderMenu();
+  }
+  function deleteBeacon(id) {
+    const i = state.beacons.findIndex(b => b.id === id); if (i < 0) return;
+    const b = state.beacons.splice(i, 1)[0];
+    state.stash.push({ id: b.id, name: b.name, target: b.target, cat: b.cat });
+    if (selectedId === id) { selectedId = null; editor.hidden = true; }
+    save(); render(); if (!addMenu.hidden) renderMenu();
+  }
+
+  function onBeaconDown(e, id) {
+    if (state.mode !== 'arrange') return;
+    const b = beaconById(id); selectedId = id; render();
+    if (b.locked) { showEditor(b); return; }
+    e.preventDefault(); dots.get(id).setPointerCapture(e.pointerId); editor.hidden = true; addMenu.hidden = true;
+    drag = { kind: 'beacon', id, pid: e.pointerId, moved: false };
+  }
+  function onBeaconClick(e, id) {
     if (state.mode === 'live') { const b = beaconById(id); if (b && b.target) { e.preventDefault(); window.location.href = b.target; } }
   }
+  function onDrawerDown(e) {
+    if (state.mode !== 'arrange') return;
+    e.preventDefault(); drawerEl.setPointerCapture(e.pointerId);
+    drag = { kind: 'drawer', pid: e.pointerId, moved: false };
+  }
+  drawerEl.addEventListener('pointerdown', onDrawerDown);
+
   window.addEventListener('pointermove', e => {
     if (!drag || e.pointerId !== drag.pid) return;
-    const b = beaconById(drag.id); if (!b) return;
     const p = toImage(e.clientX, e.clientY);
-    b.x = p.x; b.y = p.y; drag.moved = true;
-    const d = dots.get(drag.id); if (d) { placeDot(d, b); d.classList.add('dragging'); }
+    if (drag.kind === 'beacon') { const b = beaconById(drag.id); if (!b) return; b.x = p.x; b.y = p.y; drag.moved = true; const d = dots.get(drag.id); if (d) { placeEl(d, b.x, b.y); d.classList.add('dragging'); } }
+    else { state.drawer.x = p.x; state.drawer.y = p.y; drag.moved = true; placeEl(drawerEl, p.x, p.y); drawerEl.classList.add('dragging'); }
   });
   window.addEventListener('pointerup', e => {
     if (!drag || e.pointerId !== drag.pid) return;
-    const d = dots.get(drag.id); if (d) d.classList.remove('dragging');
-    const b = beaconById(drag.id);
-    if (drag.moved) save(); else if (b) showEditor(b);   // a tap opens the editor
+    if (drag.kind === 'beacon') { const d = dots.get(drag.id); if (d) d.classList.remove('dragging'); const b = beaconById(drag.id); if (drag.moved) save(); else if (b) showEditor(b); }
+    else { drawerEl.classList.remove('dragging'); if (drag.moved) save(); else openMenu(); }
     drag = null;
   });
 
   function showEditor(b) {
-    editor.hidden = false;
-    eName.value = b.name || '';
-    eTarget.value = b.target || '';
-    setKind(eSwatch, b.target);
+    editor.hidden = false; addMenu.hidden = true;
+    eName.value = b.name || ''; eTarget.value = b.target || '';
+    paintSwatch(eSwatch, b.cat);
     ePin.classList.toggle('pinned', !!b.locked);
     ePinTxt.textContent = b.locked ? 'Pinned' : 'Pin';
     ePin.title = b.locked ? 'Click to unpin' : 'Click to pin in place';
@@ -292,7 +374,7 @@
   }
 
   eName.addEventListener('input', () => { const b = beaconById(selectedId); if (b) { b.name = eName.value; save(); const d = dots.get(b.id); if (d) d.querySelector('.label').textContent = b.name || '(unnamed)'; } });
-  eTarget.addEventListener('input', () => { const b = beaconById(selectedId); if (b) { b.target = eTarget.value; save(); const d = dots.get(b.id); if (d) setKind(d, b.target); setKind(eSwatch, b.target); } });
+  eTarget.addEventListener('input', () => { const b = beaconById(selectedId); if (b) { b.target = eTarget.value; save(); } });
   ePin.addEventListener('click', () => {
     const b = beaconById(selectedId); if (!b) return;
     b.locked = !b.locked; save();
@@ -301,33 +383,25 @@
     ePin.title = b.locked ? 'Click to unpin' : 'Click to pin in place';
     const d = dots.get(b.id); if (d) d.classList.toggle('locked', b.locked);
   });
-  eDel.addEventListener('click', () => { if (selectedId) { state.beacons = state.beacons.filter(x => x.id !== selectedId); selectedId = null; editor.hidden = true; save(); render(); if (!addMenu.hidden) renderMenu(); } });
+  eDel.addEventListener('click', () => { if (selectedId) deleteBeacon(selectedId); });
 
-  addBtn.addEventListener('click', e => { e.stopPropagation(); if (addMenu.hidden) { renderMenu(); addMenu.hidden = false; } else { addMenu.hidden = true; } });
   document.addEventListener('pointerdown', e => {
-    if (!addMenu.hidden && !e.target.closest('.addwrap')) addMenu.hidden = true;
-    if (e.target.closest('.editor') || e.target.closest('.toolbar') || e.target.closest('.beacon')) return;
+    if (!addMenu.hidden && !e.target.closest('#addMenu') && !e.target.closest('#drawer')) addMenu.hidden = true;
+    if (e.target.closest('.editor') || e.target.closest('.toolbar') || e.target.closest('.beacon') || e.target.closest('#addMenu')) return;
     if (selectedId) { selectedId = null; editor.hidden = true; render(); }
   });
 
-  function addBeacon(name, target, keepMenu) {
-    const jit = () => 0.5 + (Math.random() - 0.5) * 0.14;
-    const b = { id: newId(), x: jit(), y: jit(), name: name || '', target: target || '', locked: false };
-    state.beacons.push(b); selectedId = b.id; state.mode = 'arrange';
-    if (!keepMenu) addMenu.hidden = true;
-    save(); render();
-    if (!target) showEditor(b);   // a blank point opens its editor to be filled
-  }
-
   modeBtn.addEventListener('click', () => {
     state.mode = state.mode === 'arrange' ? 'live' : 'arrange';
-    if (state.mode === 'live') { selectedId = null; addMenu.hidden = true; editor.hidden = true; }
+    if (state.mode === 'live') { selectedId = null; editor.hidden = true; addMenu.hidden = true; }
     save(); render();
   });
 
   window.addEventListener('resize', () => {
-    for (const b of state.beacons) { const el = dots.get(b.id); if (el) placeDot(el, b); }
+    for (const b of state.beacons) { const el = dots.get(b.id); if (el) placeEl(el, b.x, b.y); }
+    placeEl(drawerEl, state.drawer.x, state.drawer.y);
     if (!editor.hidden && selectedId) { const b = beaconById(selectedId); if (b) positionEditor(b); }
+    if (!addMenu.hidden) positionMenu();
   });
 
   if (img.complete && img.naturalWidth) render();
