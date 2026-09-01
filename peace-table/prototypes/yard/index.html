@@ -1,0 +1,545 @@
+<!doctype html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>שולחן החצר</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Assistant:wght@400;600;700&family=Frank+Ruhl+Libre:wght@500;700&family=Heebo:wght@400;500;700&display=swap">
+<style>
+:root{
+  --ground:#EDF0F3;
+  --surface:#FFFFFF;
+  --surface-sunk:#E4E9ED;
+  --ink:#191F26;
+  --ink-soft:#525E6B;
+  --ink-faint:#7C8894;
+  --line:#D5DCE2;
+  --line-strong:#B9C4CD;
+  --accent:#8E1F3C;
+  --accent-wash:#F7E7EB;
+  --agreed:#2C6A55;
+  --agreed-wash:#E3F0EA;
+  --contested:#96601A;
+  --contested-wash:#F7EBD9;
+  --focus:#1D5FB0;
+  --shadow:0 1px 2px rgba(25,31,38,.06);
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --ground:#11151A;
+    --surface:#191F26;
+    --surface-sunk:#141920;
+    --ink:#E8EDF2;
+    --ink-soft:#A3AFBB;
+    --ink-faint:#7C8894;
+    --line:#2A323B;
+    --line-strong:#3B4550;
+    --accent:#E3778F;
+    --accent-wash:#2C1A21;
+    --agreed:#79C4A6;
+    --agreed-wash:#152520;
+    --contested:#D9A657;
+    --contested-wash:#2A2114;
+    --focus:#7FB2F0;
+    --shadow:0 1px 2px rgba(0,0,0,.4);
+  }
+}
+:root[data-theme="dark"]{
+  --ground:#11151A;
+  --surface:#191F26;
+  --surface-sunk:#141920;
+  --ink:#E8EDF2;
+  --ink-soft:#A3AFBB;
+  --ink-faint:#7C8894;
+  --line:#2A323B;
+  --line-strong:#3B4550;
+  --accent:#E3778F;
+  --accent-wash:#2C1A21;
+  --agreed:#79C4A6;
+  --agreed-wash:#152520;
+  --contested:#D9A657;
+  --contested-wash:#2A2114;
+  --focus:#7FB2F0;
+  --shadow:0 1px 2px rgba(0,0,0,.4);
+}
+
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{
+  margin:0;
+  background:var(--ground);
+  color:var(--ink);
+  font-family:"Assistant","Segoe UI",system-ui,sans-serif;
+  font-size:16px;
+  line-height:1.65;
+}
+.wrap{max-width:37rem;margin:0 auto;padding:1.5rem 1.1rem 4rem;display:flex;flex-direction:column;gap:1.75rem}
+
+.eyebrow{
+  font-family:"Heebo","Segoe UI",system-ui,sans-serif;
+  font-size:.72rem;font-weight:500;letter-spacing:.14em;
+  color:var(--ink-faint);margin:0;
+}
+
+/* ---------- כותרת השולחן ---------- */
+.masthead{display:flex;flex-direction:column;gap:.9rem}
+.question{
+  font-family:"Frank Ruhl Libre",Georgia,serif;
+  font-weight:700;
+  font-size:clamp(1.55rem,5.5vw,2.05rem);
+  line-height:1.25;margin:0;text-wrap:balance;
+}
+.seats{display:flex;flex-wrap:wrap;gap:.4rem;align-items:center}
+.seat{
+  display:inline-flex;align-items:center;gap:.35rem;
+  background:var(--surface);border:1px solid var(--line);
+  border-radius:999px;padding:.25rem .7rem;
+  font-family:"Heebo",system-ui,sans-serif;font-size:.82rem;color:var(--ink-soft);
+}
+.seat b{font-weight:500;color:var(--ink)}
+.seat--model{border-style:dashed;border-color:var(--line-strong)}
+.seat__tag{font-size:.68rem;letter-spacing:.08em;color:var(--ink-faint)}
+.seat__dot{width:.42rem;height:.42rem;border-radius:50%;background:var(--agreed)}
+.seat--model .seat__dot{background:transparent;border:1px solid var(--ink-faint)}
+
+/* ---------- מצב השולחן ---------- */
+.state{background:var(--surface);border:1px solid var(--line);box-shadow:var(--shadow)}
+.state__head{padding:.9rem 1rem .7rem;border-bottom:1px solid var(--line);display:flex;flex-direction:column;gap:.25rem}
+.state__note{margin:0;font-size:.86rem;color:var(--ink-soft)}
+.state__list{list-style:none;margin:0;padding:0}
+.state__item{border-bottom:1px solid var(--line)}
+.state__item:last-child{border-bottom:0}
+.state__button{
+  width:100%;background:none;border:0;padding:.95rem 1rem;
+  display:flex;gap:.7rem;align-items:flex-start;text-align:start;
+  font:inherit;color:inherit;cursor:pointer;
+}
+.state__button:hover{background:var(--surface-sunk)}
+.state__button:focus-visible{outline:2px solid var(--focus);outline-offset:-2px}
+.state__mark{
+  flex:0 0 auto;margin-top:.42rem;width:.55rem;height:.55rem;border-radius:2px;background:var(--ink-faint);
+}
+.state__item--agreed .state__mark{background:var(--agreed)}
+.state__item--contested .state__mark{background:var(--contested)}
+.state__text{flex:1;min-width:0}
+.state__text strong{font-weight:600;display:block}
+.state__kind{
+  display:block;font-family:"Heebo",system-ui,sans-serif;
+  font-size:.72rem;letter-spacing:.1em;margin-bottom:.15rem;color:var(--ink-faint);
+}
+.state__item--agreed .state__kind{color:var(--agreed)}
+.state__item--contested .state__kind{color:var(--contested)}
+.state__chev{flex:0 0 auto;color:var(--ink-faint);font-size:.8rem;margin-top:.35rem;transition:transform .18s ease}
+.state__item[data-open="true"] .state__chev{transform:rotate(180deg)}
+.state__sources{padding:0 1rem 1rem;margin:0;display:none;flex-wrap:wrap;gap:.4rem;align-items:center}
+.state__item[data-open="true"] .state__sources{display:flex}
+.state__sources span{font-family:"Heebo",system-ui,sans-serif;font-size:.8rem;color:var(--ink-soft)}
+.cite{
+  font-family:"Heebo",system-ui,sans-serif;font-size:.82rem;
+  background:var(--surface-sunk);border:1px solid var(--line);border-radius:3px;
+  padding:.15rem .5rem;color:var(--ink);cursor:pointer;font-variant-numeric:tabular-nums;
+}
+.cite:hover{border-color:var(--accent);color:var(--accent)}
+.cite:focus-visible{outline:2px solid var(--focus);outline-offset:1px}
+.state__item--contested{background:var(--contested-wash)}
+
+/* ---------- תרומות ---------- */
+.stack{display:flex;flex-direction:column;gap:.85rem}
+.card{
+  background:var(--surface);border:1px solid var(--line);
+  box-shadow:var(--shadow);padding:.95rem 1rem;
+  display:flex;flex-direction:column;gap:.6rem;scroll-margin-top:1rem;
+}
+.card[data-flash="true"]{border-color:var(--accent);background:var(--accent-wash)}
+@media (prefers-reduced-motion: no-preference){
+  .card{transition:background .5s ease,border-color .5s ease}
+}
+.card__top{display:flex;gap:.6rem;align-items:baseline;flex-wrap:wrap}
+.card__num{
+  font-family:"Heebo",system-ui,sans-serif;font-weight:700;font-size:.85rem;
+  color:var(--accent);font-variant-numeric:tabular-nums;
+}
+.card__who{font-weight:600;font-size:.95rem}
+.card__kind{
+  font-family:"Heebo",system-ui,sans-serif;font-size:.72rem;letter-spacing:.08em;
+  color:var(--ink-soft);border:1px solid var(--line-strong);border-radius:2px;padding:.05rem .4rem;
+}
+.card__when{font-family:"Heebo",system-ui,sans-serif;font-size:.75rem;color:var(--ink-faint);margin-inline-start:auto}
+.card__text{margin:0;font-size:1rem}
+.card__from{margin:0;font-size:.84rem;color:var(--ink-soft);display:flex;gap:.4rem;align-items:center;flex-wrap:wrap}
+.card__actions{display:flex;gap:.5rem;flex-wrap:wrap;align-items:center}
+.card--objection{background:var(--contested-wash);border-color:var(--contested)}
+
+button.link{
+  background:none;border:0;padding:.35rem 0;font:inherit;font-size:.86rem;
+  color:var(--accent);cursor:pointer;text-decoration:underline;text-underline-offset:3px;
+}
+button.link:focus-visible{outline:2px solid var(--focus);outline-offset:2px;border-radius:2px}
+button.ghost{
+  background:var(--surface);border:1px solid var(--line-strong);border-radius:3px;
+  padding:.45rem .85rem;font:inherit;font-size:.86rem;color:var(--ink);cursor:pointer;
+}
+button.ghost:hover{border-color:var(--accent);color:var(--accent)}
+button.ghost:focus-visible{outline:2px solid var(--focus);outline-offset:2px}
+button.solid{
+  background:var(--accent);border:1px solid var(--accent);border-radius:3px;
+  padding:.45rem .95rem;font:inherit;font-size:.86rem;font-weight:600;color:#fff;cursor:pointer;
+}
+:root[data-theme="dark"] button.solid,
+:root:not([data-theme="light"]) button.solid{color:#1B1013}
+@media (prefers-color-scheme: light){:root:not([data-theme="dark"]) button.solid{color:#fff}}
+button.solid:focus-visible{outline:2px solid var(--focus);outline-offset:2px}
+
+.editor{display:none;flex-direction:column;gap:.55rem}
+.card[data-editing="true"] .editor{display:flex}
+.card[data-editing="true"] .card__actions--idle{display:none}
+.editor textarea{
+  width:100%;min-height:6.5rem;resize:vertical;
+  font:inherit;font-size:1rem;line-height:1.6;color:var(--ink);
+  background:var(--surface-sunk);border:1px solid var(--line-strong);border-radius:3px;padding:.6rem .7rem;
+}
+.editor textarea:focus-visible{outline:2px solid var(--focus);outline-offset:0}
+.editor__row{display:flex;gap:.5rem;align-items:center;flex-wrap:wrap}
+.editor__hint{font-size:.8rem;color:var(--ink-soft);margin:0}
+
+.history{display:none;flex-direction:column;gap:.5rem;padding-top:.2rem}
+.card[data-history="true"] .history{display:flex}
+.older{
+  background:var(--surface-sunk);border:1px solid var(--line);
+  padding:.6rem .7rem;margin-inline-start:1.1rem;
+}
+.older__label{
+  font-family:"Heebo",system-ui,sans-serif;font-size:.72rem;letter-spacing:.08em;
+  color:var(--ink-faint);display:flex;gap:.5rem;flex-wrap:wrap;margin-bottom:.25rem;
+}
+.older p{margin:0;font-size:.94rem;color:var(--ink-soft)}
+
+/* ---------- כף רגל ---------- */
+.rule{height:1px;background:var(--line);border:0;margin:0}
+.foot{display:flex;flex-direction:column;gap:1rem}
+.foot h2{font-family:"Frank Ruhl Libre",Georgia,serif;font-size:1.15rem;font-weight:500;margin:0}
+.foot ul{margin:0;padding-inline-start:1.1rem;display:flex;flex-direction:column;gap:.35rem}
+.foot li{font-size:.92rem;color:var(--ink-soft)}
+.foot li b{color:var(--ink);font-weight:600}
+.saved{
+  background:var(--surface);border:1px solid var(--line);padding:.8rem 1rem;
+  display:flex;flex-direction:column;gap:.5rem;
+}
+.saved p{margin:0;font-size:.88rem;color:var(--ink-soft)}
+</style>
+</head>
+<body>
+<main class="wrap">
+
+  <header class="masthead">
+    <p class="eyebrow">שולחן עבודה · בניין הדקל 7</p>
+    <h1 class="question">מה עושים עם החצר המשותפת?</h1>
+    <div class="seats" id="seats"></div>
+  </header>
+
+  <section class="state" aria-labelledby="state-title">
+    <div class="state__head">
+      <h2 class="eyebrow" id="state-title">מצב השולחן</h2>
+      <p class="state__note">ניסח גרנט מתוך מה שנאמר למטה. כל שורה נשענת על דברים שאנשים אמרו — לחצי על שורה כדי לראות על מה בדיוק.</p>
+    </div>
+    <ul class="state__list" id="state-list"></ul>
+  </section>
+
+  <section aria-labelledby="talk-title">
+    <h2 class="eyebrow" id="talk-title" style="margin-bottom:.75rem">מה נאמר סביב השולחן</h2>
+    <div class="stack" id="cards"></div>
+  </section>
+
+  <hr class="rule">
+
+  <footer class="foot">
+    <div class="saved">
+      <p id="saved-note">מה שתכתבי כאן נשמר רק בדפדפן שלך, במכשיר הזה. אף אחד אחר לא רואה את זה עדיין.</p>
+      <div><button class="ghost" id="reset">החזרה למצב ההתחלתי</button></div>
+    </div>
+
+    <div>
+      <h2>מה המסך הזה כן עושה</h2>
+      <ul>
+        <li><b>לא מוחק.</b> כל תיקון יוצר גרסה חדשה, והגרסה הקודמת נשארת לקריאה.</li>
+        <li><b>מראה מאיפה כל דבר בא.</b> כל שורה במצב השולחן נפתחת ומצביעה על הדברים שנאמרו.</li>
+        <li><b>לא מעלים התנגדות.</b> ההתנגדות של סמי נשארת על השולחן גם כשרוב האנשים מסכימים.</li>
+        <li><b>מסמן מה מודל כתב.</b> גרנט יכולה לנסח ולהציע, לא להחליט.</li>
+      </ul>
+    </div>
+
+    <div>
+      <h2>מה עוד אין כאן</h2>
+      <ul>
+        <li>אין שרת — שני אנשים לא יכולים לשבת בשולחן הזה יחד.</li>
+        <li>אין כניסה עם שם משתמש, ואין עדיין דרך לערער על שורה שגרנט ניסחה.</li>
+        <li>יש שולחן אחד. אין עדיין מעבר בין שולחנות ואין החלטה שנסגרת ונבדקת מול המציאות.</li>
+      </ul>
+    </div>
+  </footer>
+</main>
+
+<script>
+"use strict";
+
+var STORAGE_KEY = "garnet-table-yard-v1";
+
+var PEOPLE = [
+  { name: "נעה", kind: "person" },
+  { name: "יובל", kind: "person" },
+  { name: "רות", kind: "person" },
+  { name: "סמי", kind: "person" },
+  { name: "גרנט", kind: "model" }
+];
+
+function seed() {
+  return [
+    { id: "1", who: "נעה", kind: "תצפית", from: [],
+      versions: [{ text: "בשלוש השנים האחרונות החצר משמשת בעיקר כמחסן לאופניים ולגזם. אף אחד לא יושב שם.", at: "26 באוגוסט, 18:20" }] },
+    { id: "2", who: "יובל", kind: "ראיה", from: ["1"],
+      versions: [{ text: "ספרתי אתמול בבוקר: ארבעה־עשר אופניים בחצר, מהם חמישה עם גלגל שבור או בלי שרשרת.", at: "27 באוגוסט, 08:05" }] },
+    { id: "3", who: "רות", kind: "רעיון", from: ["1", "2"],
+      versions: [
+        { text: "לפנות חצי מהחצר לפינת ישיבה, ולהשאיר חצי לאופניים.", at: "27 באוגוסט, 20:40" },
+        { text: "פינת ישיבה בצד המזרחי, ומתקן אופניים מסודר בצד המערבי — כדי שהישיבה לא תהיה מתחת לחלונות של דירה 2.", at: "28 באוגוסט, 21:15" }
+      ] },
+    { id: "4", who: "סמי", kind: "התנגדות", from: ["3"], objection: true,
+      versions: [{ text: "פינת ישיבה מתחת לחלון שלי בדירה 2 תיצור רעש בערבים. אני קם לעבודה בחמש.", at: "28 באוגוסט, 19:50" }] },
+    { id: "5", who: "נעה", kind: "שאלה", from: ["4"],
+      versions: [{ text: "אפשר למקם את פינת הישיבה בצד המזרחי, רחוק מהחלונות של דירה 2?", at: "28 באוגוסט, 20:30" }] }
+  ];
+}
+
+var STATE_LINES = [
+  { tone: "agreed",    kind: "יש הסכמה",              text: "החצר לא ממלאת היום שום תפקיד שמישהו רצה בו.", rests: ["1", "2"] },
+  { tone: "direction", kind: "יש כיוון שמסתמן",        text: "לחלק את החצר: ישיבה בצד אחד, אופניים בצד השני.", rests: ["3", "5"] },
+  { tone: "contested", kind: "התנגדות שלא נפתרה",      text: "רעש בערבים מתחת לחלונות של דירה 2. זה לא נסגר, גם אם רוב האנשים מסכימים על הכיוון.", rests: ["4"] }
+];
+
+var contributions = load();
+
+function load() {
+  try {
+    var raw = localStorage.getItem(STORAGE_KEY);
+    if (!raw) return seed();
+    var parsed = JSON.parse(raw);
+    if (!Array.isArray(parsed) || !parsed.length) return seed();
+    var ok = parsed.every(function (c) {
+      return c && typeof c.id === "string" && Array.isArray(c.versions) && c.versions.length;
+    });
+    return ok ? parsed : seed();
+  } catch (e) {
+    return seed();
+  }
+}
+
+function save() {
+  try {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(contributions));
+  } catch (e) {
+    document.getElementById("saved-note").textContent =
+      "הדפדפן הזה לא מאפשר שמירה, אז התיקונים ייעלמו כשתסגרי את הדף. הכל השאר עובד.";
+  }
+}
+
+function byId(id) {
+  for (var i = 0; i < contributions.length; i++) {
+    if (contributions[i].id === id) return contributions[i];
+  }
+  return null;
+}
+
+function now() {
+  try {
+    return new Date().toLocaleString("he-IL", { day: "numeric", month: "long", hour: "2-digit", minute: "2-digit" });
+  } catch (e) {
+    return "עכשיו";
+  }
+}
+
+function el(tag, cls, text) {
+  var node = document.createElement(tag);
+  if (cls) node.className = cls;
+  if (text !== undefined) node.textContent = text;
+  return node;
+}
+
+function citeButton(id) {
+  var b = el("button", "cite", "§" + id);
+  b.type = "button";
+  b.setAttribute("aria-label", "הצגת מה שנאמר, פריט " + id);
+  b.addEventListener("click", function () { flash(id); });
+  return b;
+}
+
+function flash(id) {
+  var card = document.getElementById("card-" + id);
+  if (!card) return;
+  card.scrollIntoView({ behavior: "smooth", block: "center" });
+  card.dataset.flash = "true";
+  window.setTimeout(function () { card.dataset.flash = "false"; }, 1600);
+}
+
+function renderSeats() {
+  var host = document.getElementById("seats");
+  host.textContent = "";
+  PEOPLE.forEach(function (p) {
+    var seat = el("span", "seat" + (p.kind === "model" ? " seat--model" : ""));
+    seat.appendChild(el("span", "seat__dot"));
+    seat.appendChild(el("b", null, p.name));
+    if (p.kind === "model") seat.appendChild(el("span", "seat__tag", "מודל"));
+    host.appendChild(seat);
+  });
+}
+
+function renderState() {
+  var list = document.getElementById("state-list");
+  list.textContent = "";
+  STATE_LINES.forEach(function (line, index) {
+    var item = el("li", "state__item state__item--" + line.tone);
+    item.dataset.open = "false";
+
+    var button = el("button", "state__button");
+    button.type = "button";
+    button.setAttribute("aria-expanded", "false");
+    button.appendChild(el("span", "state__mark"));
+
+    var textWrap = el("span", "state__text");
+    textWrap.appendChild(el("span", "state__kind", line.kind));
+    textWrap.appendChild(el("strong", null, line.text));
+    button.appendChild(textWrap);
+    button.appendChild(el("span", "state__chev", "▾"));
+
+    var sources = el("p", "state__sources");
+    sources.appendChild(el("span", null, "נשען על:"));
+    line.rests.forEach(function (id) { sources.appendChild(citeButton(id)); });
+
+    button.addEventListener("click", function () {
+      var open = item.dataset.open === "true";
+      item.dataset.open = open ? "false" : "true";
+      button.setAttribute("aria-expanded", open ? "false" : "true");
+    });
+
+    item.appendChild(button);
+    item.appendChild(sources);
+    list.appendChild(item);
+    void index;
+  });
+}
+
+function renderCards() {
+  var host = document.getElementById("cards");
+  host.textContent = "";
+
+  contributions.forEach(function (c) {
+    var current = c.versions[c.versions.length - 1];
+    var older = c.versions.slice(0, -1);
+
+    var card = el("article", "card" + (c.objection ? " card--objection" : ""));
+    card.id = "card-" + c.id;
+    card.dataset.editing = "false";
+    card.dataset.history = "false";
+    card.dataset.flash = "false";
+
+    var top = el("div", "card__top");
+    top.appendChild(el("span", "card__num", "§" + c.id));
+    top.appendChild(el("span", "card__who", c.who));
+    top.appendChild(el("span", "card__kind", c.kind));
+    top.appendChild(el("span", "card__when", current.at));
+    card.appendChild(top);
+
+    card.appendChild(el("p", "card__text", current.text));
+
+    if (c.from.length) {
+      var from = el("p", "card__from");
+      from.appendChild(el("span", null, "בא מתוך:"));
+      c.from.forEach(function (id) { from.appendChild(citeButton(id)); });
+      card.appendChild(from);
+    }
+
+    var actions = el("div", "card__actions card__actions--idle");
+
+    var fix = el("button", "link", "תיקון");
+    fix.type = "button";
+    fix.addEventListener("click", function () {
+      card.dataset.editing = "true";
+      var area = card.querySelector("textarea");
+      area.value = c.versions[c.versions.length - 1].text;
+      area.focus();
+    });
+    actions.appendChild(fix);
+
+    if (older.length) {
+      var toggle = el("button", "link", "גרסאות קודמות (" + older.length + ")");
+      toggle.type = "button";
+      toggle.setAttribute("aria-expanded", "false");
+      toggle.addEventListener("click", function () {
+        var open = card.dataset.history === "true";
+        card.dataset.history = open ? "false" : "true";
+        toggle.setAttribute("aria-expanded", open ? "false" : "true");
+      });
+      actions.appendChild(toggle);
+    }
+    card.appendChild(actions);
+
+    var editor = el("div", "editor");
+    var area = document.createElement("textarea");
+    area.setAttribute("aria-label", "תיקון הטקסט של פריט " + c.id);
+    editor.appendChild(area);
+    editor.appendChild(el("p", "editor__hint", "הגרסה הנוכחית לא תימחק. היא תרד למטה, ותישאר לקריאה עם התאריך שלה."));
+
+    var row = el("div", "editor__row");
+    var saveBtn = el("button", "solid", "שמירת תיקון");
+    saveBtn.type = "button";
+    saveBtn.addEventListener("click", function () {
+      var text = area.value.trim();
+      if (!text || text === c.versions[c.versions.length - 1].text) {
+        card.dataset.editing = "false";
+        return;
+      }
+      c.versions.push({ text: text, at: now() });
+      save();
+      renderCards();
+      flash(c.id);
+    });
+    var cancelBtn = el("button", "ghost", "ביטול");
+    cancelBtn.type = "button";
+    cancelBtn.addEventListener("click", function () { card.dataset.editing = "false"; });
+    row.appendChild(saveBtn);
+    row.appendChild(cancelBtn);
+    editor.appendChild(row);
+    card.appendChild(editor);
+
+    if (older.length) {
+      var history = el("div", "history");
+      older.slice().reverse().forEach(function (version, index) {
+        var slip = el("div", "older");
+        var label = el("div", "older__label");
+        label.appendChild(el("span", null, "נכתב קודם"));
+        label.appendChild(el("span", null, version.at));
+        slip.appendChild(label);
+        slip.appendChild(el("p", null, version.text));
+        history.appendChild(slip);
+        void index;
+      });
+      card.appendChild(history);
+    }
+
+    host.appendChild(card);
+  });
+}
+
+document.getElementById("reset").addEventListener("click", function () {
+  contributions = seed();
+  try { localStorage.removeItem(STORAGE_KEY); } catch (e) {}
+  renderCards();
+});
+
+renderSeats();
+renderState();
+renderCards();
+</script>
+</body>
+</html>
