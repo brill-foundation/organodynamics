@@ -15,5 +15,9 @@ reality.
 - `blueprint/` — the engineering blueprint and execution plan for the Reference Implementation.
 - `src/` + `tests/` — the Canonical Knowledge Kernel and the constitutional
   conformance suite (`npm test`, `npm run conformance`).
+- `peace-table/` — the Peace Table layer (Hebrew): its product foundation,
+  proposed architecture and seven-stage build plan, decision register, and two
+  proposed ADRs, plus one behaviour prototype. Documents and one prototype only
+  — none of the build stages is built.
 - `rfcs/`, `cabinet/` — open questions and preserved research artifacts.
 - `drafts/` — early writing.
