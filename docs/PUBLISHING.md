@@ -77,12 +77,20 @@ node tools/conformance.js        # the published Record still conforms
 Then confirm Vercel:
 
 - The production deployment is building/serving the new `main`.
-- The **Vercel production branch is `main`** (Vercel project → Settings → Git).
-  This is a project setting outside the repo; it is the one piece of state
-  this runbook cannot enforce mechanically, so it is written here explicitly:
-  **production branch = `main`.** Verify it once per project; it rarely changes.
-- Load the public Door and confirm it shows the current Laboratory (the
-  entrance line — "the entrance is one file" — and the Sessions room render).
+- The **Vercel production branch is `main`** (Vercel project → Settings →
+  Environments → Production → Branch Tracking; it used to live under Settings →
+  Git and moved). This is a project setting outside the repo; it is the one
+  piece of state this runbook cannot enforce mechanically, so it is written here
+  explicitly: **production branch = `main`.** Verify it once per project; it
+  rarely changes.
+- **The public Door is <https://organodynamics.vercel.app>.** Written down here
+  because it was not written down anywhere, and a runbook that says "load the
+  public Door" without naming it still depends on someone remembering the
+  address. A `…-<hash>-adi-brills-projects.vercel.app` URL is a single
+  deployment, not the Door: an old one can 404 on paths that exist today.
+- Load the Door and confirm it shows the current Laboratory (the entrance line —
+  "the entrance is one file" — and the Sessions room render), and that
+  <https://organodynamics.vercel.app/lab> opens the table.
 
 ### 5. Record the publication in the Laboratory
 
