@@ -1,6 +1,6 @@
 {
   "cleanUrls": true,
   "rewrites": [
-    { "source": "/lab", "destination": "/laboratory/table/index.html" }
+    { "source": "/lab", "destination": "/laboratory/table" }
   ]
 }
