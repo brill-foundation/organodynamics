@@ -1,6 +1,6 @@
 {
   "cleanUrls": true,
-  "rewrites": [
-    { "source": "/lab", "destination": "/laboratory/table" }
+  "redirects": [
+    { "source": "/lab", "destination": "/laboratory/table/", "permanent": false }
   ]
 }
