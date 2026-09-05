@@ -144,6 +144,7 @@ body{
 .cite:hover{border-color:var(--accent);color:var(--accent)}
 .cite:focus-visible{outline:2px solid var(--focus);outline-offset:1px}
 .state__item--contested{background:var(--contested-wash)}
+.state__empty{margin:0;padding:.95rem 1rem;font-size:.92rem;color:var(--ink-faint)}
 
 /* ---------- תרומות ---------- */
 .stack{display:flex;flex-direction:column;gap:.85rem}
@@ -242,7 +243,7 @@ button.solid:focus-visible{outline:2px solid var(--focus);outline-offset:2px}
   <section class="state" aria-labelledby="state-title">
     <div class="state__head">
       <h2 class="eyebrow" id="state-title">מצב השולחן</h2>
-      <p class="state__note">ניסח גרנט מתוך מה שנאמר למטה. כל שורה נשענת על דברים שאנשים אמרו — לחצי על שורה כדי לראות על מה בדיוק.</p>
+      <p class="state__note">הטקסט כאן לא נכתב — הוא ציטוט מהגרסה הנוכחית של מה שנאמר למטה, והמבנה של מה שנאמר קובע אילו שורות קיימות ועל מה. שלוש הכותרות — יש הסכמה, יש כיוון שמסתמן, התנגדות שלא נפתרה — כן נכתבו מראש, והן כל הפרשנות שיש במסך הזה. לחצי על שורה כדי לראות על מה בדיוק היא נשענת.</p>
     </div>
     <ul class="state__list" id="state-list"></ul>
   </section>
@@ -265,8 +266,9 @@ button.solid:focus-visible{outline:2px solid var(--focus);outline-offset:2px}
       <ul>
         <li><b>לא מוחק.</b> כל תיקון יוצר גרסה חדשה, והגרסה הקודמת נשארת לקריאה.</li>
         <li><b>מראה מאיפה כל דבר בא.</b> כל שורה במצב השולחן נפתחת ומצביעה על הדברים שנאמרו.</li>
+        <li><b>מצטט, לא מנסח.</b> הטקסט בשורות המצב הוא ציטוט מהתרומות, ורק שלוש הכותרות נכתבו מראש. תיקון של מה ששורה מצטטת משנה אותה מיד; תיקון של פריט שהיא רק נשענת עליו לא. ציטוט חלקי מסומן בשלוש נקודות.</li>
         <li><b>לא מעלים התנגדות.</b> ההתנגדות של סמי נשארת על השולחן גם כשרוב האנשים מסכימים.</li>
-        <li><b>מסמן מה מודל כתב.</b> גרנט יכולה לנסח ולהציע, לא להחליט.</li>
+        <li><b>מסמן מודל.</b> גרנט יושבת בשולחן מסומנת כמודל — וכרגע לא ניסחה כאן שום שורה.</li>
       </ul>
     </div>
 
@@ -274,7 +276,8 @@ button.solid:focus-visible{outline:2px solid var(--focus);outline-offset:2px}
       <h2>מה עוד אין כאן</h2>
       <ul>
         <li>אין שרת — שני אנשים לא יכולים לשבת בשולחן הזה יחד.</li>
-        <li>אין כניסה עם שם משתמש, ואין עדיין דרך לערער על שורה שגרנט ניסחה.</li>
+        <li>אין כניסה עם שם משתמש, ואין דרך לערער על שורת מצב — גם כשהיא לא מייצגת אותך.</li>
+        <li>«יש הסכמה» נשענת כאן על היעדר התנגדות רשומה. שתיקה אינה הסכמה, והכלל הזה עוד לא הוכרע.</li>
         <li>יש שולחן אחד. אין עדיין מעבר בין שולחנות ואין החלטה שנסגרת ונבדקת מול המציאות.</li>
       </ul>
     </div>
@@ -312,11 +315,19 @@ function seed() {
   ];
 }
 
-var STATE_LINES = [
-  { tone: "agreed",    kind: "יש הסכמה",              text: "החצר לא ממלאת היום שום תפקיד שמישהו רצה בו.", rests: ["1", "2"] },
-  { tone: "direction", kind: "יש כיוון שמסתמן",        text: "לחלק את החצר: ישיבה בצד אחד, אופניים בצד השני.", rests: ["3", "5"] },
-  { tone: "contested", kind: "התנגדות שלא נפתרה",      text: "רעש בערבים מתחת לחלונות של דירה 2. זה לא נסגר, גם אם רוב האנשים מסכימים על הכיוון.", rests: ["4"] }
-];
+var KIND = {
+  OBSERVATION: "תצפית",
+  EVIDENCE:    "ראיה",
+  IDEA:        "רעיון",
+  OBJECTION:   "התנגדות",
+  QUESTION:    "שאלה"
+};
+
+var LINE_LABEL = {
+  agreed:    "יש הסכמה",
+  direction: "יש כיוון שמסתמן",
+  contested: "התנגדות שלא נפתרה"
+};
 
 var contributions = load();
 
@@ -326,8 +337,12 @@ function load() {
     if (!raw) return seed();
     var parsed = JSON.parse(raw);
     if (!Array.isArray(parsed) || !parsed.length) return seed();
+    var seenIds = Object.create(null);
     var ok = parsed.every(function (c) {
-      return c && typeof c.id === "string" && Array.isArray(c.versions) && c.versions.length;
+      if (!c || typeof c.id !== "string" || !Array.isArray(c.versions) || !c.versions.length) return false;
+      if (seenIds[c.id]) return false;   /* מזהה כפול שובר גם את הדגשת הציטוט וגם את זיכרון השורות הפתוחות */
+      seenIds[c.id] = true;
+      return true;
     });
     return ok ? parsed : seed();
   } catch (e) {
@@ -394,38 +409,192 @@ function renderSeats() {
   });
 }
 
+/* ---------- גזירת מצב השולחן ---------- */
+/* אף שורה כאן לא נכתבה מראש. המבנה של התרומות קובע אילו שורות קיימות ועל מה
+   הן נשענות, והטקסט הוא ציטוט מהגרסה הנוכחית של המקור — לא תקציר שלו. לכן
+   תיקון למטה משנה את המצב מיד, ולא משאיר שורה שמדברת על גרסה שכבר אינה. */
+
+function parentsOf(c) {
+  return Array.isArray(c.from) ? c.from : [];
+}
+
+function isObjection(c) {
+  return c.objection === true || c.kind === KIND.OBJECTION;
+}
+
+function currentText(c) {
+  var v = c.versions[c.versions.length - 1];
+  return v && typeof v.text === "string" ? v.text : "";
+}
+
+/* ציטוט קצר אחד לא יכול לשאת משפט שלם, ולכן הוא תמיד מסמן שהוא חלקי:
+   כל חיתוך — משפט, שורה או אורך — מחזיר cut, והמסך מוסיף שלוש נקודות.
+   בלי הסימון הזה מרכאות סביב חצי משפט מבטיחות שלמות שאין לה כיסוי. */
+var MIN_QUOTE = 25;
+
+/* סוף המשפט הראשון שארוך מספיק כדי לומר משהו. "לא." אינו כיוון. */
+function sentenceEnd(text) {
+  var offset = 0;
+  while (offset < text.length) {
+    var hit = text.slice(offset).search(/[.!?](\s|$)/);
+    if (hit < 0) return -1;
+    var end = offset + hit + 1;
+    if (end >= MIN_QUOTE) return end;
+    offset = end;
+  }
+  return -1;
+}
+
+function lead(c) {
+  var full = currentText(c).trim();
+  var text = full;
+  var br = text.indexOf("\n");
+  if (br > -1) text = text.slice(0, br).replace(/\s+$/, "");
+  var stop = sentenceEnd(text);
+  if (stop > -1) text = text.slice(0, stop);
+  if (text.length > 120) {
+    var space = text.lastIndexOf(" ", 120);
+    text = text.slice(0, space > 60 ? space : 120).replace(/\s+$/, "");
+  }
+  return { text: text, cut: text.length < full.length };
+}
+
+/* כל פריט שהתנגדות נשענת עליו. */
+function objectedTargets() {
+  var hit = Object.create(null);   /* מזהה כמו "__proto__" או "toString" לא יורש כלום */
+  contributions.forEach(function (c) {
+    if (!isObjection(c)) return;
+    parentsOf(c).forEach(function (id) { hit[id] = true; });
+  });
+  return hit;
+}
+
+function childIndex() {
+  var kids = Object.create(null);
+  contributions.forEach(function (c) {
+    parentsOf(c).forEach(function (id) {
+      if (!kids[id]) kids[id] = [];
+      kids[id].push(c.id);
+    });
+  });
+  return kids;
+}
+
+/* מה שנאמר בעקבות רעיון ושייך לו: שאלות, תשובות, תצפיות שנוספו אחריו.
+   דרך התנגדות עוברים בלי לאסוף אותה — לכל התנגדות יש שורה משלה. גם דרך
+   רעיון אחר עוברים בלי לאסוף אותו: הוא פותח כיוון משלו, אבל מה שנאמר
+   בעקבותיו נאמר גם בעקבות הרעיון שממנו הוא צמח. עצירה שם הייתה מותירה
+   רעיון שחודד מאוחר יותר בלי שום דבר שנשען עליו. */
+function downstream(id, kids) {
+  var out = [], seen = Object.create(null), queue = (kids[id] || []).slice();
+  seen[id] = true;
+  while (queue.length) {
+    var next = queue.shift();
+    if (seen[next]) continue;
+    seen[next] = true;
+    var c = byId(next);
+    if (!c) continue;
+    if (!isObjection(c) && c.kind !== KIND.IDEA) out.push(next);
+    queue = queue.concat(kids[next] || []);
+  }
+  return out;
+}
+
+/* המפתח הוא תפקיד השורה, לא מי מייצג אותה כרגע: שורת ההסכמה נשארת אותה
+   שורה גם כשהפריט שהיא מצטטת מתחלף, ולא נסגרת ונפתחת מעצמה. */
+function stateLine(tone, source, rests, key) {
+  var quote = lead(source);
+  return { tone: tone, kind: LINE_LABEL[tone], text: quote.text, cut: quote.cut,
+           quoted: source.id, rests: rests, key: key };
+}
+
+function deriveState() {
+  var objected = objectedTargets();
+  var kids = childIndex();
+  var lines = [];
+
+  /* הקרקע: תצפיות וראיות שאיש לא התנגד להן. */
+  var ground = contributions.filter(function (c) {
+    return (c.kind === KIND.OBSERVATION || c.kind === KIND.EVIDENCE) && !objected[c.id];
+  });
+  if (ground.length) {
+    lines.push(stateLine("agreed", ground[0], ground.map(function (c) { return c.id; }), "agreed"));
+  }
+
+  /* כיוון לכל רעיון — גם כשיש עליו התנגדות. ההתנגדות לא מוחקת אותו. */
+  contributions.forEach(function (c) {
+    if (c.kind !== KIND.IDEA) return;
+    lines.push(stateLine("direction", c, [c.id].concat(downstream(c.id, kids)), "direction:" + c.id));
+  });
+
+  /* וכל התנגדות נשארת שורה בפני עצמה. אין כאן מנגנון שסוגר אותה.
+     היא נשענת גם על מה שהיא מתנגדת לו: התנגדות בלי המטרה שלה משאירה את
+     הקורא עם התנגדות מרחפת, ומעלימה מהמצב את הדבר שהותקף. */
+  contributions.forEach(function (c) {
+    if (!isObjection(c)) return;
+    var targets = parentsOf(c).filter(function (id) { return !!byId(id); });
+    lines.push(stateLine("contested", c, [c.id].concat(targets), "contested:" + c.id));
+  });
+
+  return lines;
+}
+
+/* איזו שורה פתוחה — לפי הנימה והמקור, כדי ששורה שנפתחה תישאר פתוחה גם אחרי תיקון. */
+var openLines = {};
+
 function renderState() {
   var list = document.getElementById("state-list");
   list.textContent = "";
-  STATE_LINES.forEach(function (line, index) {
+
+  var lines = deriveState();
+  if (!lines.length) {
+    var blank = el("li", "state__item");
+    blank.appendChild(el("p", "state__empty", contributions.length
+      ? "נאמרו כאן דברים, אבל אף אחד מהם לא נופל תחת כלל שהמסך הזה מכיר. הם למטה, כפי שנכתבו."
+      : "עוד לא נאמר כאן כלום."));
+    list.appendChild(blank);
+    return;
+  }
+
+  lines.forEach(function (line) {
+    var key = line.key;
+    var open = openLines[key] === true;
+
     var item = el("li", "state__item state__item--" + line.tone);
-    item.dataset.open = "false";
+    item.dataset.open = open ? "true" : "false";
 
     var button = el("button", "state__button");
     button.type = "button";
-    button.setAttribute("aria-expanded", "false");
+    button.setAttribute("aria-expanded", open ? "true" : "false");
     button.appendChild(el("span", "state__mark"));
 
     var textWrap = el("span", "state__text");
     textWrap.appendChild(el("span", "state__kind", line.kind));
-    textWrap.appendChild(el("strong", null, line.text));
+    /* ציטוט שנקטע אחרי משפט שלם מסומן ברווח ואז נקודות; ציטוט שנקטע באמצע — צמוד. */
+    var mark = line.cut ? (/[.!?]$/.test(line.text) ? " …" : "…") : "";
+    textWrap.appendChild(el("strong", null, '"' + line.text + mark + '"'));
     button.appendChild(textWrap);
     button.appendChild(el("span", "state__chev", "▾"));
 
     var sources = el("p", "state__sources");
-    sources.appendChild(el("span", null, "נשען על:"));
-    line.rests.forEach(function (id) { sources.appendChild(citeButton(id)); });
+    sources.appendChild(el("span", null, "מצוטט מ־"));
+    sources.appendChild(citeButton(line.quoted));
+    var also = line.rests.filter(function (id) { return id !== line.quoted; });
+    if (also.length) {
+      sources.appendChild(el("span", null, "· נשען גם על"));
+      also.forEach(function (id) { sources.appendChild(citeButton(id)); });
+    }
 
     button.addEventListener("click", function () {
-      var open = item.dataset.open === "true";
-      item.dataset.open = open ? "false" : "true";
-      button.setAttribute("aria-expanded", open ? "false" : "true");
+      var wasOpen = item.dataset.open === "true";
+      openLines[key] = !wasOpen;
+      item.dataset.open = wasOpen ? "false" : "true";
+      button.setAttribute("aria-expanded", wasOpen ? "false" : "true");
     });
 
     item.appendChild(button);
     item.appendChild(sources);
     list.appendChild(item);
-    void index;
   });
 }
 
@@ -437,7 +606,7 @@ function renderCards() {
     var current = c.versions[c.versions.length - 1];
     var older = c.versions.slice(0, -1);
 
-    var card = el("article", "card" + (c.objection ? " card--objection" : ""));
+    var card = el("article", "card" + (isObjection(c) ? " card--objection" : ""));
     card.id = "card-" + c.id;
     card.dataset.editing = "false";
     card.dataset.history = "false";
@@ -452,10 +621,11 @@ function renderCards() {
 
     card.appendChild(el("p", "card__text", current.text));
 
-    if (c.from.length) {
+    var parents = parentsOf(c);
+    if (parents.length) {
       var from = el("p", "card__from");
       from.appendChild(el("span", null, "בא מתוך:"));
-      c.from.forEach(function (id) { from.appendChild(citeButton(id)); });
+      parents.forEach(function (id) { from.appendChild(citeButton(id)); });
       card.appendChild(from);
     }
 
@@ -501,6 +671,7 @@ function renderCards() {
       }
       c.versions.push({ text: text, at: now() });
       save();
+      renderState();
       renderCards();
       flash(c.id);
     });
@@ -533,7 +704,9 @@ function renderCards() {
 
 document.getElementById("reset").addEventListener("click", function () {
   contributions = seed();
+  openLines = {};
   try { localStorage.removeItem(STORAGE_KEY); } catch (e) {}
+  renderState();
   renderCards();
 });
 
