@@ -4,9 +4,6 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>שולחן החצר</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Assistant:wght@400;600;700&family=Frank+Ruhl+Libre:wght@500;700&family=Heebo:wght@400;500;700&display=swap">
 <style>
 :root{
   --ground:#EDF0F3;
@@ -369,6 +366,8 @@ RULES["no-recorded-objection"] = {
 
 var TABLE_RULE = "no-recorded-objection";
 
+/* מוצהר לפני הקריאה ל-load: השמה אחריה הייתה מאפסת את מה ש-load כתב. */
+var loadNote = "";
 var contributions = load();
 
 function load() {
@@ -399,8 +398,13 @@ function load() {
       c.from = edges;
       return true;
     });
-    return ok ? parsed : seed();
+    if (!ok) {
+      loadNote = "מה שנשמר בדפדפן הזה לא נקרא — הוא לא בצורה שהמסך מכיר. הוא לא נמחק, אבל התיקון הבא ידרוס אותו.";
+      return seed();
+    }
+    return parsed;
   } catch (e) {
+    loadNote = "מה שנשמר בדפדפן הזה לא נקרא. הוא לא נמחק, אבל התיקון הבא ידרוס אותו.";
     return seed();
   }
 }
@@ -421,9 +425,12 @@ function byId(id) {
   return null;
 }
 
+/* אותה צורה שהזרע משתמש בה. הפער נראה בדיוק בפתקי הגרסאות שאמורים להראות שאין דריסה. */
 function now() {
   try {
-    return new Date().toLocaleString("he-IL", { day: "numeric", month: "long", hour: "2-digit", minute: "2-digit" });
+    var d = new Date();
+    return d.toLocaleString("he-IL", { day: "numeric", month: "long" }) + ", " +
+           d.toLocaleString("he-IL", { hour: "2-digit", minute: "2-digit" });
   } catch (e) {
     return "עכשיו";
   }
@@ -667,9 +674,12 @@ function renderState() {
     var item = el("li", "state__item state__item--" + line.tone);
     item.dataset.open = open ? "true" : "false";
 
+    var sourcesId = "sources-" + key.replace(/[^a-zA-Z0-9_-]/g, "-");
+
     var button = el("button", "state__button");
     button.type = "button";
     button.setAttribute("aria-expanded", open ? "true" : "false");
+    button.setAttribute("aria-controls", sourcesId);
     button.appendChild(el("span", "state__mark"));
 
     var textWrap = el("span", "state__text");
@@ -681,9 +691,12 @@ function renderState() {
     var mark = line.cut ? (/[.!?]$/.test(line.text) ? " …" : "…") : "";
     textWrap.appendChild(el("strong", null, '"' + line.text + mark + '"'));
     button.appendChild(textWrap);
-    button.appendChild(el("span", "state__chev", "▾"));
+    var chev = el("span", "state__chev", "▾");
+    chev.setAttribute("aria-hidden", "true");   /* קישוט, ולא חלק מהשם הנגיש של הכפתור */
+    button.appendChild(chev);
 
     var sources = el("p", "state__sources");
+    sources.id = sourcesId;
     sources.appendChild(el("span", null, "מצוטט מ־"));
     sources.appendChild(citeButton(line.quoted, false));
 
@@ -718,7 +731,25 @@ function renderState() {
   });
 }
 
+/* renderCards בונה את כל הכרטיסים מחדש, ולכן שמירה בכרטיס אחד השמידה עורך פתוח
+   אחר ואת הטקסט שבו. מה שנפתח נשמר ומוחזר. */
+function openCardState() {
+  var state = Object.create(null);
+  contributions.forEach(function (c) {
+    var card = document.getElementById("card-" + c.id);
+    if (!card) return;
+    var area = card.querySelector("textarea");
+    state[c.id] = {
+      editing: card.dataset.editing === "true",
+      history: card.dataset.history === "true",
+      draft: area ? area.value : ""
+    };
+  });
+  return state;
+}
+
 function renderCards() {
+  var keep = openCardState();
   var host = document.getElementById("cards");
   host.textContent = "";
 
@@ -803,6 +834,16 @@ function renderCards() {
     editor.appendChild(row);
     card.appendChild(editor);
 
+    var kept = keep[c.id];
+    if (kept) {
+      card.dataset.history = kept.history ? "true" : "false";
+      if (toggle) toggle.setAttribute("aria-expanded", kept.history ? "true" : "false");
+      if (kept.editing) {
+        card.dataset.editing = "true";
+        area.value = kept.draft;
+      }
+    }
+
     if (older.length) {
       var history = el("div", "history");
       older.slice().reverse().forEach(function (version, index) {
@@ -825,6 +866,8 @@ function renderCards() {
 document.getElementById("reset").addEventListener("click", function () {
   contributions = seed();
   openLines = {};
+  loadNote = "";
+  document.getElementById("saved-note").textContent = "";
   try { localStorage.removeItem(STORAGE_KEY); } catch (e) {}
   renderState();
   renderCards();
@@ -833,6 +876,7 @@ document.getElementById("reset").addEventListener("click", function () {
 renderSeats();
 renderState();
 renderCards();
+if (loadNote) document.getElementById("saved-note").textContent = loadNote;
 </script>
 </body>
 </html>
