@@ -231,6 +231,24 @@ button.solid:focus-visible{outline:2px solid var(--focus);outline-offset:2px}
 .compose__note{font-size:.78rem;color:var(--ink-faint);margin:0}
 .compose__error{font-family:"Heebo",system-ui,sans-serif;font-size:.82rem;color:var(--contested)}
 
+.card__stances{
+  display:flex;flex-wrap:wrap;gap:.35rem;align-items:center;margin:0;
+  font-family:"Heebo",system-ui,sans-serif;font-size:.78rem;color:var(--ink-soft);
+}
+.card__stance{
+  background:var(--surface-sunk);border:1px solid var(--line);border-radius:3px;padding:.12rem .45rem;
+}
+.card__stance--stale{border-style:dashed}
+.stance{display:none;flex-direction:column;gap:.5rem}
+.card[data-stancing="true"] .stance{display:flex}
+.card[data-stancing="true"] .card__actions--idle{display:none}
+.stance select,.stance input{
+  font:inherit;font-size:.95rem;color:var(--ink);
+  background:var(--surface-sunk);border:1px solid var(--line-strong);border-radius:3px;padding:.35rem .5rem;
+}
+.stance input{width:100%}
+.stance select:focus-visible,.stance input:focus-visible{outline:2px solid var(--focus);outline-offset:0}
+
 .history{display:none;flex-direction:column;gap:.5rem;padding-top:.2rem}
 .card[data-history="true"] .history{display:flex}
 .older{
@@ -322,6 +340,7 @@ button.solid:focus-visible{outline:2px solid var(--focus);outline-offset:2px}
         <li><b>אומר כשקשר התיישן.</b> קשר נרשם מול גרסה מסוימת. אם אותה גרסה תוקנה מאז, הקישור מופיע בקו מקווקו — כי הטקסט שאליו התייחסו אינו הטקסט שמוצג. ההתנגדות של סמי היא כזאת: היא נאמרה על הגרסה הראשונה של הרעיון.</li>
         <li><b>לא מניח מה שלא נאמר.</b> פריט שהגיע דרך מתווך מסומן «בלי יחס מסומן» ואינו נספר לאף צד. השאלה של נעה נאמרה בתשובה להתנגדות, ולכן היא אינה נחשבת תמיכה ברעיון.</li>
         <li><b>לא מעלים התנגדות.</b> ההתנגדות של סמי נשארת על השולחן גם כשרוב האנשים מסכימים.</li>
+        <li><b>אפשר לומר «אני מסכים».</b> עמדה נרשמת מול הנוסח שהמצהיר ראה, ולכן תיקון של הנוסח מסמן אותה. שינוי דעה לא דורס: העמדה הקודמת נסגרת בזמן ונשארת לקריאה. אין ערך של התנגדות — התנגדות היא תרומה בפני עצמה, ודרך שנייה וחלשה להתנגד הייתה מדללת אותה.</li>
         <li><b>אפשר להוסיף, ולסמן למה זה קשור.</b> מי שמוסיף בוחר את סוג הפריט ואת היחס לכל פריט קיים שהוא מצביע עליו. הקשר נרשם מול הגרסה שהוא ראה, ולא מול הפריט — כך שתיקון עתידי מסמן אותו במקום לשכתב אותו בשקט.</li>
         <li><b>אומר לפי איזה כלל.</b> «יש הסכמה» אינה טענה עומדת בפני עצמה. היא תוצאה של כלל שהשולחן קבע, והכלל כתוב על השורה. שולחן שיקבע רוב של 70% או אפס התנגדויות יראה את הכלל שלו במקום.</li>
         <li><b>מסמן מודל.</b> גרנט יושבת בשולחן מסומנת כמודל — וכרגע לא ניסחה כאן שום שורה.</li>
@@ -334,7 +353,7 @@ button.solid:focus-visible{outline:2px solid var(--focus);outline-offset:2px}
         <li>אין שרת — שני אנשים לא יכולים לשבת בשולחן הזה יחד.</li>
         <li>אין כניסה עם שם משתמש, ואין דרך לערער על שורת מצב — גם כשהיא לא מייצגת אותך.</li>
         <li>הכלל של השולחן הזה כתוב בקוד, כי אין עדיין שולחן שאפשר לקבוע בו כלל ואין דרך לשנות אותו מהמסך.</li>
-        <li>אין דרך לומר «אני מסכים». תמיכה של אדם היא ישות נפרדת בארכיטקטורה ואינה קיימת כאן, ולכן אין במסך הזה שורה שנשענת על הסכמה מוצהרת.</li>
+        <li>אפשר לומר «אני מסכים», אבל השולחן הזה לא בנוי על זה: הכלל שלו נשען על היעדר התנגדות. קיים כלל שני שדורש תמיכה מוצהרת, ואיזה כלל שולחן מפעיל היא הכרעה של השולחן.</li>
         <li>אין כניסה עם שם משתמש. בוחרים מושב מהשולחן הזה, ואין מי שמאמת שזאת את.</li>
         <li>מושב המודל אינו יכול לכתוב. יסוד §9 דורש שכל תוצר מודל יציג זהות, גרסה, מקורות, זמן וכיסוי — ואין כאן אף אחד מהם.</li>
         <li>יש שולחן אחד. אין עדיין מעבר בין שולחנות ואין החלטה שנסגרת ונבדקת מול המציאות.</li>
@@ -418,6 +437,24 @@ RULES["no-recorded-objection"] = {
   holds: function (c, ctx) { return !ctx.objected[c.id]; }
 };
 
+/* ארכיטקטורה §7: stance הוא actor_id, item_revision_id, value, rationale, valid_from/to,
+   ו"שינוי דעה נשמר כהיסטוריה". עמדה נרשמת מול הגרסה שהמצהיר ראה — אדם מסכים לנוסח,
+   לא לפריט. אין כאן ערך של התנגדות: התנגדות היא תרומה בפני עצמה, ודרך שנייה וחלשה
+   להתנגד הייתה מדללת את יסוד §2.5. */
+var STANCE = { AGREE: "agree", CAN_LIVE_WITH: "can_live_with" };
+var STANCE_LABEL = { agree: "מסכימ/ה", can_live_with: "יכול/ה לחיות עם זה" };
+var STANCE_VALUES = Object.create(null);
+STANCE_VALUES[STANCE.AGREE] = true;
+STANCE_VALUES[STANCE.CAN_LIVE_WITH] = true;
+
+RULES["declared-support"] = {
+  label: "אדם אחד לפחות הצהיר תמיכה, ואין התנגדות רשומה",
+  holds: function (c, ctx) {
+    if (ctx.objected[c.id]) return false;
+    return currentStances(c).some(function (st) { return st.value === STANCE.AGREE; });
+  }
+};
+
 var TABLE_RULE = "no-recorded-objection";
 
 /* מוצהר לפני הקריאה ל-load: השמה אחריה הייתה מאפסת את מה ש-load כתב. */
@@ -450,6 +487,21 @@ function load() {
                      rel: REL_VALUES[e.rel] ? e.rel : null });
       });
       c.from = edges;
+      /* עמדה פגומה נזרקת ואינה מפילה את כל המערך; מה שתקין נשאר. */
+      var stances = [];
+      (Array.isArray(c.stances) ? c.stances : []).forEach(function (st) {
+        if (!st || typeof st.who !== "string" || !STANCE_VALUES[st.value]) return;
+        stances.push({
+          id: typeof st.id === "string" ? st.id : c.id + "#" + (stances.length + 1),
+          who: st.who,
+          rev: typeof st.rev === "string" ? st.rev : null,
+          value: st.value,
+          rationale: typeof st.rationale === "string" ? st.rationale : "",
+          at: typeof st.at === "string" ? st.at : "",
+          until: typeof st.until === "string" ? st.until : null
+        });
+      });
+      c.stances = stances;
       return true;
     });
     if (!ok) {
@@ -557,6 +609,31 @@ function edgeIsStale(e) {
   return e.rev !== currentRev(t);
 }
 function emptyGroups() { return { supports: [], contradicts: [], responds: [], unset: [] }; }
+
+function stancesOf(c) { return Array.isArray(c.stances) ? c.stances : []; }
+function currentStances(c) {
+  return stancesOf(c).filter(function (st) { return !st.until; });
+}
+function pastStances(c) {
+  return stancesOf(c).filter(function (st) { return !!st.until; });
+}
+/* עמדה שנרשמה מול נוסח שתוקן מאז אינה עמדה על מה שמוצג עכשיו. */
+function stanceIsStale(c, st) {
+  return !!st.rev && st.rev !== currentRev(c);
+}
+/* שינוי דעה אינו דורס: העמדה הקודמת נסגרת בזמן ונשארת לקריאה. */
+function declareStance(c, who, value, rationale) {
+  var at = now();
+  if (!Array.isArray(c.stances)) c.stances = [];
+  c.stances.forEach(function (st) {
+    if (st.who === who && !st.until) st.until = at;
+  });
+  c.stances.push({
+    id: c.id + "#" + (c.stances.length + 1),
+    who: who, rev: currentRev(c), value: value,
+    rationale: rationale || "", at: at, until: null
+  });
+}
 
 function isObjection(c) {
   return c.objection === true || c.kind === KIND.OBJECTION;
@@ -793,10 +870,13 @@ function openCardState() {
     var card = document.getElementById("card-" + c.id);
     if (!card) return;
     var area = card.querySelector("textarea");
+    var why = card.querySelector(".stance input");
     state[c.id] = {
       editing: card.dataset.editing === "true",
+      stancing: card.dataset.stancing === "true",
       history: card.dataset.history === "true",
-      draft: area ? area.value : ""
+      draft: area ? area.value : "",
+      why: why ? why.value : ""
     };
   });
   return state;
@@ -814,6 +894,7 @@ function renderCards() {
     var card = el("article", "card" + (isObjection(c) ? " card--objection" : ""));
     card.id = "card-" + c.id;
     card.dataset.editing = "false";
+    card.dataset.stancing = "false";
     card.dataset.history = "false";
     card.dataset.flash = "false";
 
@@ -834,6 +915,23 @@ function renderCards() {
       card.appendChild(from);
     }
 
+    var live = currentStances(c);
+    if (live.length) {
+      var stanceLine = el("p", "card__stances");
+      stanceLine.appendChild(el("span", null, "עמדות:"));
+      live.forEach(function (st) {
+        var stale = stanceIsStale(c, st);
+        var chip = el("span", "card__stance" + (stale ? " card__stance--stale" : ""),
+                      st.who + " — " + STANCE_LABEL[st.value]);
+        if (stale) chip.title = "העמדה נרשמה מול נוסח קודם של הפריט";
+        stanceLine.appendChild(chip);
+      });
+      if (live.some(function (st) { return stanceIsStale(c, st); })) {
+        stanceLine.appendChild(el("span", null, "· קו מקווקו: העמדה נרשמה מול נוסח קודם."));
+      }
+      card.appendChild(stanceLine);
+    }
+
     var actions = el("div", "card__actions card__actions--idle");
 
     var fix = el("button", "link", "תיקון");
@@ -846,8 +944,21 @@ function renderCards() {
     });
     actions.appendChild(fix);
 
-    if (older.length) {
-      var toggle = el("button", "link", "גרסאות קודמות (" + older.length + ")");
+    var stanceOpen = el("button", "link", "להצהיר עמדה");
+    stanceOpen.type = "button";
+    stanceOpen.addEventListener("click", function () {
+      card.dataset.stancing = "true";
+      card.querySelector(".stance select").focus();
+    });
+    actions.appendChild(stanceOpen);
+
+    var past = pastStances(c);
+    if (older.length || past.length) {
+      var toggleLabel = older.length && past.length
+        ? "מה שהיה קודם (" + (older.length + past.length) + ")"
+        : older.length ? "גרסאות קודמות (" + older.length + ")"
+                       : "עמדות קודמות (" + past.length + ")";
+      var toggle = el("button", "link", toggleLabel);
       toggle.type = "button";
       toggle.setAttribute("aria-expanded", "false");
       toggle.addEventListener("click", function () {
@@ -858,6 +969,47 @@ function renderCards() {
       actions.appendChild(toggle);
     }
     card.appendChild(actions);
+
+    var stancePanel = el("div", "stance");
+    var stanceRow = el("div", "editor__row");
+    var whoSel = document.createElement("select");
+    whoSel.setAttribute("aria-label", "מי מצהיר עמדה על פריט " + c.id);
+    composeSeats().forEach(function (seat) { whoSel.appendChild(option(seat.name, seat.name)); });
+    var valSel = document.createElement("select");
+    valSel.setAttribute("aria-label", "העמדה על פריט " + c.id);
+    [STANCE.AGREE, STANCE.CAN_LIVE_WITH].forEach(function (v) {
+      valSel.appendChild(option(v, STANCE_LABEL[v]));
+    });
+    stanceRow.appendChild(whoSel);
+    stanceRow.appendChild(valSel);
+    stancePanel.appendChild(stanceRow);
+
+    var why = document.createElement("input");
+    why.type = "text";
+    why.setAttribute("aria-label", "נימוק, לא חובה");
+    why.placeholder = "נימוק, לא חובה";
+    stancePanel.appendChild(why);
+    stancePanel.appendChild(el("p", "editor__hint", "עמדה נרשמת מול הנוסח שמוצג עכשיו. אם תתקני דעה אחר כך, הקודמת לא תימחק — היא תיסגר בזמן ותישאר לקריאה. אין כאן ערך של התנגדות: התנגדות היא תרומה בפני עצמה."));
+
+    var stanceButtons = el("div", "editor__row");
+    var stanceSave = el("button", "solid", "רישום העמדה");
+    stanceSave.type = "button";
+    stanceSave.addEventListener("click", function () {
+      declareStance(c, whoSel.value, valSel.value, why.value.trim());
+      card.dataset.stancing = "false";
+      why.value = "";
+      save();
+      renderState();
+      renderCards();
+      flash(c.id);
+    });
+    var stanceCancel = el("button", "ghost", "ביטול");
+    stanceCancel.type = "button";
+    stanceCancel.addEventListener("click", function () { card.dataset.stancing = "false"; });
+    stanceButtons.appendChild(stanceSave);
+    stanceButtons.appendChild(stanceCancel);
+    stancePanel.appendChild(stanceButtons);
+    card.appendChild(stancePanel);
 
     var editor = el("div", "editor");
     var area = document.createElement("textarea");
@@ -875,6 +1027,9 @@ function renderCards() {
         return;
       }
       c.versions.push({ id: c.id + ":" + (c.versions.length + 1), text: text, at: now() });
+      /* נסגר לפני הבנייה מחדש: openCardState מצלם את המצב הנוכחי, ופאנל שנשאר פתוח
+         כאן היה משוחזר פתוח ומסתיר את הפעולות של הכרטיס. */
+      card.dataset.editing = "false";
       save();
       renderState();
       renderCards();
@@ -896,11 +1051,15 @@ function renderCards() {
         card.dataset.editing = "true";
         area.value = kept.draft;
       }
+      if (kept.stancing) {
+        card.dataset.stancing = "true";
+        why.value = kept.why;
+      }
     }
 
-    if (older.length) {
+    if (older.length || past.length) {
       var history = el("div", "history");
-      older.slice().reverse().forEach(function (version, index) {
+      older.slice().reverse().forEach(function (version) {
         var slip = el("div", "older");
         var label = el("div", "older__label");
         label.appendChild(el("span", null, "נכתב קודם"));
@@ -908,7 +1067,17 @@ function renderCards() {
         slip.appendChild(label);
         slip.appendChild(el("p", null, version.text));
         history.appendChild(slip);
-        void index;
+      });
+      /* שינוי דעה נשמר כהיסטוריה (ארכיטקטורה §7), ולכן עמדה שנסגרה נשארת לקריאה. */
+      past.slice().reverse().forEach(function (st) {
+        var slip = el("div", "older");
+        var label = el("div", "older__label");
+        label.appendChild(el("span", null, "עמדה קודמת"));
+        label.appendChild(el("span", null, st.at + " — " + st.until));
+        slip.appendChild(label);
+        slip.appendChild(el("p", null, st.who + " — " + STANCE_LABEL[st.value] +
+                                       (st.rationale ? ". " + st.rationale : "")));
+        history.appendChild(slip);
       });
       card.appendChild(history);
     }
