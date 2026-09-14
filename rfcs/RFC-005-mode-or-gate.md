@@ -10,7 +10,8 @@ exposed-by: the operator's own statement of what the name means, 2026-09-14; and
 
 # RFC-005 — Mode or Gate
 
-**Epistemic status:** exposed by a question, not invented. On 2026-09-14 the
+**Epistemic status:** exposed by a question, not invented; corrected once by an
+independent review that found the first version wrong on its own central claim. On 2026-09-14 the
 operator was asked whether the code contradicts her own reading of the project's
 name. Answering that required reading the two repositories against each other,
 and the answer is no: the procedure she described is already specified, in
@@ -57,7 +58,7 @@ that prompted this reading:
 |---|---|
 | both write | §5, §8 — two blind, independent passes; the pre-reconciliation outputs of A and B are preserved unchanged and undeleted as a locked revision, accessible to audit |
 | each checks the other's | §6, §7 — structured comparison against shared lineage, with a four-way taxonomy of disagreement (procedural, factual, normative/material, mandate-interpretation) |
-| converge to one text | §8 — exactly one bounded reconciliation round; a Proposer offers a single candidate, an Auditor accepts or rejects it, and a rejection ends the round with no second attempt |
+| converge to one text | **Not written, and refused on purpose.** §8's round is not joint authorship: one Proposer offers a single candidate and an Auditor accepts or rejects it, with no second attempt. §9 then requires each model to sign *separately*, and says so in bold — **"אין הצהרה משותפת יחידה"**, there is no single joint statement |
 | the text may record non-agreement | §8 — where disagreement survives the round, what returns to the table is a **compact disagreement map** plus one focused human question |
 
 §8 also fixes what the round may never do: average two conflicting estimates
@@ -67,8 +68,24 @@ ambiguous mandate in order to permit an action. Foundation §12 completes the
 frame from the product side: a disagreement map is a valid product, and
 "מפת מחלוקת מדויקת עדיפה על החלטת 51% שמוחקת סיכון, פגיעה או חוסר ידע."
 
-So the answer to the question that exposed this RFC is: the corpus does not
-contradict the operator's reading. It contains it.
+So three of the four steps are written, and the fourth is not merely absent —
+it is forbidden. A first version of this RFC said the corpus contains the
+operator's reading; an independent review corrected that, and the correction is
+the sharper finding.
+
+**§9 refuses a single joint statement because it is guarding against exactly
+what a joint statement would look like.** Its subject is legitimacy: dual
+attestation "אינו, ולעולם לא יהיה, מקור הלגיטימציה", and the only approval with
+constitutional weight is a human granting a mandate. A text signed by both
+models together would read as the two of them approving something, which is the
+authority §9 exists to deny them. So it requires two separate signatures
+instead.
+
+The operator wants the joint text as a **product** — a position two parties
+formed, which may say that they did not agree. §9 refuses it as a **credential**.
+Those are different objects that would occupy the same artifact, and nothing in
+the corpus distinguishes them. That collision, not a missing feature, is what
+§3 is about.
 
 ## 3. The claim
 
@@ -106,25 +123,31 @@ receives, and the mode is what the name describes.
    are produced under single-author-plus-review. The procedure that defines the
    name has never formed a text in this Record.
 3. **Its output has nowhere to live.** ADR §8 returns a compact disagreement
-   map to the table, but the fourteen durable entities in
-   [architecture §7](../peace-table/peace-table-architecture-v0-he.md) contain
-   no record for one. `stance` holds one actor's position on one revision;
+   map to the table, but none of the twenty durable entities in
+   [architecture §7](../peace-table/peace-table-architecture-v0-he.md) is a
+   record for one. `stance` holds one actor's position on one revision;
    `mirror_snapshot` holds a projection with `agreements` and `tensions` as
    computed fields (§6.5). A text authored by two parties in a reconciliation
    round, recording precisely what they could not settle, is neither. The
    product that foundation §12 prefers to a 51% decision is the product the
    data model cannot store.
-4. **The one Mirror that exists fails the ratified test.** The single
-   implementation of an agreement line anywhere in this Record is the state
-   panel of [`prototypes/yard`](../peace-table/prototypes/yard/). It computes
-   agreement from the absence of a filed objection, renders it in green against
-   an objection line in amber, and — shown by running its own derivation
-   against a contradicting observation — lists the contradiction among the
-   things the agreed claim rests on. The ratified prominence-parity test asks
-   whether a fully-disagreed Cell would receive framing and prominence equal to
-   a fully-agreed one. It would not. Both open decisions recorded in
-   [`open-decisions-v0-he.md`](../peace-table/prototypes/yard/open-decisions-v0-he.md)
-   are instances of this same gap, seen from inside one screen.
+4. **The one Mirror that exists failed the ratified test, and the repair is
+   the evidence.** The single implementation of an agreement line anywhere in
+   this Record is the state panel of `peace-table/prototypes/yard/`. **This
+   evidence is not in this branch.** On `main` that screen still holds three
+   hardcoded `STATE_LINES` and derives nothing; the derivation, the two
+   decisions it exposed, and their repair live in PR #7 (`c57b7c3`, `f21ea80`),
+   which an independent review of this RFC correctly pointed out cannot be
+   checked from here. What that work established, and what can be reproduced
+   from that branch rather than this one: the panel emitted one agreement row
+   that listed a contradicting observation among the things the contradicted
+   claim rested on, and rendered agreement in green against an objection in
+   amber. The ratified prominence-parity test asks whether a fully-disagreed
+   Cell would receive framing and prominence equal to a fully-agreed one. It
+   did not. Both are now repaired, and the agreement row carries the rule that
+   produced it. The consequence stands as stated — this was the only running
+   Mirror and it failed the test — but the citation is to that branch, not to
+   a path in this tree.
 
 ## 5. The proposal
 
@@ -186,7 +209,9 @@ its own — a jointly formed text is evidence about its authors and nothing more
 ## 9. A note on sources
 
 Every load-bearing citation in this RFC is to a document in this public
-repository. The operational contract that governs how the two agents actually
+repository, with one stated exception: consequence 4 in §4 rests on work that
+lives on another branch of this repository and not in this tree, and says so on
+its face rather than linking to a path that does not resolve here. The operational contract that governs how the two agents actually
 coordinate, and the code of the shadow harness that replays the procedure
 described in ADR §15, are held in a separate private repository by a deliberate
 decision recorded there. This RFC describes the boundary between them without
