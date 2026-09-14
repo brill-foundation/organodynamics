@@ -205,6 +205,32 @@ button.solid:focus-visible{outline:2px solid var(--focus);outline-offset:2px}
 .editor__row{display:flex;gap:.5rem;align-items:center;flex-wrap:wrap}
 .editor__hint{font-size:.8rem;color:var(--ink-soft);margin:0}
 
+/* ---------- הוספה לשולחן ---------- */
+.compose{
+  display:flex;flex-direction:column;gap:.65rem;margin-top:1.1rem;
+  background:var(--surface);border:1px solid var(--line);border-radius:3px;padding:.9rem 1rem;
+}
+.compose__title{
+  font-family:"Heebo",system-ui,sans-serif;font-size:.74rem;letter-spacing:.1em;
+  color:var(--ink-faint);margin:0;font-weight:600;
+}
+.compose__row{display:flex;gap:.6rem;align-items:flex-end;flex-wrap:wrap}
+.compose__field{
+  display:flex;flex-direction:column;gap:.2rem;
+  font-family:"Heebo",system-ui,sans-serif;font-size:.76rem;color:var(--ink-soft);
+}
+.compose__field--wide{width:100%}
+.compose select,.compose textarea{
+  font:inherit;font-size:.95rem;color:var(--ink);
+  background:var(--surface-sunk);border:1px solid var(--line-strong);border-radius:3px;padding:.4rem .5rem;
+}
+.compose textarea{width:100%;min-height:5.5rem;resize:vertical;line-height:1.6;font-size:1rem}
+.compose select:focus-visible,.compose textarea:focus-visible{outline:2px solid var(--focus);outline-offset:0}
+.compose__links{display:flex;flex-direction:column;gap:.4rem}
+.compose__link{display:flex;gap:.5rem;align-items:flex-end;flex-wrap:wrap}
+.compose__note{font-size:.78rem;color:var(--ink-faint);margin:0}
+.compose__error{font-family:"Heebo",system-ui,sans-serif;font-size:.82rem;color:var(--contested)}
+
 .history{display:none;flex-direction:column;gap:.5rem;padding-top:.2rem}
 .card[data-history="true"] .history{display:flex}
 .older{
@@ -251,6 +277,32 @@ button.solid:focus-visible{outline:2px solid var(--focus);outline-offset:2px}
   <section aria-labelledby="talk-title">
     <h2 class="eyebrow" id="talk-title" style="margin-bottom:.75rem">מה נאמר סביב השולחן</h2>
     <div class="stack" id="cards"></div>
+
+    <form class="compose" id="compose" aria-labelledby="compose-title">
+      <h3 class="compose__title" id="compose-title">להוסיף לשולחן</h3>
+
+      <div class="compose__row">
+        <label class="compose__field"><span>מי</span><select id="compose-who"></select></label>
+        <label class="compose__field"><span>מה זה</span><select id="compose-kind"></select></label>
+      </div>
+
+      <label class="compose__field compose__field--wide">
+        <span>מה שיש לך לומר</span>
+        <textarea id="compose-text" rows="4"></textarea>
+      </label>
+
+      <div class="compose__links" id="compose-links"></div>
+      <div class="compose__row">
+        <button type="button" class="link" id="compose-add-link">הוספת קשר לפריט קיים</button>
+      </div>
+
+      <div class="compose__row">
+        <button type="submit" class="solid">הוספה לשולחן</button>
+        <span class="compose__error" id="compose-error" role="status"></span>
+      </div>
+
+      <p class="compose__note">אין כאן כניסה עם שם — בוחרים מושב מהשולחן הזה, ומה שנוסף נשמר בדפדפן שלך בלבד. קשר שלא סומן יופיע כ«בלי יחס מסומן» ולא ייחשב תמיכה. מושב המודל אינו ברשימה: יסוד §9 דורש שכל תוצר מודל יציג זהות, גרסה, מקורות, זמן וכיסוי, ואין כאן אף אחד מהם.</p>
+    </form>
   </section>
 
   <hr class="rule">
@@ -270,6 +322,7 @@ button.solid:focus-visible{outline:2px solid var(--focus);outline-offset:2px}
         <li><b>אומר כשקשר התיישן.</b> קשר נרשם מול גרסה מסוימת. אם אותה גרסה תוקנה מאז, הקישור מופיע בקו מקווקו — כי הטקסט שאליו התייחסו אינו הטקסט שמוצג. ההתנגדות של סמי היא כזאת: היא נאמרה על הגרסה הראשונה של הרעיון.</li>
         <li><b>לא מניח מה שלא נאמר.</b> פריט שהגיע דרך מתווך מסומן «בלי יחס מסומן» ואינו נספר לאף צד. השאלה של נעה נאמרה בתשובה להתנגדות, ולכן היא אינה נחשבת תמיכה ברעיון.</li>
         <li><b>לא מעלים התנגדות.</b> ההתנגדות של סמי נשארת על השולחן גם כשרוב האנשים מסכימים.</li>
+        <li><b>אפשר להוסיף, ולסמן למה זה קשור.</b> מי שמוסיף בוחר את סוג הפריט ואת היחס לכל פריט קיים שהוא מצביע עליו. הקשר נרשם מול הגרסה שהוא ראה, ולא מול הפריט — כך שתיקון עתידי מסמן אותו במקום לשכתב אותו בשקט.</li>
         <li><b>אומר לפי איזה כלל.</b> «יש הסכמה» אינה טענה עומדת בפני עצמה. היא תוצאה של כלל שהשולחן קבע, והכלל כתוב על השורה. שולחן שיקבע רוב של 70% או אפס התנגדויות יראה את הכלל שלו במקום.</li>
         <li><b>מסמן מודל.</b> גרנט יושבת בשולחן מסומנת כמודל — וכרגע לא ניסחה כאן שום שורה.</li>
       </ul>
@@ -282,7 +335,8 @@ button.solid:focus-visible{outline:2px solid var(--focus);outline-offset:2px}
         <li>אין כניסה עם שם משתמש, ואין דרך לערער על שורת מצב — גם כשהיא לא מייצגת אותך.</li>
         <li>הכלל של השולחן הזה כתוב בקוד, כי אין עדיין שולחן שאפשר לקבוע בו כלל ואין דרך לשנות אותו מהמסך.</li>
         <li>אין דרך לומר «אני מסכים». תמיכה של אדם היא ישות נפרדת בארכיטקטורה ואינה קיימת כאן, ולכן אין במסך הזה שורה שנשענת על הסכמה מוצהרת.</li>
-        <li>אין דרך להוסיף תרומה — רק לתקן אחת קיימת — ולכן אין גם דרך לסמן קשר. הקשרים שמסומנים כאן נכתבו בקוד.</li>
+        <li>אין כניסה עם שם משתמש. בוחרים מושב מהשולחן הזה, ואין מי שמאמת שזאת את.</li>
+        <li>מושב המודל אינו יכול לכתוב. יסוד §9 דורש שכל תוצר מודל יציג זהות, גרסה, מקורות, זמן וכיסוי — ואין כאן אף אחד מהם.</li>
         <li>יש שולחן אחד. אין עדיין מעבר בין שולחנות ואין החלטה שנסגרת ונבדקת מול המציאות.</li>
       </ul>
     </div>
@@ -863,10 +917,135 @@ function renderCards() {
   });
 }
 
+/* ---------- הוספה לשולחן ---------- */
+
+/* מושב המודל אינו נבחר כאן. יסוד §9 דורש שכל תוצר מודל יציג זהות, גרסה, מקורות,
+   זמן, כיסוי והאם נבדק בידי אדם; אין כאן אף אחד מהם, ולכן אי אפשר לכתוב בשם גרנט
+   בלי להפוך את הסימון שעל המושב לשקר. */
+function composeSeats() {
+  return PEOPLE.filter(function (s) { return s.kind === "person"; });
+}
+
+/* מזהה חדש הוא אחד מעל הגבוה שקיים, כדי שמזהה לא ייעשה שימוש חוזר אחרי מחיקה. */
+function nextId() {
+  var max = 0;
+  contributions.forEach(function (c) {
+    var num = parseInt(c.id, 10);
+    if (!isNaN(num) && num > max) max = num;
+  });
+  return String(max + 1);
+}
+
+function option(value, label) {
+  var o = document.createElement("option");
+  o.value = value;
+  o.textContent = label;
+  return o;
+}
+
+function composeLinkRow() {
+  var row = el("div", "compose__link");
+
+  var targetField = el("label", "compose__field");
+  targetField.appendChild(el("span", null, "קשור ל"));
+  var target = document.createElement("select");
+  target.className = "compose__target";
+  target.appendChild(option("", "— בחרי פריט —"));
+  contributions.forEach(function (c) {
+    target.appendChild(option(c.id, "§" + c.id + " · " + c.who + " · " + c.kind));
+  });
+  targetField.appendChild(target);
+
+  var relField = el("label", "compose__field");
+  relField.appendChild(el("span", null, "היחס"));
+  var rel = document.createElement("select");
+  rel.className = "compose__rel";
+  rel.appendChild(option("", REL_LABEL.unset));
+  [REL.SUPPORTS, REL.CONTRADICTS, REL.RESPONDS].forEach(function (r) {
+    rel.appendChild(option(r, REL_LABEL[r]));
+  });
+  relField.appendChild(rel);
+
+  var drop = el("button", "link", "הסרה");
+  drop.type = "button";
+  drop.addEventListener("click", function () { row.remove(); });
+
+  row.appendChild(targetField);
+  row.appendChild(relField);
+  row.appendChild(drop);
+  return row;
+}
+
+function composeEdges() {
+  var edges = [], seen = Object.create(null);
+  var rows = document.getElementById("compose-links").querySelectorAll(".compose__link");
+  Array.prototype.forEach.call(rows, function (row) {
+    var id = row.querySelector(".compose__target").value;
+    if (!id || seen[id]) return;   /* שורה ריקה נזרקת; קשר כפול לאותו פריט נספר פעם אחת */
+    var target = byId(id);
+    if (!target) return;
+    seen[id] = true;
+    var rel = row.querySelector(".compose__rel").value;
+    /* הקשת נרשמת מול הגרסה שהכותבת ראתה, לא מול הפריט. תיקון עתידי שלו יסמן אותה. */
+    edges.push({ id: id, rev: currentRev(target), rel: REL_VALUES[rel] ? rel : null });
+  });
+  return edges;
+}
+
+function renderCompose() {
+  var who = document.getElementById("compose-who");
+  var kind = document.getElementById("compose-kind");
+  who.textContent = "";
+  kind.textContent = "";
+  composeSeats().forEach(function (s) { who.appendChild(option(s.name, s.name)); });
+  [KIND.OBSERVATION, KIND.EVIDENCE, KIND.IDEA, KIND.OBJECTION, KIND.QUESTION]
+    .forEach(function (k) { kind.appendChild(option(k, k)); });
+}
+
+document.getElementById("compose-add-link").addEventListener("click", function () {
+  document.getElementById("compose-links").appendChild(composeLinkRow());
+});
+
+document.getElementById("compose").addEventListener("submit", function (e) {
+  e.preventDefault();
+  var err = document.getElementById("compose-error");
+  var area = document.getElementById("compose-text");
+  var text = area.value.trim();
+  if (!text) {
+    err.textContent = "אין מה להוסיף בלי טקסט.";
+    area.focus();
+    return;
+  }
+  err.textContent = "";
+
+  var kind = document.getElementById("compose-kind").value;
+  var id = nextId();
+  var item = {
+    id: id,
+    who: document.getElementById("compose-who").value,
+    kind: kind,
+    from: composeEdges(),
+    versions: [{ id: id + ":1", text: text, at: now() }]
+  };
+  if (kind === KIND.OBJECTION) item.objection = true;
+
+  contributions.push(item);
+  save();
+  renderState();
+  renderCards();
+
+  area.value = "";
+  document.getElementById("compose-links").textContent = "";
+  flash(id);
+});
+
 document.getElementById("reset").addEventListener("click", function () {
   contributions = seed();
   openLines = {};
   loadNote = "";
+  document.getElementById("compose-text").value = "";
+  document.getElementById("compose-links").textContent = "";
+  document.getElementById("compose-error").textContent = "";
   document.getElementById("saved-note").textContent = "";
   try { localStorage.removeItem(STORAGE_KEY); } catch (e) {}
   renderState();
@@ -874,6 +1053,7 @@ document.getElementById("reset").addEventListener("click", function () {
 });
 
 renderSeats();
+renderCompose();
 renderState();
 renderCards();
 if (loadNote) document.getElementById("saved-note").textContent = loadNote;
