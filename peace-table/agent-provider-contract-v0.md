@@ -3,6 +3,9 @@
 **Status:** Proposed
 **Date:** 2026-08-15
 **Decider:** Pending explicit operator decision
+**Where its references live:** `AGENTS.md` and every `PR #N` / `Issue #N` named
+below — including PR #39 — are in `brill-foundation/garnet`, not in the
+repository this document sits in. See the layer's [`README.md`](README.md).
 
 This ADR was recovered from the unmerged PR #39 onto current `main`. The
 provider-neutral boundary remains useful, but transplanting the document does
