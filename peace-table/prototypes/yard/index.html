@@ -121,7 +121,6 @@ body{
 .state__mark{
   flex:0 0 auto;margin-top:.42rem;width:.55rem;height:.55rem;border-radius:2px;background:var(--ink-faint);
 }
-.state__item--agreed .state__mark{background:var(--agreed)}
 .state__item--contested .state__mark{background:var(--contested)}
 .state__text{flex:1;min-width:0}
 .state__text strong{font-weight:600;display:block}
@@ -129,7 +128,10 @@ body{
   display:block;font-family:"Heebo",system-ui,sans-serif;
   font-size:.72rem;letter-spacing:.1em;margin-bottom:.15rem;color:var(--ink-faint);
 }
-.state__item--agreed .state__kind{color:var(--agreed)}
+.state__rule{
+  display:block;font-family:"Heebo",system-ui,sans-serif;
+  font-size:.74rem;margin-bottom:.3rem;color:var(--ink-faint);
+}
 .state__item--contested .state__kind{color:var(--contested)}
 .state__chev{flex:0 0 auto;color:var(--ink-faint);font-size:.8rem;margin-top:.35rem;transition:transform .18s ease}
 .state__item[data-open="true"] .state__chev{transform:rotate(180deg)}
@@ -244,7 +246,7 @@ button.solid:focus-visible{outline:2px solid var(--focus);outline-offset:2px}
   <section class="state" aria-labelledby="state-title">
     <div class="state__head">
       <h2 class="eyebrow" id="state-title">מצב השולחן</h2>
-      <p class="state__note">הטקסט כאן לא נכתב — הוא ציטוט מהגרסה הנוכחית של מה שנאמר למטה, והמבנה של מה שנאמר קובע אילו שורות קיימות ועל מה. מה שכן נכתב מראש: שלוש הכותרות — יש הסכמה, יש כיוון שמסתמן, התנגדות שלא נפתרה — ושמות סוגי הקשר שנפתחים מתחת לשורה. אלה כל הפרשנות שיש במסך הזה. לחצי על שורה כדי לראות על מה בדיוק היא נשענת.</p>
+      <p class="state__note">הטקסט כאן לא נכתב — הוא ציטוט מהגרסה הנוכחית של מה שנאמר למטה, והמבנה של מה שנאמר קובע אילו שורות קיימות ועל מה. «הסכמה» אינה מושג אחד: היא תוצאה של כלל שהשולחן קבע, והכלל רשום על השורה עצמה. בשולחן הזה הוא «אין התנגדות רשומה»; שולחן אחר יקבע אחר. מה שנכתב מראש: שלוש הכותרות ושמות סוגי הקשר. לחצי על שורה כדי לראות על מה בדיוק היא נשענת.</p>
     </div>
     <ul class="state__list" id="state-list"></ul>
   </section>
@@ -271,6 +273,7 @@ button.solid:focus-visible{outline:2px solid var(--focus);outline-offset:2px}
         <li><b>אומר כשקשר התיישן.</b> קשר נרשם מול גרסה מסוימת. אם אותה גרסה תוקנה מאז, הקישור מופיע בקו מקווקו — כי הטקסט שאליו התייחסו אינו הטקסט שמוצג. ההתנגדות של סמי היא כזאת: היא נאמרה על הגרסה הראשונה של הרעיון.</li>
         <li><b>לא מניח מה שלא נאמר.</b> פריט שהגיע דרך מתווך מסומן «בלי יחס מסומן» ואינו נספר לאף צד. השאלה של נעה נאמרה בתשובה להתנגדות, ולכן היא אינה נחשבת תמיכה ברעיון.</li>
         <li><b>לא מעלים התנגדות.</b> ההתנגדות של סמי נשארת על השולחן גם כשרוב האנשים מסכימים.</li>
+        <li><b>אומר לפי איזה כלל.</b> «יש הסכמה» אינה טענה עומדת בפני עצמה. היא תוצאה של כלל שהשולחן קבע, והכלל כתוב על השורה. שולחן שיקבע רוב של 70% או אפס התנגדויות יראה את הכלל שלו במקום.</li>
         <li><b>מסמן מודל.</b> גרנט יושבת בשולחן מסומנת כמודל — וכרגע לא ניסחה כאן שום שורה.</li>
       </ul>
     </div>
@@ -280,7 +283,7 @@ button.solid:focus-visible{outline:2px solid var(--focus);outline-offset:2px}
       <ul>
         <li>אין שרת — שני אנשים לא יכולים לשבת בשולחן הזה יחד.</li>
         <li>אין כניסה עם שם משתמש, ואין דרך לערער על שורת מצב — גם כשהיא לא מייצגת אותך.</li>
-        <li>«יש הסכמה» נשענת כאן על היעדר התנגדות רשומה. שתיקה אינה הסכמה, והכלל הזה עוד לא הוכרע — וגם לא הצבע הירוק שהוא נצבע בו.</li>
+        <li>הכלל של השולחן הזה כתוב בקוד, כי אין עדיין שולחן שאפשר לקבוע בו כלל ואין דרך לשנות אותו מהמסך.</li>
         <li>אין דרך לומר «אני מסכים». תמיכה של אדם היא ישות נפרדת בארכיטקטורה ואינה קיימת כאן, ולכן אין במסך הזה שורה שנשענת על הסכמה מוצהרת.</li>
         <li>אין דרך להוסיף תרומה — רק לתקן אחת קיימת — ולכן אין גם דרך לסמן קשר. הקשרים שמסומנים כאן נכתבו בקוד.</li>
         <li>יש שולחן אחד. אין עדיין מעבר בין שולחנות ואין החלטה שנסגרת ונבדקת מול המציאות.</li>
@@ -354,6 +357,17 @@ var REL_LABEL = {
   unset:       "בלי יחס מסומן"
 };
 var DIR_LEAD = { own: "מצביעה על", down: "נאמר בעקבותיה" };
+
+/* כלל ההכרעה שייך לשולחן ולא למסך. שולחן אחר יקבע אחר — רוב של 70%, אפס התנגדויות,
+   או מה שהיושבים בו יחליטו — והשורה תיוחס לכלל שלו ולא תטען "הסכמה" מהאוויר.
+   כאן הכלל כתוב בקוד כי אין עדיין שולחן שאפשר לקבוע בו כלל. */
+var RULES = Object.create(null);
+RULES["no-recorded-objection"] = {
+  label: "אין התנגדות רשומה",
+  holds: function (c, ctx) { return !ctx.objected[c.id]; }
+};
+
+var TABLE_RULE = "no-recorded-objection";
 
 var contributions = load();
 
@@ -590,10 +604,10 @@ function downstream(id, kids) {
 
 /* המפתח הוא תפקיד השורה, לא מי מייצג אותה כרגע: שורת ההסכמה נשארת אותה
    שורה גם כשהפריט שהיא מצטטת מתחלף, ולא נסגרת ונפתחת מעצמה. */
-function stateLine(tone, source, groups, dir, key) {
+function stateLine(tone, source, groups, dir, key, rule) {
   var quote = lead(source);
   return { tone: tone, kind: LINE_LABEL[tone], text: quote.text, cut: quote.cut,
-           quoted: source.id, groups: groups, dir: dir, key: key };
+           quoted: source.id, groups: groups, dir: dir, key: key, rule: rule || null };
 }
 
 function deriveState() {
@@ -604,10 +618,12 @@ function deriveState() {
   /* שורה לכל תצפית או ראיה שאיש לא התנגד לה, כל אחת נשענת רק על מה שהיא עצמה הצהירה
      עליו. קודם לכן הן אוחדו לשורה אחת שציטטה את הראשונה ומנתה את כל השאר כמקורות שלה —
      כך שתצפית שסותרת את המצוטטת הוצגה כאחד הדברים שהיא נשענת עליהם. */
+  var rule = RULES[TABLE_RULE] || null;
   contributions.forEach(function (c) {
     if (c.kind !== KIND.OBSERVATION && c.kind !== KIND.EVIDENCE) return;
-    if (objected[c.id]) return;
-    lines.push(stateLine("agreed", c, ownGroups(c), "own", "agreed:" + c.id));
+    /* הכלל הוא שמכריע, לא הקוד כאן. כלל שאינו מוכר לא מייצר שורות בכלל. */
+    if (!rule || !rule.holds(c, { objected: objected })) return;
+    lines.push(stateLine("agreed", c, ownGroups(c), "own", "agreed:" + c.id, rule.label));
   });
 
   /* כיוון לכל רעיון — גם כשיש עליו התנגדות. ההתנגדות לא מוחקת אותו. */
@@ -658,6 +674,9 @@ function renderState() {
 
     var textWrap = el("span", "state__text");
     textWrap.appendChild(el("span", "state__kind", line.kind));
+    if (line.rule) {
+      textWrap.appendChild(el("span", "state__rule", "לפי כלל השולחן הזה: " + line.rule));
+    }
     /* ציטוט שנקטע אחרי משפט שלם מסומן ברווח ואז נקודות; ציטוט שנקטע באמצע — צמוד. */
     var mark = line.cut ? (/[.!?]$/.test(line.text) ? " …" : "…") : "";
     textWrap.appendChild(el("strong", null, '"' + line.text + mark + '"'));
