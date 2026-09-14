@@ -30,7 +30,8 @@ mechanism, in her own words:
 
 > גרנט מבחינתי היא כל הסכמה בין שניים או יותר. בין שני סוכני בינה, בין סוכן ובן
 > אנוש, בין שני אנשים והלאה. לצורך הסכמה יש צורך שהצדדים יציגו את עמדתם וינסחו
-> יחד עמדה שמוסכמת עליהם.
+> יחד עמדה שמוסכמת עליהם. לכן היא נקראת ״שולחן״, כיוון ששולחן מייצג מקום שבו
+> משיחים שניים או יותר אנשים.
 
 and, asked what "formulate together" means:
 
@@ -38,9 +39,13 @@ and, asked what "formulate together" means:
 > יתכנסו לניסוח מאוחד. הניסוח יכול גם לציין היעדר הגעה להסכמה.
 
 Four steps: both write; each checks the other's; they converge to one text; that
-text may record that agreement was not reached. The statement has no durable
-public URL — it was typed in an operator session — which is the same provenance
-limitation already recorded for the origin of the name itself.
+text may record that agreement was not reached. Neither statement has a durable
+public URL — both were typed in an operator session — which is the same
+provenance limitation already recorded for the origin of the name itself. Both
+are now held verbatim in the curated record as `sess-garnet-name-reason-v0`,
+beside the origin record that states, on its face, that it holds the source of
+the name and not the reason. This RFC reads the statements; it does not claim
+they say why the name was chosen, and nobody has asked.
 
 ## 2. The procedure already exists
 
