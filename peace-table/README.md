@@ -31,6 +31,12 @@ beyond the one prototype named below.
 - [`agent-provider-contract-v0.md`](agent-provider-contract-v0.md) — **Proposed**
   provider-neutral agent/adapter contract. An extensibility boundary only: it
   connects no provider and grants no authority.
+- [`evidence/ptdr-04/`](evidence/ptdr-04/) — a fixture harness for PTDR-04, the
+  open decision on what makes an objection material and how a classification is
+  appealed. The register asks for this evidence by name before adoption; the
+  run tends against the register's own proposed default, and says why in
+  [`findings-v0-he.md`](evidence/ptdr-04/findings-v0-he.md). Evidence, not a
+  decision: PTDR-04 stays `Open`.
 - [`prototypes/yard/`](prototypes/yard/) — one screen, opened by double-click.
   Not the product: a behaviour prototype for three promises the documents make —
   a correction that never overwrites, a state line that opens to the exact
