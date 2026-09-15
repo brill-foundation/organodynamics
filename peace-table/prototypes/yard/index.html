@@ -4,9 +4,6 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>שולחן החצר</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Assistant:wght@400;600;700&family=Frank+Ruhl+Libre:wght@500;700&family=Heebo:wght@400;500;700&display=swap">
 <style>
 :root{
   --ground:#EDF0F3;
@@ -121,7 +118,6 @@ body{
 .state__mark{
   flex:0 0 auto;margin-top:.42rem;width:.55rem;height:.55rem;border-radius:2px;background:var(--ink-faint);
 }
-.state__item--agreed .state__mark{background:var(--agreed)}
 .state__item--contested .state__mark{background:var(--contested)}
 .state__text{flex:1;min-width:0}
 .state__text strong{font-weight:600;display:block}
@@ -129,7 +125,10 @@ body{
   display:block;font-family:"Heebo",system-ui,sans-serif;
   font-size:.72rem;letter-spacing:.1em;margin-bottom:.15rem;color:var(--ink-faint);
 }
-.state__item--agreed .state__kind{color:var(--agreed)}
+.state__rule{
+  display:block;font-family:"Heebo",system-ui,sans-serif;
+  font-size:.74rem;margin-bottom:.3rem;color:var(--ink-faint);
+}
 .state__item--contested .state__kind{color:var(--contested)}
 .state__chev{flex:0 0 auto;color:var(--ink-faint);font-size:.8rem;margin-top:.35rem;transition:transform .18s ease}
 .state__item[data-open="true"] .state__chev{transform:rotate(180deg)}
@@ -142,8 +141,10 @@ body{
   padding:.15rem .5rem;color:var(--ink);cursor:pointer;font-variant-numeric:tabular-nums;
 }
 .cite:hover{border-color:var(--accent);color:var(--accent)}
+.cite--stale{border-style:dashed}
 .cite:focus-visible{outline:2px solid var(--focus);outline-offset:1px}
 .state__item--contested{background:var(--contested-wash)}
+.state__empty{margin:0;padding:.95rem 1rem;font-size:.92rem;color:var(--ink-faint)}
 
 /* ---------- תרומות ---------- */
 .stack{display:flex;flex-direction:column;gap:.85rem}
@@ -204,6 +205,50 @@ button.solid:focus-visible{outline:2px solid var(--focus);outline-offset:2px}
 .editor__row{display:flex;gap:.5rem;align-items:center;flex-wrap:wrap}
 .editor__hint{font-size:.8rem;color:var(--ink-soft);margin:0}
 
+/* ---------- הוספה לשולחן ---------- */
+.compose{
+  display:flex;flex-direction:column;gap:.65rem;margin-top:1.1rem;
+  background:var(--surface);border:1px solid var(--line);border-radius:3px;padding:.9rem 1rem;
+}
+.compose__title{
+  font-family:"Heebo",system-ui,sans-serif;font-size:.74rem;letter-spacing:.1em;
+  color:var(--ink-faint);margin:0;font-weight:600;
+}
+.compose__row{display:flex;gap:.6rem;align-items:flex-end;flex-wrap:wrap}
+.compose__field{
+  display:flex;flex-direction:column;gap:.2rem;
+  font-family:"Heebo",system-ui,sans-serif;font-size:.76rem;color:var(--ink-soft);
+}
+.compose__field--wide{width:100%}
+.compose select,.compose textarea{
+  font:inherit;font-size:.95rem;color:var(--ink);
+  background:var(--surface-sunk);border:1px solid var(--line-strong);border-radius:3px;padding:.4rem .5rem;
+}
+.compose textarea{width:100%;min-height:5.5rem;resize:vertical;line-height:1.6;font-size:1rem}
+.compose select:focus-visible,.compose textarea:focus-visible{outline:2px solid var(--focus);outline-offset:0}
+.compose__links{display:flex;flex-direction:column;gap:.4rem}
+.compose__link{display:flex;gap:.5rem;align-items:flex-end;flex-wrap:wrap}
+.compose__note{font-size:.78rem;color:var(--ink-faint);margin:0}
+.compose__error{font-family:"Heebo",system-ui,sans-serif;font-size:.82rem;color:var(--contested)}
+
+.card__stances{
+  display:flex;flex-wrap:wrap;gap:.35rem;align-items:center;margin:0;
+  font-family:"Heebo",system-ui,sans-serif;font-size:.78rem;color:var(--ink-soft);
+}
+.card__stance{
+  background:var(--surface-sunk);border:1px solid var(--line);border-radius:3px;padding:.12rem .45rem;
+}
+.card__stance--stale{border-style:dashed}
+.stance{display:none;flex-direction:column;gap:.5rem}
+.card[data-stancing="true"] .stance{display:flex}
+.card[data-stancing="true"] .card__actions--idle{display:none}
+.stance select,.stance input{
+  font:inherit;font-size:.95rem;color:var(--ink);
+  background:var(--surface-sunk);border:1px solid var(--line-strong);border-radius:3px;padding:.35rem .5rem;
+}
+.stance input{width:100%}
+.stance select:focus-visible,.stance input:focus-visible{outline:2px solid var(--focus);outline-offset:0}
+
 .history{display:none;flex-direction:column;gap:.5rem;padding-top:.2rem}
 .card[data-history="true"] .history{display:flex}
 .older{
@@ -242,7 +287,7 @@ button.solid:focus-visible{outline:2px solid var(--focus);outline-offset:2px}
   <section class="state" aria-labelledby="state-title">
     <div class="state__head">
       <h2 class="eyebrow" id="state-title">מצב השולחן</h2>
-      <p class="state__note">ניסח גרנט מתוך מה שנאמר למטה. כל שורה נשענת על דברים שאנשים אמרו — לחצי על שורה כדי לראות על מה בדיוק.</p>
+      <p class="state__note">הטקסט כאן לא נכתב — הוא ציטוט מהגרסה הנוכחית של מה שנאמר למטה, והמבנה של מה שנאמר קובע אילו שורות קיימות ועל מה. «הסכמה» אינה מושג אחד: היא תוצאה של כלל שהשולחן קבע, והכלל רשום על השורה עצמה. בשולחן הזה הוא «אין התנגדות רשומה»; שולחן אחר יקבע אחר. מה שנכתב מראש: שלוש הכותרות ושמות סוגי הקשר. לחצי על שורה כדי לראות על מה בדיוק היא נשענת.</p>
     </div>
     <ul class="state__list" id="state-list"></ul>
   </section>
@@ -250,6 +295,32 @@ button.solid:focus-visible{outline:2px solid var(--focus);outline-offset:2px}
   <section aria-labelledby="talk-title">
     <h2 class="eyebrow" id="talk-title" style="margin-bottom:.75rem">מה נאמר סביב השולחן</h2>
     <div class="stack" id="cards"></div>
+
+    <form class="compose" id="compose" aria-labelledby="compose-title">
+      <h3 class="compose__title" id="compose-title">להוסיף לשולחן</h3>
+
+      <div class="compose__row">
+        <label class="compose__field"><span>מי</span><select id="compose-who"></select></label>
+        <label class="compose__field"><span>מה זה</span><select id="compose-kind"></select></label>
+      </div>
+
+      <label class="compose__field compose__field--wide">
+        <span>מה שיש לך לומר</span>
+        <textarea id="compose-text" rows="4"></textarea>
+      </label>
+
+      <div class="compose__links" id="compose-links"></div>
+      <div class="compose__row">
+        <button type="button" class="link" id="compose-add-link">הוספת קשר לפריט קיים</button>
+      </div>
+
+      <div class="compose__row">
+        <button type="submit" class="solid">הוספה לשולחן</button>
+        <span class="compose__error" id="compose-error" role="status"></span>
+      </div>
+
+      <p class="compose__note">אין כאן כניסה עם שם — בוחרים מושב מהשולחן הזה, ומה שנוסף נשמר בדפדפן שלך בלבד. קשר שלא סומן יופיע כ«בלי יחס מסומן» ולא ייחשב תמיכה. מושב המודל אינו ברשימה: יסוד §9 דורש שכל תוצר מודל יציג זהות, גרסה, מקורות, זמן וכיסוי, ואין כאן אף אחד מהם.</p>
+    </form>
   </section>
 
   <hr class="rule">
@@ -265,8 +336,14 @@ button.solid:focus-visible{outline:2px solid var(--focus);outline-offset:2px}
       <ul>
         <li><b>לא מוחק.</b> כל תיקון יוצר גרסה חדשה, והגרסה הקודמת נשארת לקריאה.</li>
         <li><b>מראה מאיפה כל דבר בא.</b> כל שורה במצב השולחן נפתחת ומצביעה על הדברים שנאמרו.</li>
+        <li><b>מצטט, לא מנסח.</b> הטקסט בשורות המצב הוא ציטוט מהתרומות; נכתבו מראש רק שלוש הכותרות ושמות סוגי הקשר. תיקון של מה ששורה מצטטת משנה אותה מיד; תיקון של פריט שהיא רק מצביעה עליו לא. ציטוט חלקי מסומן בשלוש נקודות.</li>
+        <li><b>אומר כשקשר התיישן.</b> קשר נרשם מול גרסה מסוימת. אם אותה גרסה תוקנה מאז, הקישור מופיע בקו מקווקו — כי הטקסט שאליו התייחסו אינו הטקסט שמוצג. ההתנגדות של סמי היא כזאת: היא נאמרה על הגרסה הראשונה של הרעיון.</li>
+        <li><b>לא מניח מה שלא נאמר.</b> פריט שהגיע דרך מתווך מסומן «בלי יחס מסומן» ואינו נספר לאף צד. השאלה של נעה נאמרה בתשובה להתנגדות, ולכן היא אינה נחשבת תמיכה ברעיון.</li>
         <li><b>לא מעלים התנגדות.</b> ההתנגדות של סמי נשארת על השולחן גם כשרוב האנשים מסכימים.</li>
-        <li><b>מסמן מה מודל כתב.</b> גרנט יכולה לנסח ולהציע, לא להחליט.</li>
+        <li><b>אפשר לומר «אני מסכים».</b> עמדה נרשמת מול הנוסח שהמצהיר ראה, ולכן תיקון של הנוסח מסמן אותה. שינוי דעה לא דורס: העמדה הקודמת נסגרת בזמן ונשארת לקריאה. אין ערך של התנגדות — התנגדות היא תרומה בפני עצמה, ודרך שנייה וחלשה להתנגד הייתה מדללת אותה.</li>
+        <li><b>אפשר להוסיף, ולסמן למה זה קשור.</b> מי שמוסיף בוחר את סוג הפריט ואת היחס לכל פריט קיים שהוא מצביע עליו. הקשר נרשם מול הגרסה שהוא ראה, ולא מול הפריט — כך שתיקון עתידי מסמן אותו במקום לשכתב אותו בשקט.</li>
+        <li><b>אומר לפי איזה כלל.</b> «יש הסכמה» אינה טענה עומדת בפני עצמה. היא תוצאה של כלל שהשולחן קבע, והכלל כתוב על השורה. שולחן שיקבע רוב של 70% או אפס התנגדויות יראה את הכלל שלו במקום.</li>
+        <li><b>מסמן מודל.</b> גרנט יושבת בשולחן מסומנת כמודל — וכרגע לא ניסחה כאן שום שורה.</li>
       </ul>
     </div>
 
@@ -274,7 +351,11 @@ button.solid:focus-visible{outline:2px solid var(--focus);outline-offset:2px}
       <h2>מה עוד אין כאן</h2>
       <ul>
         <li>אין שרת — שני אנשים לא יכולים לשבת בשולחן הזה יחד.</li>
-        <li>אין כניסה עם שם משתמש, ואין עדיין דרך לערער על שורה שגרנט ניסחה.</li>
+        <li>אין כניסה עם שם משתמש, ואין דרך לערער על שורת מצב — גם כשהיא לא מייצגת אותך.</li>
+        <li>הכלל של השולחן הזה כתוב בקוד, כי אין עדיין שולחן שאפשר לקבוע בו כלל ואין דרך לשנות אותו מהמסך.</li>
+        <li>אפשר לומר «אני מסכים», אבל השולחן הזה לא בנוי על זה. ב-15 בספטמבר 2026 הוכרע שהכלל שלו הוא «אין התנגדות רשומה» — כלומר שתיקה נספרת: פריט שאיש לא הצהיר עליו דבר ואיש לא התנגד לו מייצר שורת הסכמה. קיים כלל שני שדורש תמיכה מוצהרת, והוא אינו מופעל כאן. שולחן אחר יכריע אחרת.</li>
+        <li>אין כניסה עם שם משתמש. בוחרים מושב מהשולחן הזה, ואין מי שמאמת שזאת את.</li>
+        <li>מושב המודל אינו יכול לכתוב. יסוד §9 דורש שכל תוצר מודל יציג זהות, גרסה, מקורות, זמן וכיסוי — ואין כאן אף אחד מהם.</li>
         <li>יש שולחן אחד. אין עדיין מעבר בין שולחנות ואין החלטה שנסגרת ונבדקת מול המציאות.</li>
       </ul>
     </div>
@@ -297,27 +378,89 @@ var PEOPLE = [
 function seed() {
   return [
     { id: "1", who: "נעה", kind: "תצפית", from: [],
-      versions: [{ text: "בשלוש השנים האחרונות החצר משמשת בעיקר כמחסן לאופניים ולגזם. אף אחד לא יושב שם.", at: "26 באוגוסט, 18:20" }] },
-    { id: "2", who: "יובל", kind: "ראיה", from: ["1"],
-      versions: [{ text: "ספרתי אתמול בבוקר: ארבעה־עשר אופניים בחצר, מהם חמישה עם גלגל שבור או בלי שרשרת.", at: "27 באוגוסט, 08:05" }] },
-    { id: "3", who: "רות", kind: "רעיון", from: ["1", "2"],
+      versions: [{ id: "1:1", text: "בשלוש השנים האחרונות החצר משמשת בעיקר כמחסן לאופניים ולגזם. אף אחד לא יושב שם.", at: "26 באוגוסט, 18:20" }] },
+    { id: "2", who: "יובל", kind: "ראיה", from: [{ id: "1", rev: "1:1", rel: REL.SUPPORTS }],
+      versions: [{ id: "2:1", text: "ספרתי אתמול בבוקר: ארבעה־עשר אופניים בחצר, מהם חמישה עם גלגל שבור או בלי שרשרת.", at: "27 באוגוסט, 08:05" }] },
+    { id: "3", who: "רות", kind: "רעיון", from: [{ id: "1", rev: "1:1", rel: REL.SUPPORTS }, { id: "2", rev: "2:1", rel: REL.SUPPORTS }],
       versions: [
-        { text: "לפנות חצי מהחצר לפינת ישיבה, ולהשאיר חצי לאופניים.", at: "27 באוגוסט, 20:40" },
-        { text: "פינת ישיבה בצד המזרחי, ומתקן אופניים מסודר בצד המערבי — כדי שהישיבה לא תהיה מתחת לחלונות של דירה 2.", at: "28 באוגוסט, 21:15" }
+        { id: "3:1", text: "לפנות חצי מהחצר לפינת ישיבה, ולהשאיר חצי לאופניים.", at: "27 באוגוסט, 20:40" },
+        { id: "3:2", text: "פינת ישיבה בצד המזרחי, ומתקן אופניים מסודר בצד המערבי — כדי שהישיבה לא תהיה מתחת לחלונות של דירה 2.", at: "28 באוגוסט, 21:15" }
       ] },
-    { id: "4", who: "סמי", kind: "התנגדות", from: ["3"], objection: true,
-      versions: [{ text: "פינת ישיבה מתחת לחלון שלי בדירה 2 תיצור רעש בערבים. אני קם לעבודה בחמש.", at: "28 באוגוסט, 19:50" }] },
-    { id: "5", who: "נעה", kind: "שאלה", from: ["4"],
-      versions: [{ text: "אפשר למקם את פינת הישיבה בצד המזרחי, רחוק מהחלונות של דירה 2?", at: "28 באוגוסט, 20:30" }] }
+    /* סמי התנגד לגרסה הראשונה של §3. רות תיקנה אותה אחר כך, ולכן הקשת הזאת מצביעה
+       לגרסה שכבר אינה מוצגת — וזה מסומן על המסך ולא נבלע. */
+    { id: "4", who: "סמי", kind: "התנגדות", from: [{ id: "3", rev: "3:1", rel: REL.CONTRADICTS }], objection: true,
+      versions: [{ id: "4:1", text: "פינת ישיבה מתחת לחלון שלי בדירה 2 תיצור רעש בערבים. אני קם לעבודה בחמש.", at: "28 באוגוסט, 19:50" }] },
+    { id: "5", who: "נעה", kind: "שאלה", from: [{ id: "4", rev: "4:1", rel: REL.RESPONDS }],
+      versions: [{ id: "5:1", text: "אפשר למקם את פינת הישיבה בצד המזרחי, רחוק מהחלונות של דירה 2?", at: "28 באוגוסט, 20:30" }] }
   ];
 }
 
-var STATE_LINES = [
-  { tone: "agreed",    kind: "יש הסכמה",              text: "החצר לא ממלאת היום שום תפקיד שמישהו רצה בו.", rests: ["1", "2"] },
-  { tone: "direction", kind: "יש כיוון שמסתמן",        text: "לחלק את החצר: ישיבה בצד אחד, אופניים בצד השני.", rests: ["3", "5"] },
-  { tone: "contested", kind: "התנגדות שלא נפתרה",      text: "רעש בערבים מתחת לחלונות של דירה 2. זה לא נסגר, גם אם רוב האנשים מסכימים על הכיוון.", rests: ["4"] }
-];
+var KIND = {
+  OBSERVATION: "תצפית",
+  EVIDENCE:    "ראיה",
+  IDEA:        "רעיון",
+  OBJECTION:   "התנגדות",
+  QUESTION:    "שאלה"
+};
 
+var LINE_LABEL = {
+  agreed:    "יש הסכמה",
+  direction: "יש כיוון שמסתמן",
+  contested: "התנגדות שלא נפתרה"
+};
+
+/* ארכיטקטורה §6.4 מונה שמונה יחסים. שלושה נשמרים כאן; SUPERSEDES כבר קיים כ-versions,
+   SUMMARIZES אסור במסך שמצטט ואינו מנסח, ל-TESTS אין Reality Test, ו-DERIVED_FROM/REFINES
+   מתמוטטים ל-supports עד שיהיה מי שיבדיל ביניהם. */
+var REL = { SUPPORTS: "supports", CONTRADICTS: "contradicts", RESPONDS: "responds" };
+var REL_VALUES = Object.create(null);
+REL_VALUES[REL.SUPPORTS] = true;
+REL_VALUES[REL.CONTRADICTS] = true;
+REL_VALUES[REL.RESPONDS] = true;
+
+/* התוויות ניטרליות לכיוון בכוונה: בשורת קרקע והתנגדות הן מתארות את הקשתות של הפריט
+   עצמו, ובשורת כיוון את הקשתות של מה שבא אחריו. מילת הפתיחה היא שקובעת את הכיוון. */
+var REL_LABEL = {
+  supports:    "תמיכה",
+  contradicts: "נגד",
+  responds:    "תשובה",
+  unset:       "בלי יחס מסומן"
+};
+var DIR_LEAD = { own: "מצביעה על", down: "נאמר בעקבותיה" };
+
+/* כלל ההכרעה שייך לשולחן ולא למסך. שולחן אחר יקבע אחר — רוב של 70%, אפס התנגדויות,
+   או מה שהיושבים בו יחליטו — והשורה תיוחס לכלל שלו ולא תטען "הסכמה" מהאוויר.
+   כאן הכלל כתוב בקוד כי אין עדיין שולחן שאפשר לקבוע בו כלל. */
+var RULES = Object.create(null);
+RULES["no-recorded-objection"] = {
+  label: "אין התנגדות רשומה",
+  holds: function (c, ctx) { return !ctx.objected[c.id]; }
+};
+
+/* ארכיטקטורה §7: stance הוא actor_id, item_revision_id, value, rationale, valid_from/to,
+   ו"שינוי דעה נשמר כהיסטוריה". עמדה נרשמת מול הגרסה שהמצהיר ראה — אדם מסכים לנוסח,
+   לא לפריט. אין כאן ערך של התנגדות: התנגדות היא תרומה בפני עצמה, ודרך שנייה וחלשה
+   להתנגד הייתה מדללת את יסוד §2.5. */
+var STANCE = { AGREE: "agree", CAN_LIVE_WITH: "can_live_with" };
+var STANCE_LABEL = { agree: "מסכימ/ה", can_live_with: "יכול/ה לחיות עם זה" };
+var STANCE_VALUES = Object.create(null);
+STANCE_VALUES[STANCE.AGREE] = true;
+STANCE_VALUES[STANCE.CAN_LIVE_WITH] = true;
+
+RULES["declared-support"] = {
+  label: "אדם אחד לפחות הצהיר תמיכה, ואין התנגדות רשומה",
+  holds: function (c, ctx) {
+    if (ctx.objected[c.id]) return false;
+    return currentStances(c).some(function (st) { return st.value === STANCE.AGREE; });
+  }
+};
+
+/* הכלל של שולחן החצר, כפי שהוכרע ב-15 בספטמבר 2026: אין התנגדות רשומה.
+   המשמעות היא ששתיקה נספרת. declared-support רשום כאן ואינו מופעל. */
+var TABLE_RULE = "no-recorded-objection";
+
+/* מוצהר לפני הקריאה ל-load: השמה אחריה הייתה מאפסת את מה ש-load כתב. */
+var loadNote = "";
 var contributions = load();
 
 function load() {
@@ -326,11 +469,50 @@ function load() {
     if (!raw) return seed();
     var parsed = JSON.parse(raw);
     if (!Array.isArray(parsed) || !parsed.length) return seed();
+    var seenIds = Object.create(null);
     var ok = parsed.every(function (c) {
-      return c && typeof c.id === "string" && Array.isArray(c.versions) && c.versions.length;
+      if (!c || typeof c.id !== "string" || !Array.isArray(c.versions) || !c.versions.length) return false;
+      if (seenIds[c.id]) return false;   /* מזהה כפול שובר גם את הדגשת הציטוט וגם את זיכרון השורות הפתוחות */
+      seenIds[c.id] = true;
+      if (!c.versions.every(function (v) { return v && typeof v.text === "string" && typeof v.at === "string"; })) return false;
+      /* גרסה שנשמרה לפני שהיו מזהי גרסה מקבלת אותם לפי סדר הכתיבה — בדיוק מה שהזרע היה נותן. */
+      c.versions.forEach(function (v, i) {
+        if (typeof v.id !== "string") v.id = c.id + ":" + (i + 1);
+      });
+      /* save() מסרסל את כל מערך התרומות, ולכן קורא שביצע תיקון אחד מחזיק כאן את הגרף
+         הישן. קשר שנשמר כמחרוזת נקרא כקשר שלא סומן — לא כתמיכה, ולא נמחק. */
+      var edges = [];
+      (Array.isArray(c.from) ? c.from : []).forEach(function (e) {
+        if (typeof e === "string") { edges.push({ id: e, rev: null, rel: null }); return; }
+        if (!e || typeof e.id !== "string") return;
+        edges.push({ id: e.id, rev: typeof e.rev === "string" ? e.rev : null,
+                     rel: REL_VALUES[e.rel] ? e.rel : null });
+      });
+      c.from = edges;
+      /* עמדה פגומה נזרקת ואינה מפילה את כל המערך; מה שתקין נשאר. */
+      var stances = [];
+      (Array.isArray(c.stances) ? c.stances : []).forEach(function (st) {
+        if (!st || typeof st.who !== "string" || !STANCE_VALUES[st.value]) return;
+        stances.push({
+          id: typeof st.id === "string" ? st.id : c.id + "#" + (stances.length + 1),
+          who: st.who,
+          rev: typeof st.rev === "string" ? st.rev : null,
+          value: st.value,
+          rationale: typeof st.rationale === "string" ? st.rationale : "",
+          at: typeof st.at === "string" ? st.at : "",
+          until: typeof st.until === "string" ? st.until : null
+        });
+      });
+      c.stances = stances;
+      return true;
     });
-    return ok ? parsed : seed();
+    if (!ok) {
+      loadNote = "מה שנשמר בדפדפן הזה לא נקרא — הוא לא בצורה שהמסך מכיר. הוא לא נמחק, אבל התיקון הבא ידרוס אותו.";
+      return seed();
+    }
+    return parsed;
   } catch (e) {
+    loadNote = "מה שנשמר בדפדפן הזה לא נקרא. הוא לא נמחק, אבל התיקון הבא ידרוס אותו.";
     return seed();
   }
 }
@@ -351,9 +533,12 @@ function byId(id) {
   return null;
 }
 
+/* אותה צורה שהזרע משתמש בה. הפער נראה בדיוק בפתקי הגרסאות שאמורים להראות שאין דריסה. */
 function now() {
   try {
-    return new Date().toLocaleString("he-IL", { day: "numeric", month: "long", hour: "2-digit", minute: "2-digit" });
+    var d = new Date();
+    return d.toLocaleString("he-IL", { day: "numeric", month: "long" }) + ", " +
+           d.toLocaleString("he-IL", { hour: "2-digit", minute: "2-digit" });
   } catch (e) {
     return "עכשיו";
   }
@@ -366,10 +551,15 @@ function el(tag, cls, text) {
   return node;
 }
 
-function citeButton(id) {
-  var b = el("button", "cite", "§" + id);
+function citeButton(id, stale) {
+  var b = el("button", "cite" + (stale ? " cite--stale" : ""), "§" + id);
   b.type = "button";
-  b.setAttribute("aria-label", "הצגת מה שנאמר, פריט " + id);
+  var label = "הצגת מה שנאמר, פריט " + id;
+  if (stale) {
+    label += ". הקשר נרשם מול גרסה קודמת שלו";
+    b.title = "הקשר נרשם מול גרסה קודמת של פריט " + id;
+  }
+  b.setAttribute("aria-label", label);
   b.addEventListener("click", function () { flash(id); });
   return b;
 }
@@ -394,42 +584,308 @@ function renderSeats() {
   });
 }
 
+/* ---------- גזירת מצב השולחן ---------- */
+/* אף שורה כאן לא נכתבה מראש. המבנה של התרומות קובע אילו שורות קיימות ועל מה
+   הן נשענות, והטקסט הוא ציטוט מהגרסה הנוכחית של המקור — לא תקציר שלו. לכן
+   תיקון למטה משנה את המצב מיד, ולא משאיר שורה שמדברת על גרסה שכבר אינה. */
+
+function parentsOf(c) {
+  return Array.isArray(c.from) ? c.from : [];
+}
+function parentIds(c) { return parentsOf(c).map(function (e) { return e.id; }); }
+function edgeTo(c, id) {
+  var found = null;
+  parentsOf(c).forEach(function (e) { if (e.id === id) found = e; });
+  return found;
+}
+function relOf(e) { return e && REL_VALUES[e.rel] ? e.rel : "unset"; }
+function currentRev(c) {
+  var v = c.versions[c.versions.length - 1];
+  return v && typeof v.id === "string" ? v.id : null;
+}
+/* ארכיטקטורה §6.4 מקשרת בין רוויזיות, לא בין פריטים. קשת שנרשמה מול גרסה שכבר תוקנה
+   אינה מתייחסת לטקסט שמוצג עכשיו, ולכן היא מסומנת במקום להיקרא כאילו כן. */
+function edgeIsStale(e) {
+  var t = e && byId(e.id);
+  if (!t || !e.rev) return false;
+  return e.rev !== currentRev(t);
+}
+function emptyGroups() { return { supports: [], contradicts: [], responds: [], unset: [] }; }
+
+function stancesOf(c) { return Array.isArray(c.stances) ? c.stances : []; }
+function currentStances(c) {
+  return stancesOf(c).filter(function (st) { return !st.until; });
+}
+function pastStances(c) {
+  return stancesOf(c).filter(function (st) { return !!st.until; });
+}
+/* עמדה שנרשמה מול נוסח שתוקן מאז אינה עמדה על מה שמוצג עכשיו. */
+function stanceIsStale(c, st) {
+  return !!st.rev && st.rev !== currentRev(c);
+}
+/* שינוי דעה אינו דורס: העמדה הקודמת נסגרת בזמן ונשארת לקריאה. */
+function declareStance(c, who, value, rationale) {
+  var at = now();
+  if (!Array.isArray(c.stances)) c.stances = [];
+  c.stances.forEach(function (st) {
+    if (st.who === who && !st.until) st.until = at;
+  });
+  c.stances.push({
+    id: c.id + "#" + (c.stances.length + 1),
+    who: who, rev: currentRev(c), value: value,
+    rationale: rationale || "", at: at, until: null
+  });
+}
+
+function isObjection(c) {
+  return c.objection === true || c.kind === KIND.OBJECTION;
+}
+
+function currentText(c) {
+  var v = c.versions[c.versions.length - 1];
+  return v && typeof v.text === "string" ? v.text : "";
+}
+
+/* ציטוט קצר אחד לא יכול לשאת משפט שלם, ולכן הוא תמיד מסמן שהוא חלקי:
+   כל חיתוך — משפט, שורה או אורך — מחזיר cut, והמסך מוסיף שלוש נקודות.
+   בלי הסימון הזה מרכאות סביב חצי משפט מבטיחות שלמות שאין לה כיסוי. */
+var MIN_QUOTE = 25;
+
+/* סוף המשפט הראשון שארוך מספיק כדי לומר משהו. "לא." אינו כיוון. */
+function sentenceEnd(text) {
+  var offset = 0;
+  while (offset < text.length) {
+    var hit = text.slice(offset).search(/[.!?](\s|$)/);
+    if (hit < 0) return -1;
+    var end = offset + hit + 1;
+    if (end >= MIN_QUOTE) return end;
+    offset = end;
+  }
+  return -1;
+}
+
+function lead(c) {
+  var full = currentText(c).trim();
+  var flat = full.replace(/\s+/g, " ");
+  var text = flat;
+  /* שורה ראשונה שעומדת בפני עצמה עדיפה — אבל רק כשהיא ארוכה מספיק. אחרת החיתוך בשורה
+     החדשה היה עוקף את המינימום, ותיקון שנפתח ב"לא." היה מצוטט כ"לא. …". */
+  var br = full.indexOf("\n");
+  if (br > -1) {
+    var firstLine = full.slice(0, br).replace(/\s+$/, "");
+    if (firstLine.length >= MIN_QUOTE) text = firstLine;
+  }
+  var stop = sentenceEnd(text);
+  if (stop > -1) text = text.slice(0, stop);
+  if (text.length > 120) {
+    var space = text.lastIndexOf(" ", 120);
+    text = text.slice(0, space > 60 ? space : 120).replace(/\s+$/, "");
+  }
+  return { text: text, cut: text.length < flat.length };
+}
+
+/* כל פריט שהתנגדות נשענת עליו. */
+function objectedTargets() {
+  var hit = Object.create(null);   /* מזהה כמו "__proto__" או "toString" לא יורש כלום */
+  contributions.forEach(function (c) {
+    var objection = isObjection(c);
+    parentsOf(c).forEach(function (e) {
+      if (objection || e.rel === REL.CONTRADICTS) hit[e.id] = true;
+    });
+  });
+  return hit;
+}
+
+function childIndex() {
+  var kids = Object.create(null);
+  contributions.forEach(function (c) {
+    parentsOf(c).forEach(function (e) {
+      if (!kids[e.id]) kids[e.id] = [];
+      kids[e.id].push(c.id);
+    });
+  });
+  return kids;
+}
+
+/* הקשתות שהפריט עצמו הצהיר עליהן, מקובצות לפי היחס. */
+function ownGroups(c) {
+  var groups = emptyGroups();
+  parentsOf(c).forEach(function (e) {
+    if (!byId(e.id)) return;   /* מזהה תלוש לא מצייר כפתור שלא גולל לשום מקום */
+    groups[relOf(e)].push({ id: e.id, stale: edgeIsStale(e) });
+  });
+  return groups;
+}
+
+/* מה שנאמר בעקבות רעיון ושייך לו: שאלות, תשובות, תצפיות שנוספו אחריו.
+   דרך התנגדות עוברים בלי לאסוף אותה — לכל התנגדות יש שורה משלה. גם דרך
+   רעיון אחר עוברים בלי לאסוף אותו: הוא פותח כיוון משלו, אבל מה שנאמר
+   בעקבותיו נאמר גם בעקבות הרעיון שממנו הוא צמח. עצירה שם הייתה מותירה
+   רעיון שחודד מאוחר יותר בלי שום דבר שנשען עליו. */
+function downstream(id, kids) {
+  var groups = emptyGroups(), seen = Object.create(null), queue = (kids[id] || []).slice();
+  seen[id] = true;
+  while (queue.length) {
+    var next = queue.shift();
+    if (seen[next]) continue;
+    seen[next] = true;
+    var c = byId(next);
+    if (!c) continue;
+    if (!isObjection(c) && c.kind !== KIND.IDEA) {
+      /* יחס מוצהר קיים רק כלפי הורה ישיר. מה שהגיע דרך מתווך — למשל שאלה שנאמרה בתשובה
+         להתנגדות — אינו מסומן כלפי הרעיון, ולכן אינו נספר לאף צד. */
+      var e = edgeTo(c, id);
+      groups[relOf(e)].push({ id: next, stale: edgeIsStale(e) });
+    }
+    queue = queue.concat(kids[next] || []);
+  }
+  return groups;
+}
+
+/* המפתח הוא תפקיד השורה, לא מי מייצג אותה כרגע: שורת ההסכמה נשארת אותה
+   שורה גם כשהפריט שהיא מצטטת מתחלף, ולא נסגרת ונפתחת מעצמה. */
+function stateLine(tone, source, groups, dir, key, rule) {
+  var quote = lead(source);
+  return { tone: tone, kind: LINE_LABEL[tone], text: quote.text, cut: quote.cut,
+           quoted: source.id, groups: groups, dir: dir, key: key, rule: rule || null };
+}
+
+function deriveState() {
+  var objected = objectedTargets();
+  var kids = childIndex();
+  var lines = [];
+
+  /* שורה לכל תצפית או ראיה שאיש לא התנגד לה, כל אחת נשענת רק על מה שהיא עצמה הצהירה
+     עליו. קודם לכן הן אוחדו לשורה אחת שציטטה את הראשונה ומנתה את כל השאר כמקורות שלה —
+     כך שתצפית שסותרת את המצוטטת הוצגה כאחד הדברים שהיא נשענת עליהם. */
+  var rule = RULES[TABLE_RULE] || null;
+  contributions.forEach(function (c) {
+    if (c.kind !== KIND.OBSERVATION && c.kind !== KIND.EVIDENCE) return;
+    /* הכלל הוא שמכריע, לא הקוד כאן. כלל שאינו מוכר לא מייצר שורות בכלל. */
+    if (!rule || !rule.holds(c, { objected: objected })) return;
+    lines.push(stateLine("agreed", c, ownGroups(c), "own", "agreed:" + c.id, rule.label));
+  });
+
+  /* כיוון לכל רעיון — גם כשיש עליו התנגדות. ההתנגדות לא מוחקת אותו. */
+  contributions.forEach(function (c) {
+    if (c.kind !== KIND.IDEA) return;
+    lines.push(stateLine("direction", c, downstream(c.id, kids), "down", "direction:" + c.id));
+  });
+
+  /* וכל התנגדות נשארת שורה בפני עצמה. אין כאן מנגנון שסוגר אותה.
+     היא נשענת גם על מה שהיא מתנגדת לו: התנגדות בלי המטרה שלה משאירה את
+     הקורא עם התנגדות מרחפת, ומעלימה מהמצב את הדבר שהותקף. */
+  contributions.forEach(function (c) {
+    if (!isObjection(c)) return;
+    lines.push(stateLine("contested", c, ownGroups(c), "own", "contested:" + c.id));
+  });
+
+  return lines;
+}
+
+/* איזו שורה פתוחה — לפי הנימה והמקור, כדי ששורה שנפתחה תישאר פתוחה גם אחרי תיקון. */
+var openLines = {};
+
 function renderState() {
   var list = document.getElementById("state-list");
   list.textContent = "";
-  STATE_LINES.forEach(function (line, index) {
+
+  var lines = deriveState();
+  if (!lines.length) {
+    var blank = el("li", "state__item");
+    blank.appendChild(el("p", "state__empty", contributions.length
+      ? "נאמרו כאן דברים, אבל אף אחד מהם לא נופל תחת כלל שהמסך הזה מכיר. הם למטה, כפי שנכתבו."
+      : "עוד לא נאמר כאן כלום."));
+    list.appendChild(blank);
+    return;
+  }
+
+  lines.forEach(function (line) {
+    var key = line.key;
+    var open = openLines[key] === true;
+
     var item = el("li", "state__item state__item--" + line.tone);
-    item.dataset.open = "false";
+    item.dataset.open = open ? "true" : "false";
+
+    var sourcesId = "sources-" + key.replace(/[^a-zA-Z0-9_-]/g, "-");
 
     var button = el("button", "state__button");
     button.type = "button";
-    button.setAttribute("aria-expanded", "false");
+    button.setAttribute("aria-expanded", open ? "true" : "false");
+    button.setAttribute("aria-controls", sourcesId);
     button.appendChild(el("span", "state__mark"));
 
     var textWrap = el("span", "state__text");
     textWrap.appendChild(el("span", "state__kind", line.kind));
-    textWrap.appendChild(el("strong", null, line.text));
+    if (line.rule) {
+      textWrap.appendChild(el("span", "state__rule", "לפי כלל השולחן הזה: " + line.rule));
+    }
+    /* ציטוט שנקטע אחרי משפט שלם מסומן ברווח ואז נקודות; ציטוט שנקטע באמצע — צמוד. */
+    var mark = line.cut ? (/[.!?]$/.test(line.text) ? " …" : "…") : "";
+    textWrap.appendChild(el("strong", null, '"' + line.text + mark + '"'));
     button.appendChild(textWrap);
-    button.appendChild(el("span", "state__chev", "▾"));
+    var chev = el("span", "state__chev", "▾");
+    chev.setAttribute("aria-hidden", "true");   /* קישוט, ולא חלק מהשם הנגיש של הכפתור */
+    button.appendChild(chev);
 
     var sources = el("p", "state__sources");
-    sources.appendChild(el("span", null, "נשען על:"));
-    line.rests.forEach(function (id) { sources.appendChild(citeButton(id)); });
+    sources.id = sourcesId;
+    sources.appendChild(el("span", null, "מצוטט מ־"));
+    sources.appendChild(citeButton(line.quoted, false));
+
+    var anyStale = false, opened = false;
+    ["supports", "contradicts", "responds", "unset"].forEach(function (rel) {
+      var items = line.groups[rel].filter(function (x) { return x.id !== line.quoted; });
+      if (!items.length) return;
+      if (!opened) {
+        sources.appendChild(el("span", null, "· " + DIR_LEAD[line.dir] + ":"));
+        opened = true;
+      }
+      sources.appendChild(el("span", null, REL_LABEL[rel]));
+      items.forEach(function (x) {
+        if (x.stale) anyStale = true;
+        sources.appendChild(citeButton(x.id, x.stale));
+      });
+    });
+    if (anyStale) {
+      sources.appendChild(el("span", null, "· קו מקווקו: הקשר נרשם מול גרסה קודמת."));
+    }
 
     button.addEventListener("click", function () {
-      var open = item.dataset.open === "true";
-      item.dataset.open = open ? "false" : "true";
-      button.setAttribute("aria-expanded", open ? "false" : "true");
+      var wasOpen = item.dataset.open === "true";
+      openLines[key] = !wasOpen;
+      item.dataset.open = wasOpen ? "false" : "true";
+      button.setAttribute("aria-expanded", wasOpen ? "false" : "true");
     });
 
     item.appendChild(button);
     item.appendChild(sources);
     list.appendChild(item);
-    void index;
   });
 }
 
+/* renderCards בונה את כל הכרטיסים מחדש, ולכן שמירה בכרטיס אחד השמידה עורך פתוח
+   אחר ואת הטקסט שבו. מה שנפתח נשמר ומוחזר. */
+function openCardState() {
+  var state = Object.create(null);
+  contributions.forEach(function (c) {
+    var card = document.getElementById("card-" + c.id);
+    if (!card) return;
+    var area = card.querySelector("textarea");
+    var why = card.querySelector(".stance input");
+    state[c.id] = {
+      editing: card.dataset.editing === "true",
+      stancing: card.dataset.stancing === "true",
+      history: card.dataset.history === "true",
+      draft: area ? area.value : "",
+      why: why ? why.value : ""
+    };
+  });
+  return state;
+}
+
 function renderCards() {
+  var keep = openCardState();
   var host = document.getElementById("cards");
   host.textContent = "";
 
@@ -437,9 +893,10 @@ function renderCards() {
     var current = c.versions[c.versions.length - 1];
     var older = c.versions.slice(0, -1);
 
-    var card = el("article", "card" + (c.objection ? " card--objection" : ""));
+    var card = el("article", "card" + (isObjection(c) ? " card--objection" : ""));
     card.id = "card-" + c.id;
     card.dataset.editing = "false";
+    card.dataset.stancing = "false";
     card.dataset.history = "false";
     card.dataset.flash = "false";
 
@@ -452,11 +909,29 @@ function renderCards() {
 
     card.appendChild(el("p", "card__text", current.text));
 
-    if (c.from.length) {
+    var parents = parentsOf(c).filter(function (e) { return !!byId(e.id); });
+    if (parents.length) {
       var from = el("p", "card__from");
       from.appendChild(el("span", null, "בא מתוך:"));
-      c.from.forEach(function (id) { from.appendChild(citeButton(id)); });
+      parents.forEach(function (e) { from.appendChild(citeButton(e.id, edgeIsStale(e))); });
       card.appendChild(from);
+    }
+
+    var live = currentStances(c);
+    if (live.length) {
+      var stanceLine = el("p", "card__stances");
+      stanceLine.appendChild(el("span", null, "עמדות:"));
+      live.forEach(function (st) {
+        var stale = stanceIsStale(c, st);
+        var chip = el("span", "card__stance" + (stale ? " card__stance--stale" : ""),
+                      st.who + " — " + STANCE_LABEL[st.value]);
+        if (stale) chip.title = "העמדה נרשמה מול נוסח קודם של הפריט";
+        stanceLine.appendChild(chip);
+      });
+      if (live.some(function (st) { return stanceIsStale(c, st); })) {
+        stanceLine.appendChild(el("span", null, "· קו מקווקו: העמדה נרשמה מול נוסח קודם."));
+      }
+      card.appendChild(stanceLine);
     }
 
     var actions = el("div", "card__actions card__actions--idle");
@@ -471,8 +946,21 @@ function renderCards() {
     });
     actions.appendChild(fix);
 
-    if (older.length) {
-      var toggle = el("button", "link", "גרסאות קודמות (" + older.length + ")");
+    var stanceOpen = el("button", "link", "להצהיר עמדה");
+    stanceOpen.type = "button";
+    stanceOpen.addEventListener("click", function () {
+      card.dataset.stancing = "true";
+      card.querySelector(".stance select").focus();
+    });
+    actions.appendChild(stanceOpen);
+
+    var past = pastStances(c);
+    if (older.length || past.length) {
+      var toggleLabel = older.length && past.length
+        ? "מה שהיה קודם (" + (older.length + past.length) + ")"
+        : older.length ? "גרסאות קודמות (" + older.length + ")"
+                       : "עמדות קודמות (" + past.length + ")";
+      var toggle = el("button", "link", toggleLabel);
       toggle.type = "button";
       toggle.setAttribute("aria-expanded", "false");
       toggle.addEventListener("click", function () {
@@ -483,6 +971,47 @@ function renderCards() {
       actions.appendChild(toggle);
     }
     card.appendChild(actions);
+
+    var stancePanel = el("div", "stance");
+    var stanceRow = el("div", "editor__row");
+    var whoSel = document.createElement("select");
+    whoSel.setAttribute("aria-label", "מי מצהיר עמדה על פריט " + c.id);
+    composeSeats().forEach(function (seat) { whoSel.appendChild(option(seat.name, seat.name)); });
+    var valSel = document.createElement("select");
+    valSel.setAttribute("aria-label", "העמדה על פריט " + c.id);
+    [STANCE.AGREE, STANCE.CAN_LIVE_WITH].forEach(function (v) {
+      valSel.appendChild(option(v, STANCE_LABEL[v]));
+    });
+    stanceRow.appendChild(whoSel);
+    stanceRow.appendChild(valSel);
+    stancePanel.appendChild(stanceRow);
+
+    var why = document.createElement("input");
+    why.type = "text";
+    why.setAttribute("aria-label", "נימוק, לא חובה");
+    why.placeholder = "נימוק, לא חובה";
+    stancePanel.appendChild(why);
+    stancePanel.appendChild(el("p", "editor__hint", "עמדה נרשמת מול הנוסח שמוצג עכשיו. אם תתקני דעה אחר כך, הקודמת לא תימחק — היא תיסגר בזמן ותישאר לקריאה. אין כאן ערך של התנגדות: התנגדות היא תרומה בפני עצמה."));
+
+    var stanceButtons = el("div", "editor__row");
+    var stanceSave = el("button", "solid", "רישום העמדה");
+    stanceSave.type = "button";
+    stanceSave.addEventListener("click", function () {
+      declareStance(c, whoSel.value, valSel.value, why.value.trim());
+      card.dataset.stancing = "false";
+      why.value = "";
+      save();
+      renderState();
+      renderCards();
+      flash(c.id);
+    });
+    var stanceCancel = el("button", "ghost", "ביטול");
+    stanceCancel.type = "button";
+    stanceCancel.addEventListener("click", function () { card.dataset.stancing = "false"; });
+    stanceButtons.appendChild(stanceSave);
+    stanceButtons.appendChild(stanceCancel);
+    stancePanel.appendChild(stanceButtons);
+    card.appendChild(stancePanel);
 
     var editor = el("div", "editor");
     var area = document.createElement("textarea");
@@ -499,8 +1028,12 @@ function renderCards() {
         card.dataset.editing = "false";
         return;
       }
-      c.versions.push({ text: text, at: now() });
+      c.versions.push({ id: c.id + ":" + (c.versions.length + 1), text: text, at: now() });
+      /* נסגר לפני הבנייה מחדש: openCardState מצלם את המצב הנוכחי, ופאנל שנשאר פתוח
+         כאן היה משוחזר פתוח ומסתיר את הפעולות של הכרטיס. */
+      card.dataset.editing = "false";
       save();
+      renderState();
       renderCards();
       flash(c.id);
     });
@@ -512,9 +1045,23 @@ function renderCards() {
     editor.appendChild(row);
     card.appendChild(editor);
 
-    if (older.length) {
+    var kept = keep[c.id];
+    if (kept) {
+      card.dataset.history = kept.history ? "true" : "false";
+      if (toggle) toggle.setAttribute("aria-expanded", kept.history ? "true" : "false");
+      if (kept.editing) {
+        card.dataset.editing = "true";
+        area.value = kept.draft;
+      }
+      if (kept.stancing) {
+        card.dataset.stancing = "true";
+        why.value = kept.why;
+      }
+    }
+
+    if (older.length || past.length) {
       var history = el("div", "history");
-      older.slice().reverse().forEach(function (version, index) {
+      older.slice().reverse().forEach(function (version) {
         var slip = el("div", "older");
         var label = el("div", "older__label");
         label.appendChild(el("span", null, "נכתב קודם"));
@@ -522,7 +1069,17 @@ function renderCards() {
         slip.appendChild(label);
         slip.appendChild(el("p", null, version.text));
         history.appendChild(slip);
-        void index;
+      });
+      /* שינוי דעה נשמר כהיסטוריה (ארכיטקטורה §7), ולכן עמדה שנסגרה נשארת לקריאה. */
+      past.slice().reverse().forEach(function (st) {
+        var slip = el("div", "older");
+        var label = el("div", "older__label");
+        label.appendChild(el("span", null, "עמדה קודמת"));
+        label.appendChild(el("span", null, st.at + " — " + st.until));
+        slip.appendChild(label);
+        slip.appendChild(el("p", null, st.who + " — " + STANCE_LABEL[st.value] +
+                                       (st.rationale ? ". " + st.rationale : "")));
+        history.appendChild(slip);
       });
       card.appendChild(history);
     }
@@ -531,15 +1088,146 @@ function renderCards() {
   });
 }
 
+/* ---------- הוספה לשולחן ---------- */
+
+/* מושב המודל אינו נבחר כאן. יסוד §9 דורש שכל תוצר מודל יציג זהות, גרסה, מקורות,
+   זמן, כיסוי והאם נבדק בידי אדם; אין כאן אף אחד מהם, ולכן אי אפשר לכתוב בשם גרנט
+   בלי להפוך את הסימון שעל המושב לשקר. */
+function composeSeats() {
+  return PEOPLE.filter(function (s) { return s.kind === "person"; });
+}
+
+/* מזהה חדש הוא אחד מעל הגבוה שקיים, כדי שמזהה לא ייעשה שימוש חוזר אחרי מחיקה. */
+function nextId() {
+  var max = 0;
+  contributions.forEach(function (c) {
+    var num = parseInt(c.id, 10);
+    if (!isNaN(num) && num > max) max = num;
+  });
+  return String(max + 1);
+}
+
+function option(value, label) {
+  var o = document.createElement("option");
+  o.value = value;
+  o.textContent = label;
+  return o;
+}
+
+function composeLinkRow() {
+  var row = el("div", "compose__link");
+
+  var targetField = el("label", "compose__field");
+  targetField.appendChild(el("span", null, "קשור ל"));
+  var target = document.createElement("select");
+  target.className = "compose__target";
+  target.appendChild(option("", "— בחרי פריט —"));
+  contributions.forEach(function (c) {
+    target.appendChild(option(c.id, "§" + c.id + " · " + c.who + " · " + c.kind));
+  });
+  targetField.appendChild(target);
+
+  var relField = el("label", "compose__field");
+  relField.appendChild(el("span", null, "היחס"));
+  var rel = document.createElement("select");
+  rel.className = "compose__rel";
+  rel.appendChild(option("", REL_LABEL.unset));
+  [REL.SUPPORTS, REL.CONTRADICTS, REL.RESPONDS].forEach(function (r) {
+    rel.appendChild(option(r, REL_LABEL[r]));
+  });
+  relField.appendChild(rel);
+
+  var drop = el("button", "link", "הסרה");
+  drop.type = "button";
+  drop.addEventListener("click", function () { row.remove(); });
+
+  row.appendChild(targetField);
+  row.appendChild(relField);
+  row.appendChild(drop);
+  return row;
+}
+
+function composeEdges() {
+  var edges = [], seen = Object.create(null);
+  var rows = document.getElementById("compose-links").querySelectorAll(".compose__link");
+  Array.prototype.forEach.call(rows, function (row) {
+    var id = row.querySelector(".compose__target").value;
+    if (!id || seen[id]) return;   /* שורה ריקה נזרקת; קשר כפול לאותו פריט נספר פעם אחת */
+    var target = byId(id);
+    if (!target) return;
+    seen[id] = true;
+    var rel = row.querySelector(".compose__rel").value;
+    /* הקשת נרשמת מול הגרסה שהכותבת ראתה, לא מול הפריט. תיקון עתידי שלו יסמן אותה. */
+    edges.push({ id: id, rev: currentRev(target), rel: REL_VALUES[rel] ? rel : null });
+  });
+  return edges;
+}
+
+function renderCompose() {
+  var who = document.getElementById("compose-who");
+  var kind = document.getElementById("compose-kind");
+  who.textContent = "";
+  kind.textContent = "";
+  composeSeats().forEach(function (s) { who.appendChild(option(s.name, s.name)); });
+  [KIND.OBSERVATION, KIND.EVIDENCE, KIND.IDEA, KIND.OBJECTION, KIND.QUESTION]
+    .forEach(function (k) { kind.appendChild(option(k, k)); });
+}
+
+document.getElementById("compose-add-link").addEventListener("click", function () {
+  document.getElementById("compose-links").appendChild(composeLinkRow());
+});
+
+document.getElementById("compose").addEventListener("submit", function (e) {
+  e.preventDefault();
+  var err = document.getElementById("compose-error");
+  var area = document.getElementById("compose-text");
+  var text = area.value.trim();
+  if (!text) {
+    err.textContent = "אין מה להוסיף בלי טקסט.";
+    area.focus();
+    return;
+  }
+  err.textContent = "";
+
+  var kind = document.getElementById("compose-kind").value;
+  var id = nextId();
+  var item = {
+    id: id,
+    who: document.getElementById("compose-who").value,
+    kind: kind,
+    from: composeEdges(),
+    versions: [{ id: id + ":1", text: text, at: now() }]
+  };
+  if (kind === KIND.OBJECTION) item.objection = true;
+
+  contributions.push(item);
+  save();
+  renderState();
+  renderCards();
+
+  area.value = "";
+  document.getElementById("compose-links").textContent = "";
+  flash(id);
+});
+
 document.getElementById("reset").addEventListener("click", function () {
   contributions = seed();
+  openLines = {};
+  loadNote = "";
+  document.getElementById("compose-text").value = "";
+  document.getElementById("compose-links").textContent = "";
+  document.getElementById("compose-error").textContent = "";
+  document.getElementById("saved-note").textContent = "";
   try { localStorage.removeItem(STORAGE_KEY); } catch (e) {}
+  renderState();
   renderCards();
 });
 
 renderSeats();
+renderCompose();
 renderState();
 renderCards();
+if (loadNote) document.getElementById("saved-note").textContent = loadNote;
 </script>
 </body>
 </html>
