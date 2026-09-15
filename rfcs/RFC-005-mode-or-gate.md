@@ -3,6 +3,7 @@ id: RFC-005
 title: Mode or Gate
 status: open
 opened: 2026-09-14
+ruled: 2026-09-15 — the operator answered §3 "both"; §7 items 2 and 3 are unbuilt, so the RFC stays open
 concerns: whether the procedure that gives Garnet its name is a way of forming a shared position, or only a safety gate before acting
 confidence: proposal
 exposed-by: the operator's own statement of what the name means, 2026-09-14; and the one derived agreement line in the yard prototype
@@ -110,6 +111,35 @@ convergence step, and no disagreement map — because none of those are required
 of a review. The gate is specified to a level of care that the mode never
 receives, and the mode is what the name describes.
 
+### 3.1 The ruling
+
+On 2026-09-15 the operator answered §3: **both.** The four steps are a gate on
+action *and* a mode by which a text is formed.
+
+**What that settles.** The gate keeps its existing scope untouched — foundation
+§9.1(3) still admits a reversible Tier-2 action inside an approved Mandate only
+through those four steps, and nothing here loosens that. What is added is the
+second reading: the same procedure, run for its own sake, produces a text. The
+mode is now something the corpus is meant to have, not something it happens to
+lack.
+
+**What it does not settle, and cannot.** This ruling does not amend ADR §9, and
+does not need to. §9 forbids a joint **credential**; the operator ruled on the
+same day, on [RFC-006](RFC-006-the-first-table.md) §4, for reading 3 — the first
+table is an instance governed by the same mechanism, with a permissive rule of
+its own — and RFC-006 §3 supplies the test that keeps the two apart: a jointly
+formed text is a product if and only if no gate anywhere may name it as its
+authorization. The mode is admissible only under that test. If a gate can ever
+cite the text, §9's ban applies to it in full and this ruling does not reach it.
+
+**Provenance.** The ruling was given in an operator session, as a choice among
+three options drafted by the Builder, and has no durable public URL — the same
+limitation already recorded in §1 for the two statements that opened this RFC.
+It is a ruling on an open RFC by the person who decides, not an adopted
+amendment to any ratified document. What it authorizes is building §7 items 2
+and 3; it does not, by itself, put a jointly formed position into the
+architecture.
+
 ## 4. What follows from it
 
 1. **The mechanism has no executing authority.** The ADR carrying it is
@@ -180,12 +210,16 @@ its own — a jointly formed text is evidence about its authors and nothing more
 
 ## 7. What would ratify it
 
-1. The operator rules on §3: is the procedure a mode, a gate, or both.
-2. If a mode: an entity for a jointly formed position enters the architecture's
-   §7 table, and foundation §12's list of valid products names it explicitly.
-3. The prototype's agreement line is settled first, since it is the only running
-   instance and it currently fails a ratified test. Its two open decisions are
-   the evidence this RFC would otherwise have to invent.
+1. ~~The operator rules on §3: is the procedure a mode, a gate, or both.~~
+   **Done, 2026-09-15: both.** See §3.1.
+2. An entity for a jointly formed position enters the architecture's §7 table,
+   and foundation §12's list of valid products names it explicitly. **Not
+   built.** This is what the ruling in §3.1 authorizes and what it is waiting
+   on; §8's four questions are the design questions it has to answer first.
+3. ~~The prototype's agreement line is settled first.~~ **Done.** Its two
+   decisions closed on 2026-09-14, and the rule it runs — the last thing about
+   that screen nobody had ruled on — was decided on 2026-09-15. The evidence
+   this RFC would otherwise have had to invent exists, on the branch §4 names.
 
 ## 8. Open questions
 
@@ -209,9 +243,14 @@ its own — a jointly formed text is evidence about its authors and nothing more
 ## 9. A note on sources
 
 Every load-bearing citation in this RFC is to a document in this public
-repository, with one stated exception: consequence 4 in §4 rests on work that
-lives on another branch of this repository and not in this tree, and says so on
-its face rather than linking to a path that does not resolve here. The operational contract that governs how the two agents actually
+repository, with two stated exceptions, both to other branches of this same
+repository rather than to anything outside it. Consequence 4 in §4 rests on work
+that lives on the prototype's branch and not in this tree, and says so on its
+face rather than linking to a path that does not resolve here. §3.1 links to
+RFC-006, which is open on its own branch as PR #9 and is not in this tree
+either; the link resolves once both are merged, and until then the ruling it
+reports is recorded in that RFC as well, so neither document depends on the
+other having landed first. The operational contract that governs how the two agents actually
 coordinate, and the code of the shadow harness that replays the procedure
 described in ADR §15, are held in a separate private repository by a deliberate
 decision recorded there. This RFC describes the boundary between them without
