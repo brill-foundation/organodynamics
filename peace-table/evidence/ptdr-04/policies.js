@@ -1,4 +1,4 @@
-/* Four candidate policies for PTDR-04.
+/* Five candidate policies for PTDR-04.
  *
  * Foundation §8 states requirements, not alternatives, so these are not four
  * readings of one text. A is the decision register's own Proposed default for
@@ -19,6 +19,8 @@
  *   canAppeal     — is the classification appealable
  *   noBasis       — can the policy say "no basis to decide" instead of guessing
  */
+
+import { coverageOf, unrepresentedClaimHolds } from "./coverage.js";
 
 export const policies = {
   "A · מועמדת-למהותית (ברירת המחדל של PTDR-04)": {
@@ -85,15 +87,66 @@ export const policies = {
         canAppeal: true
       };
     }
+  },
+
+  "E · מקור מוצהר + coverage": {
+    id: "E",
+    blurb:
+      "כמו D, ובנוסף: היקף התחולה מוצהר, וה-coverage נגזר ממנו. שתי תוספות. " +
+      "ראשית, «אין בסיס להכרעה» מוחזר כשקבוצה שההחלטה חלה עליה לא נשמעה בכלל או " +
+      "כשמשהו שההחלטה נשענת עליו אינו מגובה — כלומר בדיוק שני הכשלים שיסוד §8 מונה, " +
+      "והוא מוחזר כסיבה שמנקבת בשם הפער ולא כציון. שנית, הצהרת «אוכלוסייה שאינה " +
+      "מיוצגת» נבדקת מול ההיקף במקום להיות מקובלת באמון. המדיניות הזאת אינה קוראת " +
+      "ספירה בשום נקודה.",
+    run(o, { declarer, reviewer }) {
+      const cv = coverageOf(o);
+      let declared = declarer(o);
+
+      /* A declaration this policy can actually check. §8 names an unrepresented
+       * population as a source of materiality; whether one exists is a fact
+       * about the declared scope, so it is verified and not trusted. */
+      if (declared === "unrepresented" && !unrepresentedClaimHolds(o)) declared = "preference";
+
+      const blocks = declared !== "preference" || !cv.sufficient;
+      const review = reviewer(o, declared);
+
+      /* "אין בסיס להכרעה" is about the item, not about the objection, so it
+       * neither promotes a preference to material nor demotes a material
+       * objection. It blocks, and it says which gap it is blocking on. */
+      if (!cv.sufficient) {
+        return {
+          blocksWhileOpen: true,
+          needsRuling: false,
+          classified: review.material,
+          noBasis: true,
+          canAppeal: true,
+          reason: cv.unheard.length
+            ? `ייצוג: «${cv.unheard[0].group}» לא נשמע`
+            : `ידע: «${cv.unevidenced[0]}» אינו מגובה`
+        };
+      }
+      return {
+        blocksWhileOpen: blocks,
+        needsRuling: review.contested,
+        classified: review.material,
+        noBasis: false,
+        canAppeal: true
+      };
+    }
   }
 };
 
 /* Two classifiers. The register asks for evidence before adoption; a policy
  * judged only under a perfect classifier is not evidence about anything real. */
 
+/* An ideal human classifier notices an insufficiency and says so. A, B and D
+ * carry no coverage concept of their own — the register's proposed default does
+ * not mention coverage — so for them "אין בסיס להכרעה" exists only as something
+ * a person happens to notice. That is the honest model of those policies, and
+ * it is what E is meant to replace with a computation. */
 export const idealClassifier = (o) => ({
   material: o.material,
-  noBasis: !!o.knowledgeGap
+  noBasis: o.hasBasis === false
 });
 
 /* Follows the room. This is not a strawman: it is the exact failure foundation
@@ -105,16 +158,35 @@ export const roomFollowingClassifier = (o) => ({
 });
 
 export const honestDeclarer = (o) => o.source;
-/* Someone who has learned that "preference" does not block will stop declaring it. */
+/* Someone who has learned that "preference" does not block will stop declaring
+ * it. Two variants matter: one that reaches for "direct-harm", which no policy
+ * here can check, and one that reaches for "unrepresented", which E can. */
 export const gamingDeclarer = (o) => (o.source === "preference" ? "direct-harm" : o.source);
+export const gamingUnrepresentedDeclarer = (o) =>
+  (o.source === "preference" ? "unrepresented" : o.source);
 
 export const strictReviewer = (o, declared) => ({
   contested: declared !== o.source,
   material: o.material,
-  noBasis: !!o.knowledgeGap
+  noBasis: o.hasBasis === false
 });
 export const absentReviewer = (o, declared) => ({
   contested: false,
   material: declared !== "preference",
   noBasis: false
+});
+
+/* Reviewers for E. The strict one still only checks whether the declared source
+ * is the real source. The absent one accepts any declaration — but under E an
+ * "unrepresented" declaration was already checked against the scope before any
+ * reviewer was consulted, so absence costs less than it does under D. */
+export const coverageStrictReviewer = (o, declared) => ({
+  contested: declared !== o.source,
+  material: o.material,
+  noBasis: !coverageOf(o).sufficient
+});
+export const coverageAbsentReviewer = (o, declared) => ({
+  contested: false,
+  material: declared !== "preference",
+  noBasis: !coverageOf(o).sufficient
 });
