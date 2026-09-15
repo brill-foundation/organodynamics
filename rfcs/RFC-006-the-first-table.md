@@ -3,6 +3,7 @@ id: RFC-006
 title: The First Table
 status: open
 opened: 2026-09-14
+ruled: 2026-09-15 — the operator answered §4 with reading 3; §6 items 2 and 3 are unwritten, so the RFC stays open
 concerns: whether the table that builds the others is governed by their rules, and what a text two parties formed together is allowed to be
 confidence: proposal
 exposed-by: the operator's statement that the first table decides differently, 2026-09-14; and a review finding on RFC-005 that the corpus refuses a single joint statement
@@ -136,6 +137,40 @@ the first table keeps its reason for existing. It also makes the operator's own
 model self-consistent: the table that builds the others is governed by the same
 mechanism it builds, with its own rule filled in.
 
+### 4.1 The ruling
+
+On 2026-09-15 the operator answered §4: **reading 3.** The first table is a
+table whose members chose a permissive rule.
+
+**What it buys.** Foundation §1 survives intact. Garnet remains an instance of
+the system it builds, which is the whole argument for the reflexive mandate and
+for this Record's method; the first table is governed by the same mechanism as
+every other table, with its own rule filled in. It also makes her two
+commitments consistent instead of opposed — "in the first table you and Codex
+decide for yourselves" is now a statement about which rule this table set, not
+an exemption from the mechanism.
+
+**What it costs, stated plainly.** Reading 3's cost is not optional and it is
+not small: **the constitutional floor binds the first table exactly as it binds
+the others.** Foundation §2.5 — a material objection is never erased by a
+majority — and §9.1(4)'s non-delegable list hold here. She cannot grant her
+agents powers the floor withholds from everyone. Judging an objection
+immaterial, hiding a voice, and approving a final Decision stay hers under this
+ruling, the same as under the other two readings.
+
+**What it settles about the artifact.** Reading 3 adopts §3's test with it: a
+jointly formed text is a product if and only if no gate anywhere may name it as
+its authorization. ADR §9's ban on a joint credential stands exactly as written
+and is not narrowed by anything here — what changes is that the Record can now
+tell the two objects apart, which is what forced the ban to be total.
+
+**Provenance.** The ruling was given in an operator session, as a choice among
+the three readings §4 sets out, and has no durable public URL. That is the same
+limitation §8 records for the statements that opened this RFC. It is a ruling on
+an open RFC by the person who decides — not an amendment to foundation §1, which
+this RFC explicitly does not propose, and not an adopted change to any ratified
+document.
+
 ## 5. What this does not propose
 
 - Not a change to §9. Its ban on a joint credential should stand exactly as
@@ -149,15 +184,20 @@ mechanism it builds, with its own rule filled in.
 
 ## 6. What would ratify it
 
-1. The operator rules on §4: is the first table special by kind, already
-   lawful, or a table with a permissive rule.
-2. If reading 3: the constitutional floor is stated explicitly as binding every
-   table including the first, which no document currently says because no
-   document currently distinguishes them.
+1. ~~The operator rules on §4.~~ **Done, 2026-09-15: reading 3.** See §4.1.
+2. The constitutional floor is stated explicitly as binding every table
+   including the first — which no document currently says, because no document
+   currently distinguishes them. **Not written.** Reading 3 makes this the
+   condition of its own coherence rather than a nicety: a permissive table rule
+   is only safe if the floor under it is written down, and §7's second question
+   (can a table change its own rule, and by what rule is *that* decided) is the
+   failure mode it guards against.
 3. A jointly formed position becomes a record — architecture §7 has twenty
    entities and none of them is one — carrying its authors, its
    pre-reconciliation originals under ADR §8's preservation rule, and the §3
-   property on its face.
+   property on its face. **Not built.** This is the same obligation
+   [RFC-005](RFC-005-mode-or-gate.md) §7(2) carries, and it should be satisfied
+   once, not twice.
 
 ## 7. Open questions
 
@@ -177,7 +217,12 @@ mechanism it builds, with its own rule filled in.
 
 ## 8. A note on sources
 
-Every load-bearing citation is to a document in this public repository. The
-operating contract of the coordination layer is held privately by a decision
+Every load-bearing citation is to a document in this public repository, with one
+exception of position rather than of access: RFC-005 is open on its own branch
+as PR #8 and is not in this tree, so the link in §6(3) resolves only once both
+have merged. The ruling in §4.1 is recorded in that RFC as well, so neither
+document depends on the other having landed first.
+
+The operating contract of the coordination layer is held privately by a decision
 recorded there; where §4 refers to it, it names what that contract already
 states in public documents here and quotes nothing from it.
