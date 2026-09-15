@@ -217,11 +217,12 @@ document.
 
 ## 8. A note on sources
 
-Every load-bearing citation is to a document in this public repository, with one
-exception of position rather than of access: RFC-005 is open on its own branch
-as PR #8 and is not in this tree, so the link in §6(3) resolves only once both
-have merged. The ruling in §4.1 is recorded in that RFC as well, so neither
-document depends on the other having landed first.
+Every load-bearing citation is to a document in this public repository, and every
+one of them resolves here. One did not while this RFC was under review: the link
+in §6(3) points at RFC-005, which was then open on a branch of its own. The two
+RFCs and the prototype work they both cite were merged together on 15 September
+2026. The ruling in §4.1 is recorded in RFC-005 as well, so neither document ever
+depended on the other having landed first.
 
 The operating contract of the coordination layer is held privately by a decision
 recorded there; where §4 refers to it, it names what that contract already
