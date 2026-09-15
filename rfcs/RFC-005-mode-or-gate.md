@@ -163,21 +163,21 @@ architecture.
    data model cannot store.
 4. **The one Mirror that exists failed the ratified test, and the repair is
    the evidence.** The single implementation of an agreement line anywhere in
-   this Record is the state panel of `peace-table/prototypes/yard/`. **This
-   evidence is not in this branch.** On `main` that screen still holds three
-   hardcoded `STATE_LINES` and derives nothing; the derivation, the two
-   decisions it exposed, and their repair live in PR #7 (`c57b7c3`, `f21ea80`),
-   which an independent review of this RFC correctly pointed out cannot be
-   checked from here. What that work established, and what can be reproduced
-   from that branch rather than this one: the panel emitted one agreement row
-   that listed a contradicting observation among the things the contradicted
-   claim rested on, and rendered agreement in green against an objection in
-   amber. The ratified prominence-parity test asks whether a fully-disagreed
-   Cell would receive framing and prominence equal to a fully-agreed one. It
-   did not. Both are now repaired, and the agreement row carries the rule that
-   produced it. The consequence stands as stated — this was the only running
-   Mirror and it failed the test — but the citation is to that branch, not to
-   a path in this tree.
+   this Record is the state panel of
+   [`peace-table/prototypes/yard/`](../peace-table/prototypes/yard/), and the
+   evidence is now in this tree. An earlier version of this RFC cited it while
+   it was still on an unmerged branch; an independent review said so, correctly,
+   and the disclosure has been replaced by the thing itself. What that work
+   found: the panel emitted one agreement row that listed a contradicting
+   observation among the things the contradicted claim rested on, and rendered
+   agreement in green against an objection in amber. The ratified
+   prominence-parity test asks whether a fully-disagreed Cell would receive
+   framing and prominence equal to a fully-agreed one. It did not. Both are
+   repaired, the agreement row now carries the rule that produced it, and the
+   two decisions the derivation had been making in silence are written down in
+   [`open-decisions-v0-he.md`](../peace-table/prototypes/yard/open-decisions-v0-he.md)
+   beside the rule the table was later ruled to run. The consequence stands as
+   stated: this was the only running Mirror, and it failed the test.
 
 ## 5. The proposal
 
@@ -243,14 +243,12 @@ its own — a jointly formed text is evidence about its authors and nothing more
 ## 9. A note on sources
 
 Every load-bearing citation in this RFC is to a document in this public
-repository, with two stated exceptions, both to other branches of this same
-repository rather than to anything outside it. Consequence 4 in §4 rests on work
-that lives on the prototype's branch and not in this tree, and says so on its
-face rather than linking to a path that does not resolve here. §3.1 links to
-RFC-006, which is open on its own branch as PR #9 and is not in this tree
-either; the link resolves once both are merged, and until then the ruling it
-reports is recorded in that RFC as well, so neither document depends on the
-other having landed first. The operational contract that governs how the two agents actually
+repository, and every one of them resolves here. Two did not while this RFC was
+under review: consequence 4 in §4 rested on prototype work that was then on an
+unmerged branch, and §3.1 links to RFC-006, which was then open on a branch of
+its own. The three were merged together on 15 September 2026, in that order. The
+ruling §3.1 reports is recorded in RFC-006 as well, so neither document ever
+depended on the other having merged first. The operational contract that governs how the two agents actually
 coordinate, and the code of the shadow harness that replays the procedure
 described in ADR §15, are held in a separate private repository by a deliberate
 decision recorded there. This RFC describes the boundary between them without
