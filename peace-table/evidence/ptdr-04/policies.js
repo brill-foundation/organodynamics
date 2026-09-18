@@ -1,26 +1,21 @@
-/* Five candidate policies for PTDR-04.
+/* Candidate policies for PTDR-04, and coverage as a separate, orthogonal layer.
  *
- * Foundation §8 states requirements, not alternatives, so these are not four
- * readings of one text. A is the decision register's own Proposed default for
- * PTDR-04, quoted in behaviour; B is its inverse; C is the numeric threshold
- * §8 rules out in words; D is a declared-source variant written for this run.
+ * Foundation §8 states requirements, not alternatives, so these are not readings
+ * of one text. A is the decision register's own Proposed default for PTDR-04,
+ * quoted in behaviour; B is its inverse; C is the numeric threshold §8 rules out
+ * in words; D is a declared-source variant written for this run.
  *
- * Each answers the same two questions: does this objection block the item
- * while unclassified, and who decides whether it is material. None of them is
- * invented out of nothing — A is the register's own Proposed default, B is its
- * inverse, C is the numeric threshold §8 rules out (run so the ruling-out is
- * evidenced rather than asserted), D is a declared-source variant that keeps
- * the classifier but narrows what it decides.
- *
- * A policy returns, per objection:
- *   blocks        — does the target lose agreement right now
- *   needsRuling   — does a human classifier have to act for this to settle
- *   classified    — final materiality the policy lands on
- *   canAppeal     — is the classification appealable
- *   noBasis       — can the policy say "no basis to decide" instead of guessing
+ * COVERAGE IS NOT A FIFTH POLICY. Version 0.2 of this harness carried an "E"
+ * that was D with coverage bolted on, and compared it against A, B and D without
+ * it. A review was right that this predetermined the result: coverage and "no
+ * basis to decide" are requirements §8 states alongside materiality, not instead
+ * of it, so A+coverage and B+coverage are equally constructible and would score
+ * the same on that axis without changing their materiality rule. The two choices
+ * are orthogonal and are now scored that way: `withCoverage` wraps ANY policy,
+ * and run.js runs all four base policies both with and without it.
  */
 
-import { coverageOf, unrepresentedClaimHolds } from "./coverage.js";
+import { coverageOf, unrepresentedClaimHolds, PROPOSED_CUTOFFS } from "./coverage.js";
 
 export const policies = {
   "A · מועמדת-למהותית (ברירת המחדל של PTDR-04)": {
@@ -28,13 +23,8 @@ export const policies = {
     blurb: "כל התנגדות חוסמת מרגע הגשתה ועד שמסווג מוסמך מכריע. הסיווג ניתן לערעור.",
     run(o, { classifier }) {
       const ruling = classifier(o);
-      return {
-        blocksWhileOpen: true,
-        needsRuling: true,
-        classified: ruling.material,
-        noBasis: ruling.noBasis,
-        canAppeal: true
-      };
+      return { blocksWhileOpen: true, needsRuling: true,
+               classified: ruling.material, noBasis: ruling.noBasis, canAppeal: true };
     }
   },
 
@@ -43,29 +33,18 @@ export const policies = {
     blurb: "התנגדות נרשמת ונראית, אך אינה חוסמת עד שמסווג מוסמך קבע שהיא מהותית.",
     run(o, { classifier }) {
       const ruling = classifier(o);
-      return {
-        blocksWhileOpen: false,
-        needsRuling: true,
-        classified: ruling.material,
-        noBasis: ruling.noBasis,
-        canAppeal: true
-      };
+      return { blocksWhileOpen: false, needsRuling: true,
+               classified: ruling.material, noBasis: ruling.noBasis, canAppeal: true };
     }
   },
 
   "C · סף מספרי (N חותמים)": {
-    id: "C",
-    N: 3,
+    id: "C", N: 3,
     blurb: "מהותית אם ורק אם לפחות שלושה מהיושבים חתומים עליה. אין מסווג.",
     run(o) {
       const material = o.sentiment >= 3;
-      return {
-        blocksWhileOpen: material,
-        needsRuling: false,
-        classified: material,
-        noBasis: false,
-        canAppeal: false
-      };
+      return { blocksWhileOpen: material, needsRuling: false,
+               classified: material, noBasis: false, canAppeal: false };
     }
   },
 
@@ -74,119 +53,93 @@ export const policies = {
     blurb:
       "המתנגד מצהיר על אחד מששת המקורות ב-§8, או על «העדפה». העדפה אינה חוסמת; " +
       "כל מקור אחר חוסם מיד. ההצהרה ניתנת לסקירה ולערעור, והסוקר מכריע רק בשאלה " +
-      "האם המקור שהוצהר הוא אכן המקור — לא האם ההתנגדות צודקת.",
-    run(o, { declarer, reviewer }) {
-      const declared = declarer(o);            // what the objector says it is
-      const blocks = declared !== "preference";
-      const review = reviewer(o, declared);    // only checks the declared source
-      return {
-        blocksWhileOpen: blocks,
-        needsRuling: review.contested,         // a reviewer acts only when challenged
-        classified: review.material,
-        noBasis: review.noBasis,
-        canAppeal: true
-      };
-    }
-  },
+      "האם המקור שהוצהר הוא אכן המקור — לא האם ההתנגדות צודקת. הצהרת «אוכלוסייה " +
+      "שאינה מיוצגת» חייבת לנקוב בשם הקבוצה, והקבוצה שהוצהרה נבדקת מול ההיקף.",
+    run(o, { declarer, reviewer, cutoffs = PROPOSED_CUTOFFS }) {
+      const d = declarer(o);
+      let source = d.source;
 
-  "E · מקור מוצהר + coverage": {
-    id: "E",
-    blurb:
-      "כמו D, ובנוסף: היקף התחולה מוצהר, וה-coverage נגזר ממנו. שתי תוספות. " +
-      "ראשית, «אין בסיס להכרעה» מוחזר כשקבוצה שההחלטה חלה עליה לא נשמעה בכלל או " +
-      "כשמשהו שההחלטה נשענת עליו אינו מגובה — כלומר בדיוק שני הכשלים שיסוד §8 מונה, " +
-      "והוא מוחזר כסיבה שמנקבת בשם הפער ולא כציון. שנית, הצהרת «אוכלוסייה שאינה " +
-      "מיוצגת» נבדקת מול ההיקף במקום להיות מקובלת באמון. המדיניות הזאת אינה קוראת " +
-      "ספירה בשום נקודה.",
-    run(o, { declarer, reviewer }) {
-      const cv = coverageOf(o);
-      let declared = declarer(o);
-
-      /* A declaration this policy can actually check. §8 names an unrepresented
-       * population as a source of materiality; whether one exists is a fact
-       * about the declared scope, so it is verified and not trusted. */
-      if (declared === "unrepresented" && !unrepresentedClaimHolds(o)) declared = "preference";
-
-      const blocks = declared !== "preference" || !cv.sufficient;
-      const review = reviewer(o, declared);
-
-      /* "אין בסיס להכרעה" is about the item, not about the objection, so it
-       * neither promotes a preference to material nor demotes a material
-       * objection. It blocks, and it says which gap it is blocking on. */
-      if (!cv.sufficient) {
-        return {
-          blocksWhileOpen: true,
-          needsRuling: false,
-          classified: review.material,
-          noBasis: true,
-          canAppeal: true,
-          reason: cv.unheard.length
-            ? `ייצוג: «${cv.unheard[0].group}» לא נשמע`
-            : `ידע: «${cv.unevidenced[0]}» אינו מגובה`
-        };
+      /* The one source whose truth is a fact about the declared scope rather than
+       * a claim about the world. It is verified — and verified against the group
+       * the declaration actually names. An earlier version asked only whether the
+       * item had SOME unheard group, which let an unrelated preference ride a gap
+       * it never mentioned; a review caught that. A declaration naming nothing,
+       * or naming a group that was heard, is not checkable and is not accepted. */
+      if (source === "unrepresented" && !unrepresentedClaimHolds(o, d.group, cutoffs)) {
+        source = "preference";
       }
+
+      const review = reviewer(o, source);
       return {
-        blocksWhileOpen: blocks,
+        blocksWhileOpen: source !== "preference",
         needsRuling: review.contested,
         classified: review.material,
-        noBasis: false,
+        noBasis: review.noBasis,
         canAppeal: true
       };
     }
   }
 };
 
-/* Two classifiers. The register asks for evidence before adoption; a policy
- * judged only under a perfect classifier is not evidence about anything real. */
+/* Coverage as a wrapper, applicable to any policy above. It adds exactly one
+ * thing: §8's obligation to return "אין בסיס להכרעה" when the knowledge or the
+ * representation is insufficient. That is a statement about the ITEM, so it
+ * neither promotes a preference to material nor demotes a material objection —
+ * it blocks, and it names the gap it is blocking on. */
+export function withCoverage(base) {
+  return {
+    id: base.id + "+cov",
+    blurb: base.blurb + " ובנוסף: היקף התחולה מוצהר, ו«אין בסיס להכרעה» נגזר ממנו ונוקב בשם הפער.",
+    run(o, ctx) {
+      const cv = coverageOf(o, ctx.cutoffs || PROPOSED_CUTOFFS);
+      const r = base.run(o, ctx);
+      if (cv.sufficient) return { ...r, noBasis: false };
+      return {
+        ...r,
+        blocksWhileOpen: true,
+        noBasis: true,
+        reason: cv.underrepresented.length
+          ? `ייצוג: «${cv.underrepresented[0].group}» ${cv.underrepresented[0].heard}/${cv.underrepresented[0].size}`
+          : `ידע: «${cv.unevidenced[0]}» אינו מגובה`
+      };
+    }
+  };
+}
 
-/* An ideal human classifier notices an insufficiency and says so. A, B and D
- * carry no coverage concept of their own — the register's proposed default does
- * not mention coverage — so for them "אין בסיס להכרעה" exists only as something
- * a person happens to notice. That is the honest model of those policies, and
- * it is what E is meant to replace with a computation. */
-export const idealClassifier = (o) => ({
-  material: o.material,
-  noBasis: o.hasBasis === false
-});
+/* An ideal human classifier notices an insufficiency and says so. Without the
+ * coverage wrapper, "אין בסיס להכרעה" exists only as something a person happens
+ * to notice — which is what the wrapper replaces with a computation. */
+export const idealClassifier = (o) => ({ material: o.material, noBasis: o.hasBasis === false });
 
-/* Follows the room. This is not a strawman: it is the exact failure foundation
- * §2.5 forbids — "התנגדות מהותית אינה נמחקת על ידי רוב" — and the reason §8
- * says materiality is not a function of count. */
-export const roomFollowingClassifier = (o) => ({
-  material: o.sentiment >= 3,
-  noBasis: false
-});
+/* Follows the room. Not a strawman: it is the exact failure יסוד §2.5 forbids —
+ * "התנגדות מהותית אינה נמחקת על ידי רוב". */
+export const roomFollowingClassifier = (o) => ({ material: o.sentiment >= 3, noBasis: false });
 
-export const honestDeclarer = (o) => o.source;
-/* Someone who has learned that "preference" does not block will stop declaring
- * it. Two variants matter: one that reaches for "direct-harm", which no policy
- * here can check, and one that reaches for "unrepresented", which E can. */
-export const gamingDeclarer = (o) => (o.source === "preference" ? "direct-harm" : o.source);
+/* Declarers return {source, group}. The group matters only for "unrepresented",
+ * which is the one declaration a policy can check. */
+export const honestDeclarer = (o) => ({ source: o.source, group: o.declaredGroup || null });
+
+/* Someone who has learned that "העדפה" does not block. Three ways to reach for
+ * something that does, in rising order of how hard they are to catch. */
+export const gamingDeclarer = (o) =>
+  ({ source: o.source === "preference" ? "direct-harm" : o.source,
+     /* Only the preference is lied about. An earlier version dropped the group
+      * for every objection, which silently demoted an honest "unrepresented"
+      * declaration and charged D with an erasure the adversary never caused. */
+     group: o.source === "preference" ? null : (o.declaredGroup || null) });
 export const gamingUnrepresentedDeclarer = (o) =>
-  (o.source === "preference" ? "unrepresented" : o.source);
+  ({ source: o.source === "preference" ? "unrepresented" : o.source,
+     group: o.source === "preference" ? "דיירים שאינם נוכחים" : (o.declaredGroup || null) });
+/* The sharpest one: names a group that really is unheard on this item. */
+export const gamingRealGapDeclarer = (o) => {
+  if (o.source !== "preference") return { source: o.source, group: o.declaredGroup || null };
+  const gap = coverageOf(o).unheard[0];
+  return { source: "unrepresented", group: gap ? gap.group : "דיירים שאינם נוכחים" };
+};
 
-export const strictReviewer = (o, declared) => ({
-  contested: declared !== o.source,
-  material: o.material,
-  noBasis: o.hasBasis === false
+export const strictReviewer = (o, source) => ({
+  contested: source !== o.source, material: o.material, noBasis: o.hasBasis === false
 });
-export const absentReviewer = (o, declared) => ({
-  contested: false,
-  material: declared !== "preference",
-  noBasis: false
-});
-
-/* Reviewers for E. The strict one still only checks whether the declared source
- * is the real source. The absent one accepts any declaration — but under E an
- * "unrepresented" declaration was already checked against the scope before any
- * reviewer was consulted, so absence costs less than it does under D. */
-export const coverageStrictReviewer = (o, declared) => ({
-  contested: declared !== o.source,
-  material: o.material,
-  noBasis: !coverageOf(o).sufficient
-});
-export const coverageAbsentReviewer = (o, declared) => ({
-  contested: false,
-  material: declared !== "preference",
-  noBasis: !coverageOf(o).sufficient
+export const absentReviewer = (o, source) => ({
+  contested: false, material: source !== "preference", noBasis: false
 });
