@@ -8,6 +8,7 @@
     "lab": "node tools/lab.js",
     "backlog": "node tools/backlog.js",
     "conformance": "node tools/conformance.js",
+    "ptdr04": "node peace-table/evidence/ptdr-04/run.js",
     "publish-check": "node tools/publish-check.js"
   }
 }
